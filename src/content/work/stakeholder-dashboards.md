@@ -12,6 +12,7 @@ summary:
   outcome: "The dashboards rolled out to every Network Head and principal in the Pakistani market. The first version where principals asked for more features, not fewer."
 order: 3
 collaborators: ["Tooba Malik"]
+featured: true
 draft: false
 ---
 ---

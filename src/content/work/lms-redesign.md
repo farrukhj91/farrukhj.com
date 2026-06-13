@@ -12,6 +12,7 @@ summary:
   outcome: "Time-to-lesson dropped to two clicks. The product broke even in launch year — a first — and schools brought the dashboards into renewal conversations."
 order: 1
 collaborators: []
+featured: true
 draft: false
 ---
 <figure><img src="/assets/hero-ia-working-board.jpg" alt="A wide working board showing the LMS redesign in progress — research synthesis, information architecture, content structure, signup flows, and the teacher assignment flow, all laid out together" /><figcaption>The working board, partway through the redesign. Research synthesis (top left), the new IA (top center), site IA (top right), the learner content model (bottom left), signup flows (bottom center), the teacher assignment flow (bottom right).</figcaption></figure>

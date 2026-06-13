@@ -20,6 +20,7 @@ const work = defineCollection({
       .optional(),
     order: z.number().default(0),
     collaborators: z.array(z.string()).optional(),
+    featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });

@@ -12,6 +12,7 @@ summary:
   outcome: "35 TCF schools deployed in the first wave. Every operational pain point that drove the rebuild was structurally addressed, not bandaged."
 order: 2
 collaborators: ["Tooba Malik"]
+featured: true
 draft: false
 ---
 <figure><img src="/assets/offline/hero-clicker-classroom.jpg" alt="Students in a Pakistani classroom raising clickers to answer an assessment question" /><figcaption>Students in a partner school using the offline app's clicker assessment feature.</figcaption></figure>

@@ -1,6 +1,6 @@
 # Farrukh Jamal — Portfolio · Project Scope (SSOT)
 
-**Last updated:** 2026-06-14 (Phase 4 Round 2)
+**Last updated:** 2026-06-14 (Phase 4 Round 3)
 **Current phase:** Phase 4 — Styling + content wiring, iterating
 **Domain:** farrukhj.com (Namecheap; git connected to Vercel)
 **Owner:** Farrukh Jamal · farrukh.jamal91@gmail.com
@@ -231,7 +231,10 @@ Same schema (lighter), `<empty-state>` until populated. First candidates: Compet
 
 ### 12.3 About / CV / Contact / Writing
 
-About + CV + Contact scaffolded with `[TODO]` slots. Writing hidden until first post.
+- **About** (`src/pages/about.astro`): first-person narrative populated from resume + case-study material. Trajectory: Discretelogix Scrum→PO → KP Design Engineer→PM → Lead Pursuits AI PM. Principles list pulled verbatim from his own LMS/Offline reflection sections. Farrukh edits next.
+- **CV** (`src/pages/cv.astro`): two-column timeline (140px year column + content), single-col stack ≤720px. Sections: Summary, Experience, Education, Certifications, Skills. Skills section appears here only — NOT on home/About.
+- **Contact**: short page; primary contact in footer.
+- **Writing**: hidden until first post.
 
 ---
 
@@ -315,6 +318,13 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 | 2026-06-14 R2 | Home page section label "Selected work" removed (violated extended hard-no list — generic section labels) | List speaks for itself |
 | 2026-06-14 R2 | Decision: no skills section (recommendation) — expertise framing goes into About narrative as a sentence | Senior portfolios don't list skills |
 | 2026-06-14 R2 | Decision: testimonials handled inline in case study reflections (recommendation) — `/endorsements` page reserved if Farrukh wants a dedicated showcase later | Avoids "trusted by" marketing posture |
+| 2026-06-14 R3 | Locked: TOC stays on right rail | Editorial-convention rationale |
+| 2026-06-14 R3 | Locked: skip testimonials for now | LinkedIn handles for now |
+| 2026-06-14 R3 | Schema: added `featured: boolean` (default false) to work collection | Explicit home-page curation |
+| 2026-06-14 R3 | Home page filters by `featured === true` instead of slicing `order` | All three KP case studies set `featured: true` |
+| 2026-06-14 R3 | CV page populated from `_inbox/resume_extracted.md` — full timeline: summary, experience, education, certifications, skills | Two-column timeline (140px year + content); stacks single-col on ≤720px |
+| 2026-06-14 R3 | About page drafted from resume + case-study material — first-person narrative, trajectory, principles | Farrukh edits next; not Claude-default voice — pulls his own reflection-section principles verbatim |
+| 2026-06-14 R3 | Skills appear ONLY on CV page (standard resume content). NOT on home, About, or anywhere else | Maintains senior-portfolio posture |
 
 ---
 

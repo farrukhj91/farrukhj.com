@@ -1,18 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="About" description="About Farrukh Jamal — product practitioner with a design-led background, currently pointing at AI product work.">
-  <section class="page container">
-    <div class="prose">
+<BaseLayout title="About" description="About Farrukh Jamal — Senior Product Manager with a design-led background, pointing at AI Product Management.">
+  <section class="about container">
+    <header class="about-header">
       <h1>About</h1>
-      <p><em>[TODO: Farrukh to write the About page narrative. First person, work history woven in, trajectory from Product Design to PM to AI PM. Not a bulleted resume — narrative with substance.]</em></p>
+    </header>
+
+    <div class="prose">
+      <p>I'm a Product Manager with a design-led background. Eight years in, currently consulting on AI-native product at <a href="https://leadpursuits.com">Lead Pursuits</a>, a US-based eProcurement SaaS. Before that I led product at Knowledge Platform Pakistan, where I rebuilt an LMS that ships across Pakistan, the UK, and Afghanistan. Earlier still: product ownership, scrum facilitation, and engineering school.</p>
+
+      <p>The trajectory hasn't been a straight line. I trained as an electronics engineer at Bahria University, then walked into a Scrum Master role at Discretelogix in 2016 — facilitating sprint ceremonies for a 15-person cross-functional team while learning what good product delivery actually looked like. Two years later, that became a Product Owner role on FinTech credit decisioning systems: Soaran (loan management, ~$70K project) and Lead Envy (now Tekambi — lead routing for US short-term lenders), alongside Magento eCommerce builds for clients like Aeroshop and ExcalDrives. The discipline I picked up in those years — talking to engineering on their terms, scoping for what can actually ship — has shaped every product role since.</p>
+
+      <p>In late 2019 I moved to Knowledge Platform in Islamabad as a Product Design Engineer. When the pandemic hit, I co-led a 0-to-1 Virtual School and Homework Center for 100K+ students, delivered in under six weeks. I ran 30+ user interviews, synthesized them into 100+ Figma artifacts, and grew the 1-on-1 platform to 252K+ users through iterative gamification work. The work pulled me deeper into product — I cared about what we shipped, not just how it looked.</p>
+
+      <p>By late 2021 I was the Product Lead at Knowledge Platform, owning the full lifecycle on Bonzo (rebranded as Shupavu Games in Kenya through a Safaricom telco partnership), the LMS rebuild, the offline deployment, the stakeholder dashboards, the self-serve campus admin system, and the exam-prep work that followed. Across that span I ran 50+ discovery workshops and stakeholder interviews with enterprise clients — Beaconhouse, AKUEB, LAPIS Communications in the UAE, 21st Century in the UK — translating pain into roadmap. Shupavu / Bonzo scaled to 71K+ users and 4.5M+ questions answered across three markets. The LMS rebuild broke even in launch year. A few of those pieces of work are written up in the <a href="/work">case studies</a>.</p>
+
+      <p>Since September 2025 I've been consulting as Product Manager at Lead Pursuits, directing a cross-functional squad of 10+ across engineering, sales, cold outreach, data enrichment, and content. The work is squarely AI-native product: a natural-language procurement capture agent and a Shipley-framework-aligned multi-agent proposal builder, both shipped 0-to-1. On the side, I've been building AI PM productivity tools with Claude Code — a Competitive Intelligence Agent and a Daily Competitor Changelog Agent — to compress the parts of my own job that scale poorly. That's the direction I'm pointing: AI Product Management as the next chapter of what's been a design-to-PM trajectory across eight years and five markets.</p>
+
+      <p>A few things I've learned that I carry into every product decision:</p>
+
+      <ul>
+        <li>A good product is one that doesn't require explaining.</li>
+        <li>The system should answer the user's first question, not present them with the options to find it themselves.</li>
+        <li>Don't make institutional buyers learn your metrics. Adopt theirs.</li>
+        <li>Question design is research design.</li>
+        <li>When you can move work out of the user's hands into the system's, do.</li>
+      </ul>
+
+      <p>I'm based in Rawalpindi, Pakistan, and work with teams across the US, UK, UAE, and South Asia. Reach me at <a href="mailto:farrukh.jamal91@gmail.com">farrukh.jamal91@gmail.com</a> or on <a href="https://www.linkedin.com/in/farrukh-jamal" rel="me">LinkedIn</a>.</p>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page {
+  .about {
     padding-top: var(--s-9);
     padding-bottom: var(--s-9);
+  }
+  .about-header { margin-bottom: var(--s-8); }
+  .about-header h1 { margin: 0; }
+  .prose { max-width: var(--w-text); }
+  .prose > * + * { margin-top: var(--s-5); }
+  .prose p { line-height: var(--lh-body); }
+  .prose a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .prose a:hover,
+  .prose a:focus-visible {
+    color: var(--ink-bright);
+    border-bottom-color: var(--ink-bright);
+  }
+  .prose ul {
+    padding-left: var(--s-5);
+    margin-top: var(--s-4);
+  }
+  .prose li {
+    margin-bottom: var(--s-3);
+    list-style: disc;
+    line-height: var(--lh-body);
   }
 </style>

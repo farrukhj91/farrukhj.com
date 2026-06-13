@@ -1,49 +1,311 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const experience = [
+  {
+    years: '2025 — Now',
+    role: 'Product Management Consultant',
+    org: 'Lead Pursuits',
+    location: 'Remote, US',
+    bullets: [
+      'Led product strategy and execution for an AI-native eProcurement SaaS platform, directing a cross-functional squad of 10+ across engineering, sales, cold outreach, data enrichment, and content teams.',
+      'Drove 0-to-1 product development across two core SaaS verticals: a natural-language procurement capture agent and a Shipley-framework-aligned multi-agent proposal builder — from discovery and scoping through prototype and delivery.',
+      'Defined MVP scope in collaboration with solution architects and AI engineers, aligning prototype delivery with product goals and stakeholder priorities.',
+      'Built two AI-powered PM productivity tools using Claude Code: a competitive intelligence agent (automated competitor discovery, SWOT, strategic gap recommendations) and a daily competitor changelog agent (morning briefings tracking product changes across competitor portfolios).',
+      'Partnered with cold outreach and marketing teams to review email copy for clarity and deliverability, analyse daily campaign results, and iterate messaging in real time.',
+    ],
+  },
+  {
+    years: '2021 — 2026',
+    role: 'Product Lead',
+    org: 'Knowledge Platform',
+    location: 'Islamabad, Pakistan',
+    bullets: [
+      'Owned full product lifecycle for Bonzo (Pakistan) — rebranded as Shupavu Games in Kenya under a Safaricom telco partnership — executing 0-to-1 discovery, MVP definition, and multi-market launch, scaling to 71K+ users, 4.5M+ questions answered, and 32,000+ hours of engagement.',
+      'Led complete LMS redesign through structured user research across 4 stakeholder types (learners, teachers, principals, parents), design sprints, and persona-driven prioritization — stripping unused features and replacing feel-good KPIs with weighted average performance scores to surface class-level and grade-level intervention needs.',
+      'Delivered offline clicker-based desktop LMS for low-connectivity schools, replacing a high-friction USB courier and local server process with an intelligent 30-day sync model.',
+      'Built self-serve campus admin system enabling schools to bulk-upload and manage users independently, removing 100% of manual user creation from the internal team.',
+      'Conducted 50+ structured discovery workshops and stakeholder interviews with enterprise clients including Beaconhouse, AKUEB, LAPIS Communications (UAE), and 21st Century (UK), translating pain points into prioritized product roadmaps.',
+    ],
+  },
+  {
+    years: '2019 — 2021',
+    role: 'Product Design Engineer',
+    org: 'Knowledge Platform',
+    location: 'Islamabad, Pakistan',
+    bullets: [
+      'Co-led 0-to-1 development of a Virtual School and Homework Center during COVID-19, supporting 100K+ students through rapid prototyping and cross-functional execution.',
+      'Conducted 30+ user research interviews and synthesized insights into 100+ Figma design artifacts, informing product decisions and MVP scope across multiple product tracks.',
+      'Grew 1-on-1 platform to 252K+ users, 4.9M+ questions answered, and 19,000+ hours of usage through iterative gamification improvements and continuous UX refinement.',
+      'Reduced design-to-development bug rate by 50% through structured handoff processes.',
+      'Redesigned hierarchical dashboards for 5 stakeholder levels — Teacher, Principal, School Owner, Regional Head, and Network Head — providing leadership with faster and clearer visibility into school performance.',
+    ],
+  },
+  {
+    years: '2018 — 2019',
+    role: 'Product Owner',
+    org: 'Discretelogix',
+    location: 'Islamabad, Pakistan',
+    bullets: [
+      'Scoped and delivered Soaran Loan Management System — a FinTech credit decisioning platform connecting to major credit bureaus to automate loan approval decisions and generate repayment plans; $70,000 project.',
+      'Scoped and delivered Lead Envy (now Tekambi) — an automated lead management and loan decisioning platform for US short-term lenders, enabling real-time lead qualification, underwriting routing, and ping-tree distribution.',
+      'Managed client-facing product roadmaps and Agile sprint delivery for SaaS and eCommerce platforms across 5+ concurrent client engagements.',
+      'Oversaw Magento eCommerce builds for Aeroshop (10M+ parts, 7,000+ brands) and ExcalDrives (15M+ parts, 6,000+ brands).',
+    ],
+  },
+  {
+    years: '2016 — 2018',
+    role: 'Scrum Master',
+    org: 'Discretelogix',
+    location: 'Islamabad, Pakistan',
+    bullets: [
+      'Facilitated Agile ceremonies and sprint delivery coordination across a 15+ person cross-functional squad spanning QA, development, and product.',
+      'Implemented structured retrospective processes that reduced recurring sprint blockers and improved on-time delivery rates across a SaaS client portfolio.',
+    ],
+  },
+];
+
+const certifications = [
+  { year: '2025', name: 'Product Management: Building a Product Strategy', org: 'LinkedIn Learning' },
+  { year: '2025', name: 'Become a Product Manager', org: 'Udemy' },
+  { year: '2025', name: 'Technology for Product Managers', org: 'LinkedIn Learning' },
+  { year: '2021', name: 'UX Design Fellowship', org: 'AssemblyF' },
+  { year: '2020', name: 'Creating Habit Forming Products', org: 'LinkedIn Learning' },
+];
+
+const skills = [
+  { label: 'Product Management', items: 'Product Strategy, Roadmap Planning, Feature Prioritization, User Research, Stakeholder Management, 0-to-1 Product Development, MVP Scoping, Discovery & Ideation, Agile Delivery, Cross-functional Team Leadership, Gamification Design' },
+  { label: 'Methodologies', items: 'Agile (Scrum), Sprint Planning, Design Sprints, Persona Development, HMW Mapping, Funnel Analysis, User Interviews, Competitive Analysis' },
+  { label: 'AI & Rapid Prototyping', items: 'Google AI Studio, Lovable, Claude Code, Stitch (Google), Figma Make' },
+  { label: 'Design & Collaboration', items: 'Figma, FigJam, Draw.io, Lucidchart' },
+  { label: 'Project Management', items: 'Jira, Trello, Asana, Slack, Mattermost, Google Workspace, MS Teams' },
+];
 ---
-<BaseLayout title="CV" description="Farrukh Jamal — work timeline.">
-  <section class="page container">
+<BaseLayout title="CV" description="Farrukh Jamal — Senior Product Manager. Full work timeline.">
+  <section class="cv container">
     <header class="cv-header">
       <h1>Farrukh Jamal</h1>
-      <p class="meta">Rawalpindi, Pakistan · <a href="mailto:farrukh.jamal91@gmail.com">farrukh.jamal91@gmail.com</a></p>
-      <p class="download"><a href="/resume.pdf">Download PDF</a></p>
+      <p class="subtitle">Senior Product Manager</p>
+      <p class="contact">
+        <span>Rawalpindi, Pakistan</span>
+        <span class="dot">·</span>
+        <a href="mailto:farrukh.jamal91@gmail.com">farrukh.jamal91@gmail.com</a>
+        <span class="dot">·</span>
+        <a href="https://www.linkedin.com/in/farrukh-jamal" rel="me">LinkedIn</a>
+        <span class="dot">·</span>
+        <a href="/resume.pdf">Download PDF</a>
+      </p>
     </header>
 
-    <div class="timeline">
-      <p><em>[TODO: Farrukh to confirm which CV sections go public. Content staged in `_inbox/resume_extracted.md`. Phase 4 wires the timeline.]</em></p>
-    </div>
+    <section class="block">
+      <p class="kicker"><span>Summary</span></p>
+      <p class="summary">
+        Senior Product Manager with 8+ years of experience driving 0-to-1 product development, discovery, and delivery across EdTech, FinTech, and eProcurement SaaS products. Strong foundation in user research, stakeholder management, and cross-functional delivery — from scoping and discovery through launch and post-launch iteration — with growing fluency in AI-augmented rapid prototyping. Scaled a flagship product to 71K+ users and 4.5M+ questions answered across three international markets.
+      </p>
+    </section>
+
+    <section class="block">
+      <p class="kicker"><span>Experience</span></p>
+      <div class="timeline">
+        {experience.map((e) => (
+          <div class="row">
+            <div class="years">{e.years}</div>
+            <div class="content">
+              <h3>{e.role}</h3>
+              <p class="role-meta">{e.org} <span class="dot">·</span> {e.location}</p>
+              <ul>
+                {e.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker"><span>Education</span></p>
+      <div class="timeline">
+        <div class="row">
+          <div class="years">2013</div>
+          <div class="content">
+            <h3>Bachelor of Engineering, Electronics</h3>
+            <p class="role-meta">Bahria University, Islamabad</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker"><span>Certifications</span></p>
+      <div class="timeline tight">
+        {certifications.map((c) => (
+          <div class="row">
+            <div class="years">{c.year}</div>
+            <div class="content">
+              <p class="cert">{c.name} <span class="cert-org">— {c.org}</span></p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="kicker"><span>Skills</span></p>
+      <dl class="skills">
+        {skills.map((s) => (
+          <div class="skill-row">
+            <dt>{s.label}</dt>
+            <dd>{s.items}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   </section>
 </BaseLayout>
 
 <style>
-  .page {
+  .cv {
     padding-top: var(--s-9);
     padding-bottom: var(--s-9);
+    max-width: 900px;
   }
-  .cv-header { margin-bottom: var(--s-8); max-width: var(--w-text); }
-  .cv-header h1 { margin-bottom: var(--s-3); }
-  .meta {
+  .cv-header {
+    margin-bottom: var(--s-9);
+  }
+  .cv-header h1 { margin: 0 0 var(--s-2); }
+  .subtitle {
+    font-family: var(--font-mono);
     font-size: var(--size-meta);
     color: var(--muted);
-    margin: 0 0 var(--s-2);
-    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 var(--s-4);
+    font-feature-settings: 'ss01', 'ss02';
   }
-  .meta a { color: var(--muted); border-bottom: none; }
-  .meta a:hover, .meta a:focus-visible { color: var(--ink-bright); }
-  .download {
+  .contact {
+    font-family: var(--font-mono);
     font-size: var(--size-meta);
-    margin: var(--s-4) 0 0;
+    color: var(--muted);
+    margin: 0;
+    font-feature-settings: 'ss01', 'ss02';
+    line-height: 1.7;
   }
-  .download a {
-    color: var(--ink);
+  .contact a {
+    color: var(--muted);
     border-bottom: 1px solid var(--border);
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
-  .download a:hover, .download a:focus-visible {
+  .contact a:hover,
+  .contact a:focus-visible {
     color: var(--ink-bright);
     border-bottom-color: var(--ink-bright);
   }
-  .timeline {
-    max-width: var(--w-text);
+  .dot { color: var(--border); padding: 0 var(--s-2); }
+
+  .block { margin-bottom: var(--s-8); }
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
     color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    margin: 0 0 var(--s-6);
+  }
+  .kicker span { white-space: nowrap; }
+  .kicker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .summary {
+    font-size: var(--size-body);
+    line-height: var(--lh-body);
+    color: var(--ink);
+    max-width: var(--w-text);
+    margin: 0;
+  }
+
+  .timeline { display: flex; flex-direction: column; gap: var(--s-7); }
+  .timeline.tight { gap: var(--s-4); }
+  .row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: var(--s-6);
+    align-items: start;
+  }
+  .years {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    padding-top: 4px;
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .content { min-width: 0; }
+  .content h3 {
+    font-size: var(--size-h3);
+    margin: 0 0 var(--s-1);
+    color: var(--ink);
+  }
+  .role-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0 0 var(--s-3);
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .content ul {
+    margin: 0;
+    padding-left: var(--s-5);
+  }
+  .content li {
+    margin-bottom: var(--s-2);
+    list-style: disc;
+    color: var(--ink);
+    line-height: var(--lh-body);
+  }
+  .cert { margin: 0; color: var(--ink); }
+  .cert-org { color: var(--muted); }
+
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    margin: 0;
+  }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--s-6);
+    align-items: start;
+  }
+  .skill-row dt {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--ink-bright);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-top: 2px;
+  }
+  .skill-row dd {
+    margin: 0;
+    color: var(--ink);
+    line-height: var(--lh-body);
+  }
+
+  @media (max-width: 720px) {
+    .row,
+    .skill-row {
+      grid-template-columns: 1fr;
+      gap: var(--s-2);
+    }
+    .years { padding-top: 0; }
   }
 </style>
