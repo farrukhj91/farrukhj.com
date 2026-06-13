@@ -1,6 +1,6 @@
 # Farrukh Jamal — Portfolio · Project Scope (SSOT)
 
-**Last updated:** 2026-06-13 (Phase 4 Round 1)
+**Last updated:** 2026-06-14 (Phase 4 Round 2)
 **Current phase:** Phase 4 — Styling + content wiring, iterating
 **Domain:** farrukhj.com (Namecheap; git connected to Vercel)
 **Owner:** Farrukh Jamal · farrukh.jamal91@gmail.com
@@ -81,7 +81,7 @@ CMS-ready future: TinaCMS or Keystatic (git-based, edits MDX in place, no DB).
 
 | Route | Purpose | Status |
 |---|---|---|
-| `/` | Home — wordmark + positioning + curated front door | live |
+| `/` | Home — wordmark + positioning + curated front door (top 3 by order, with "All work →" link when more exist) | live |
 | `/work` | Case studies index — flat typographic list | live |
 | `/work/[slug]` | Case study (LMS Redesign, Coach Offline, Stakeholder Dashboards) | live |
 | `/side-projects` | Empty-state index | live |
@@ -304,6 +304,17 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 | 2026-06-13 R1 | Image markdown converted to `<figure><figcaption>`; remark-unwrap-images installed | Lets figures render up to 1000px |
 | 2026-06-13 R1 | Visible focus rings: 2px `--ink-bright`, 3px offset, 2px radius | |
 | 2026-06-13 R1 | Strip H1 + byline from case study markdown bodies (now rendered by layout from frontmatter) | |
+| 2026-06-14 R2 | Home page caps to 3 case studies by `order` + conditional "All work →" link | Avoids infinite-scroll as case studies grow |
+| 2026-06-14 R2 | TOC sticky fix — moved `position: sticky` from inner `.toc` to outer `.cs-rail` grid item | Inner sticky had no track inside short rail; rail now sticks within content column |
+| 2026-06-14 R2 | TOC always visible (dropped opacity-fade) with refined left-rule indicator per item | Active section has brighter, longer left dash |
+| 2026-06-14 R2 | TOC kept on **right rail** (editorial convention — Stripe / Tailwind / Astro / Linear docs) | Reversible if user prefers left |
+| 2026-06-14 R2 | Nav wrapped in `<header class="site-header">` with full-width bottom hairline | Structural separation from content |
+| 2026-06-14 R2 | List items (home + /work) gain hover state — `--bg-elevated` background + 1px border + slide-in `→` arrow + title brightens to `--ink-bright` | Linear-style tactile feedback |
+| 2026-06-14 R2 | Exec summary block: `--bg-elevated` bg + 1px border + 2px left `--ink-bright` accent + bottom-ruled kicker | Adds depth without violating no-card-grid |
+| 2026-06-14 R2 | `/work` page kicker: mono-uppercase label with trailing extending hairline rule (max 320px) | Linear-style structural decoration |
+| 2026-06-14 R2 | Home page section label "Selected work" removed (violated extended hard-no list — generic section labels) | List speaks for itself |
+| 2026-06-14 R2 | Decision: no skills section (recommendation) — expertise framing goes into About narrative as a sentence | Senior portfolios don't list skills |
+| 2026-06-14 R2 | Decision: testimonials handled inline in case study reflections (recommendation) — `/endorsements` page reserved if Farrukh wants a dedicated showcase later | Avoids "trusted by" marketing posture |
 
 ---
 

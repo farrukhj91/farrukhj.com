@@ -57,29 +57,25 @@ const sections = headings.filter((h) => h.depth === 2);
 
 <style>
   .toc {
-    position: sticky;
-    top: var(--s-7);
     font-family: var(--font-mono);
     font-size: var(--size-meta);
     color: var(--muted);
-    opacity: 0.35;
-    transition: opacity 0.2s ease;
-    align-self: start;
+    font-feature-settings: 'ss01', 'ss02';
   }
-  .toc:hover,
-  .toc:focus-within { opacity: 1; }
   .toc-label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--muted);
-    margin: 0 0 var(--s-3);
+    margin: 0 0 var(--s-4);
     font-weight: 500;
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--border);
   }
   .toc ul {
     display: flex;
     flex-direction: column;
-    gap: var(--s-2);
+    gap: var(--s-3);
   }
   .toc a {
     color: var(--muted);
@@ -88,10 +84,28 @@ const sections = headings.filter((h) => h.depth === 2);
     display: block;
     padding: 2px 0;
     transition: color 0.15s ease;
+    position: relative;
+    padding-left: var(--s-3);
+  }
+  .toc a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 1px;
+    background: var(--border);
+    transition: background 0.15s ease, width 0.15s ease;
   }
   .toc a:hover,
   .toc a:focus-visible { color: var(--ink); }
+  .toc a:hover::before,
+  .toc a:focus-visible::before { background: var(--ink); }
   .toc a.active { color: var(--ink-bright); }
+  .toc a.active::before {
+    background: var(--ink-bright);
+    width: 10px;
+  }
 
   @media (max-width: 1100px) {
     .toc { display: none; }

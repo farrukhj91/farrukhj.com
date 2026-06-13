@@ -7,13 +7,15 @@ const work = (await getCollection('work', ({ data }) => !data.draft))
 ---
 <BaseLayout title="Work" description="Selected product and design work by Farrukh Jamal.">
   <section class="page container">
-    <h1 class="page-title">Work</h1>
+    <p class="kicker"><span>Work</span></p>
     <ul class="list">
       {work.map((w) => (
         <li>
-          <h2><a href={`/work/${w.id}`}>{w.data.title}</a></h2>
-          <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
-          <p class="problem">{w.data.problem}</p>
+          <a class="row" href={`/work/${w.id}`}>
+            <h2>{w.data.title}<span class="arrow" aria-hidden="true">→</span></h2>
+            <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
+            <p class="problem">{w.data.problem}</p>
+          </a>
         </li>
       ))}
     </ul>
@@ -25,29 +27,71 @@ const work = (await getCollection('work', ({ data }) => !data.draft))
     padding-top: var(--s-9);
     padding-bottom: var(--s-9);
   }
-  .page-title {
-    font-size: var(--size-h3);
-    font-weight: 600;
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: var(--s-8);
-    font-family: var(--font-mono);
-    font-feature-settings: 'ss01', 'ss02';
+    font-weight: 500;
+    margin: 0 0 var(--s-8);
   }
-  .list { display: flex; flex-direction: column; gap: var(--s-8); }
-  .list li { padding: 0; max-width: var(--w-text); }
-  .list h2 {
+  .kicker span { white-space: nowrap; }
+  .kicker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 320px;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .list li { max-width: var(--w-text); }
+  .row {
+    display: block;
+    padding: var(--s-5);
+    margin: 0 calc(-1 * var(--s-5));
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    border-bottom: none;
+  }
+  .row:hover,
+  .row:focus-visible {
+    background-color: var(--bg-elevated);
+    border-color: var(--border);
+  }
+  .row h2 {
     font-size: var(--size-h2);
     margin: 0 0 var(--s-3);
-  }
-  .list h2 a {
-    border-bottom: none;
     color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
     transition: color 0.15s ease;
   }
-  .list h2 a:hover,
-  .list h2 a:focus-visible { color: var(--ink-bright); }
+  .row:hover h2,
+  .row:focus-visible h2 { color: var(--ink-bright); }
+  .arrow {
+    font-family: var(--font-mono);
+    font-size: var(--size-ui);
+    color: var(--ink-bright);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    display: inline-block;
+  }
+  .row:hover .arrow,
+  .row:focus-visible .arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
   .meta {
     font-family: var(--font-mono);
     font-size: var(--size-meta);

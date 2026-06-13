@@ -12,30 +12,36 @@ function isActive(href: string) {
   return current === href || current.startsWith(href + '/');
 }
 ---
-<nav class="nav container" aria-label="Primary">
-  <a href="/" class="wordmark">Farrukh Jamal</a>
-  <ul>
-    {items.map((item) => (
-      <li>
-        <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
-          {item.label}
-        </a>
-      </li>
-    ))}
-  </ul>
-</nav>
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="/" class="wordmark">Farrukh Jamal</a>
+    <ul>
+      {items.map((item) => (
+        <li>
+          <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
 
 <style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: relative;
+    z-index: 2;
+  }
   .nav {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--s-7);
-    padding-top: var(--s-7);
-    padding-bottom: var(--s-7);
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
     font-size: var(--size-ui);
-    position: relative;
-    z-index: 1;
   }
   .wordmark {
     font-size: var(--size-h3);
@@ -43,6 +49,7 @@ function isActive(href: string) {
     color: var(--ink);
     border-bottom: none;
     letter-spacing: -0.005em;
+    transition: color 0.15s ease;
   }
   .wordmark:hover,
   .wordmark:focus-visible { color: var(--ink-bright); }

@@ -5,6 +5,8 @@ import { getCollection } from 'astro:content';
 
 const work = (await getCollection('work', ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order);
+const featured = work.slice(0, 3);
+const hasMore = work.length > featured.length;
 ---
 <BaseLayout description="Farrukh Jamal — Senior Product Manager with a design-led background, currently building AI-native product.">
   <HomeBackground />
@@ -16,18 +18,23 @@ const work = (await getCollection('work', ({ data }) => !data.draft))
       </p>
     </header>
 
-    {work.length > 0 && (
-      <section class="work-list" aria-label="Selected work">
-        <p class="section-label">Selected work</p>
+    {featured.length > 0 && (
+      <section class="work-list" aria-label="Work">
         <ul>
-          {work.map((w) => (
+          {featured.map((w) => (
             <li>
-              <h2><a href={`/work/${w.id}`}>{w.data.title}</a></h2>
-              <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
-              <p class="problem">{w.data.problem}</p>
+              <a class="row" href={`/work/${w.id}`}>
+                <h2>{w.data.title}<span class="arrow" aria-hidden="true">→</span></h2>
+                <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
+                <p class="problem">{w.data.problem}</p>
+              </a>
             </li>
           ))}
         </ul>
+
+        {hasMore && (
+          <a href="/work" class="see-all">All work <span aria-hidden="true">→</span></a>
+        )}
       </section>
     )}
   </section>
@@ -61,32 +68,51 @@ const work = (await getCollection('work', ({ data }) => !data.draft))
   .positioning em { color: var(--muted); font-style: italic; }
 
   .work-list { max-width: var(--w-page); }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: var(--s-6);
-    font-weight: 500;
-  }
   .work-list ul {
     display: flex;
     flex-direction: column;
-    gap: var(--s-8);
+    gap: var(--s-2);
   }
   .work-list li { max-width: var(--w-text); }
-  .work-list h2 {
+  .row {
+    display: block;
+    padding: var(--s-5);
+    margin: 0 calc(-1 * var(--s-5));
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    border-bottom: none;
+  }
+  .row:hover,
+  .row:focus-visible {
+    background-color: var(--bg-elevated);
+    border-color: var(--border);
+  }
+  .row h2 {
     font-size: var(--size-h2);
     margin: 0 0 var(--s-3);
-  }
-  .work-list h2 a {
-    border-bottom: none;
     color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
     transition: color 0.15s ease;
   }
-  .work-list h2 a:hover,
-  .work-list h2 a:focus-visible { color: var(--ink-bright); }
+  .row:hover h2,
+  .row:focus-visible h2 { color: var(--ink-bright); }
+  .arrow {
+    font-family: var(--font-mono);
+    font-size: var(--size-ui);
+    color: var(--ink-bright);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    display: inline-block;
+  }
+  .row:hover .arrow,
+  .row:focus-visible .arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
   .meta {
     font-family: var(--font-mono);
     font-size: var(--size-meta);
@@ -100,5 +126,23 @@ const work = (await getCollection('work', ({ data }) => !data.draft))
     color: var(--ink);
     margin: 0;
     line-height: var(--lh-body);
+  }
+  .see-all {
+    display: inline-block;
+    margin-top: var(--s-7);
+    margin-left: 0;
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--s-1);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .see-all:hover,
+  .see-all:focus-visible {
+    color: var(--ink-bright);
+    border-bottom-color: var(--ink-bright);
   }
 </style>

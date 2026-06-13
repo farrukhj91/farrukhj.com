@@ -48,7 +48,7 @@ const { data } = entry;
   }
   .cs-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 200px;
+    grid-template-columns: minmax(0, 1fr) 220px;
     gap: var(--s-8);
     align-items: start;
   }
@@ -63,7 +63,12 @@ const { data } = entry;
     font-feature-settings: 'ss01', 'ss02';
   }
   .cs-header .dot { color: var(--border); padding: 0 var(--s-1); }
-  .cs-rail { position: relative; }
+  .cs-rail {
+    position: sticky;
+    top: var(--s-7);
+    align-self: start;
+    height: fit-content;
+  }
   @media (max-width: 1100px) {
     .cs-grid {
       grid-template-columns: 1fr;

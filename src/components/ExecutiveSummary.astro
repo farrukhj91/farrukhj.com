@@ -16,8 +16,11 @@ const { summary, role, years } = Astro.props as Props;
   .exec {
     max-width: var(--w-text);
     margin: var(--s-7) 0 var(--s-8);
-    padding-left: var(--s-5);
-    border-left: 1px solid var(--border);
+    padding: var(--s-6) var(--s-7);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--ink-bright);
+    border-radius: 2px;
   }
   .kicker {
     font-family: var(--font-mono);
@@ -26,9 +29,11 @@ const { summary, role, years } = Astro.props as Props;
     letter-spacing: 0;
     margin: 0 0 var(--s-5);
     font-feature-settings: 'ss01', 'ss02';
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--border);
   }
   .key {
-    color: var(--ink);
+    color: var(--ink-bright);
     font-weight: 500;
   }
   .sep { color: var(--border); padding: 0 var(--s-2); }
@@ -39,4 +44,7 @@ const { summary, role, years } = Astro.props as Props;
     margin: 0 0 var(--s-3);
   }
   .line:last-child { margin-bottom: 0; }
+  @media (max-width: 600px) {
+    .exec { padding: var(--s-5); }
+  }
 </style>
