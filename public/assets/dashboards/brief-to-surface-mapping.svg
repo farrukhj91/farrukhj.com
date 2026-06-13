@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1100" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.10"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="1100" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="700" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="#111827">From brief to surface</text>
+  <text x="700" y="78" text-anchor="middle" font-size="14" fill="#6b7280">The six-line product brief, mapped to the Network Head Dashboard surfaces that deliver it</text>
+
+  <!-- Column headers -->
+  <text x="350" y="130" text-anchor="middle" font-size="12" font-weight="600" fill="#6b7280" letter-spacing="1">THE BRIEF</text>
+  <text x="1080" y="130" text-anchor="middle" font-size="12" font-weight="600" fill="#6b7280" letter-spacing="1">THE SURFACE IN THE FINAL DESIGN</text>
+
+  <!-- Row 1 — Know that they are achieving success → Network Summary -->
+  <g transform="translate(80, 150)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 1</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"Know that they are achieving success"</text>
+  </g>
+  <line x1="640" y1="205" x2="700" y2="205" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 150)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">NETWORK SUMMARY CARD</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Three KPI tiles at a glance</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">Total Schools • Enrolled Students • Total Teachers</text>
+  </g>
+
+  <!-- Row 2 — Understand the depth of the success → Performance Trends -->
+  <g transform="translate(80, 290)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 2</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"Understand the depth of the success"</text>
+  </g>
+  <line x1="640" y1="345" x2="700" y2="345" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 290)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">PERFORMANCE TRENDS CARD</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Time-series chart of network performance</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">Dimension dropdown: Lesson Score, Lesson Completion, Subject Score…</text>
+  </g>
+
+  <!-- Row 3 — See how success aligns with other schools → My Schools -->
+  <g transform="translate(80, 430)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 3</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"See how success aligns with other schools…"</text>
+  </g>
+  <line x1="640" y1="485" x2="700" y2="485" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 430)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">MY SCHOOLS TABLE</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Sortable, filterable school comparison</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">Sort by lesson score, completion, clicker assessments • Filter by region</text>
+  </g>
+
+  <!-- Row 4 — Set realistic goals → Performance Trends + My Schools together -->
+  <g transform="translate(80, 570)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 4</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"Set realistic goals"</text>
+  </g>
+  <line x1="640" y1="625" x2="700" y2="625" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 570)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">PERFORMANCE TRENDS  +  MY SCHOOLS</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Trend data + peer comparison together</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">The two surfaces, read in tandem, define what "realistic" looks like</text>
+  </g>
+
+  <!-- Row 5 — Develop strategies to reach goals → Subject Performance + drill-ins -->
+  <g transform="translate(80, 710)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 5</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"Develop strategies to reach goals"</text>
+  </g>
+  <line x1="640" y1="765" x2="700" y2="765" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 710)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">SUBJECT PERFORMANCE  +  DRILL-INS</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Per-subject weakness + teacher / student profiles</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">Find the specific weak area; drill to the teacher or student behind it</text>
+  </g>
+
+  <!-- Row 6 — Track yearly, monthly, weekly, daily → Calendar picker + sidebar -->
+  <g transform="translate(80, 850)">
+    <rect x="0" y="0" width="540" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="5" height="110" rx="2" fill="#10b981"/>
+    <text x="30" y="42" font-size="13" font-weight="500" fill="#6b7280">Principle 6</text>
+    <text x="30" y="74" font-size="17" font-style="italic" fill="#111827">"Track yearly, monthly, weekly, daily progress"</text>
+  </g>
+  <line x1="640" y1="905" x2="700" y2="905" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g transform="translate(720, 850)">
+    <rect x="0" y="0" width="600" height="110" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" filter="url(#shadow)"/>
+    <text x="30" y="34" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.8">CALENDAR-MONTH PICKER  +  PERSISTENT SIDEBAR</text>
+    <text x="30" y="62" font-size="16" font-weight="600" fill="#111827">Pick a month; return at any cadence</text>
+    <text x="30" y="86" font-size="13" fill="#6b7280">Replaces the V1's relative "Last 6 months" with absolute time</text>
+  </g>
+
+  <!-- Source caption -->
+  <text x="700" y="1030" text-anchor="middle" font-size="12" font-style="italic" fill="#9ca3af">Brief authored by Tooba Malik on the "New LMS Structure" FigJam board, alongside the Features grid and Information Architecture cluster.</text>
+</svg>

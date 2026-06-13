@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('side-projects', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Side Projects" description="Experiments and side projects by Farrukh Jamal.">
+  <section class="page container">
+    <h1>Side Projects</h1>
+
+    {projects.length === 0 ? (
+      <p class="empty">Experiments in progress. More shipping here soon.</p>
+    ) : (
+      <ul class="list">
+        {projects.map((p) => (
+          <li>
+            <h2><a href={`/side-projects/${p.id}`}>{p.data.title}</a></h2>
+            <p class="meta">{p.data.years}</p>
+            <p class="problem">{p.data.problem}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: var(--s-9); padding-bottom: var(--s-9); }
+  .page > h1 { margin-bottom: var(--s-8); }
+  .empty {
+    margin-top: var(--s-7);
+    max-width: var(--w-text);
+    color: var(--muted);
+    font-size: var(--size-body);
+  }
+  .list { margin-top: var(--s-7); }
+  .list li { margin-bottom: var(--s-7); }
+  .list h2 { font-size: var(--size-h2); margin: 0; }
+  .list h2 a { border-bottom: none; color: var(--ink); }
+  .list h2 a:hover, .list h2 a:focus-visible { color: var(--ink-bright); }
+  .meta {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: var(--s-2) 0 0;
+    letter-spacing: 0.01em;
+  }
+  .problem {
+    max-width: var(--w-text);
+    margin: var(--s-3) 0 0;
+    color: var(--ink);
+  }
+</style>

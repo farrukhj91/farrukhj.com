@@ -1,0 +1,35 @@
+---
+interface Props { description: string; }
+const { description } = Astro.props as Props;
+---
+<div class="frame-pending" role="img" aria-label={`Screen pending: ${description}`}>
+  <span class="label">Screen pending</span>
+  <p>{description}</p>
+</div>
+
+<style>
+  .frame-pending {
+    margin: var(--s-7) auto;
+    padding: var(--s-7);
+    border: 1px solid var(--border);
+    max-width: var(--w-figure);
+    text-align: center;
+  }
+  .label {
+    display: block;
+    font-size: var(--size-meta);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--s-3);
+    font-weight: 500;
+  }
+  p {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0 auto;
+    max-width: 60ch;
+    font-style: normal;
+    line-height: 1.5;
+  }
+</style>

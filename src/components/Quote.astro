@@ -1,0 +1,24 @@
+---
+interface Props { attribution?: string; }
+const { attribution } = Astro.props as Props;
+---
+<blockquote class="quote">
+  <slot />
+  {attribution && <p class="attr">{attribution}</p>}
+</blockquote>
+
+<style>
+  .quote {
+    border-left: 1px solid var(--border);
+    padding-left: var(--s-5);
+    margin: var(--s-7) 0;
+    max-width: var(--w-text);
+    color: var(--ink);
+  }
+  .attr {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin-top: var(--s-3);
+    letter-spacing: 0.01em;
+  }
+</style>

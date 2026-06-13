@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Work" description="Selected product and design work by Farrukh Jamal.">
+  <section class="page container">
+    <h1 class="page-title">Work</h1>
+    <ul class="list">
+      {work.map((w) => (
+        <li>
+          <h2><a href={`/work/${w.id}`}>{w.data.title}</a></h2>
+          <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
+          <p class="problem">{w.data.problem}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-top: var(--s-9);
+    padding-bottom: var(--s-9);
+  }
+  .page-title {
+    font-size: var(--size-h3);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--s-8);
+    font-family: var(--font-mono);
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .list { display: flex; flex-direction: column; gap: var(--s-8); }
+  .list li { padding: 0; max-width: var(--w-text); }
+  .list h2 {
+    font-size: var(--size-h2);
+    margin: 0 0 var(--s-3);
+  }
+  .list h2 a {
+    border-bottom: none;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .list h2 a:hover,
+  .list h2 a:focus-visible { color: var(--ink-bright); }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0 0 var(--s-3);
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .dot { color: var(--border); padding: 0 var(--s-1); }
+  .problem {
+    font-size: var(--size-body);
+    color: var(--ink);
+    margin: 0;
+    line-height: var(--lh-body);
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ExecutiveSummary from '../../components/ExecutiveSummary.astro';
+import CaseStudyToc from '../../components/CaseStudyToc.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work', ({ data }) => !data.draft);
+  return work.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { data } = entry;
+---
+<BaseLayout title={data.title} description={data.problem}>
+  <article class="case-study">
+    <div class="cs-grid container">
+      <div class="cs-content">
+        <header class="cs-header">
+          <h1>{data.title}</h1>
+          <p class="meta">{data.company} <span class="dot">·</span> {data.product} <span class="dot">·</span> {data.role} <span class="dot">·</span> {data.years}</p>
+        </header>
+
+        {data.summary && (
+          <ExecutiveSummary summary={data.summary} role={data.role} years={data.years} />
+        )}
+
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+
+      <aside class="cs-rail">
+        <CaseStudyToc headings={headings} />
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-study {
+    padding-top: var(--s-8);
+    padding-bottom: var(--s-9);
+  }
+  .cs-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: var(--s-8);
+    align-items: start;
+  }
+  .cs-content { min-width: 0; }
+  .cs-header { margin-bottom: var(--s-6); max-width: var(--w-text); }
+  .cs-header h1 { margin-bottom: var(--s-3); }
+  .cs-header .meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0;
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .cs-header .dot { color: var(--border); padding: 0 var(--s-1); }
+  .cs-rail { position: relative; }
+  @media (max-width: 1100px) {
+    .cs-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .cs-rail { display: none; }
+  }
+</style>

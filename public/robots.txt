@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /writing/
+Sitemap: https://farrukhj.com/sitemap-index.xml

@@ -1,0 +1,31 @@
+---
+interface Props {
+  role: string;
+  company: string;
+  duration?: string;
+  markets?: string[];
+  collaborators?: string[];
+}
+const { role, company, duration, markets = [], collaborators = [] } = Astro.props as Props;
+---
+<footer class="role-footer">
+  <p>
+    <span><strong>Role:</strong> {role} at {company}</span>
+    {duration && <span> · <strong>Duration:</strong> {duration}</span>}
+    {markets.length > 0 && <span> · <strong>Markets:</strong> {markets.join(', ')}</span>}
+    {collaborators.length > 0 && <span> · <strong>Collaborators:</strong> {collaborators.join(', ')}</span>}
+  </p>
+</footer>
+
+<style>
+  .role-footer {
+    margin-top: var(--s-8);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    max-width: var(--w-text);
+  }
+  .role-footer strong { font-weight: 500; color: var(--ink); }
+  p { margin: 0; line-height: 1.6; }
+</style>

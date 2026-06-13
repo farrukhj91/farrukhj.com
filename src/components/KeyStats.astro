@@ -1,0 +1,41 @@
+---
+interface Stat { value: string; label: string; }
+interface Props { stats: Stat[]; }
+const { stats = [] } = Astro.props as Props;
+---
+<dl class="stats">
+  {stats.map(({ value, label }) => (
+    <div class="stat">
+      <dt class="value">{value}</dt>
+      <dd class="label">{label}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--s-6);
+    margin: var(--s-7) 0;
+    padding: var(--s-6) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: var(--w-wide);
+  }
+  .stat { display: flex; flex-direction: column; gap: var(--s-2); }
+  .value {
+    font-size: var(--size-h3);
+    font-weight: 600;
+    color: var(--ink-bright);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .label {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0;
+    max-width: 32ch;
+    line-height: 1.5;
+  }
+</style>

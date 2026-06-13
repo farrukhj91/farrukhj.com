@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="CV" description="Farrukh Jamal — work timeline.">
+  <section class="page container">
+    <header class="cv-header">
+      <h1>Farrukh Jamal</h1>
+      <p class="meta">Rawalpindi, Pakistan · <a href="mailto:farrukh.jamal91@gmail.com">farrukh.jamal91@gmail.com</a></p>
+      <p class="download"><a href="/resume.pdf">Download PDF</a></p>
+    </header>
+
+    <div class="timeline">
+      <p><em>[TODO: Farrukh to confirm which CV sections go public. Content staged in `_inbox/resume_extracted.md`. Phase 4 wires the timeline.]</em></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-top: var(--s-9);
+    padding-bottom: var(--s-9);
+  }
+  .cv-header { margin-bottom: var(--s-8); max-width: var(--w-text); }
+  .cv-header h1 { margin-bottom: var(--s-3); }
+  .meta {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0 0 var(--s-2);
+    letter-spacing: 0.01em;
+  }
+  .meta a { color: var(--muted); border-bottom: none; }
+  .meta a:hover, .meta a:focus-visible { color: var(--ink-bright); }
+  .download {
+    font-size: var(--size-meta);
+    margin: var(--s-4) 0 0;
+  }
+  .download a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+  }
+  .download a:hover, .download a:focus-visible {
+    color: var(--ink-bright);
+    border-bottom-color: var(--ink-bright);
+  }
+  .timeline {
+    max-width: var(--w-text);
+    color: var(--muted);
+  }
+</style>

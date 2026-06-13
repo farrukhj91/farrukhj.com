@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeBackground from '../components/HomeBackground.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout description="Farrukh Jamal — Senior Product Manager with a design-led background, currently building AI-native product.">
+  <HomeBackground />
+  <section class="home container">
+    <header class="opener">
+      <h1 class="wordmark">Farrukh Jamal</h1>
+      <p class="positioning">
+        <em>[TODO: Farrukh to write one-sentence positioning statement.]</em>
+      </p>
+    </header>
+
+    {work.length > 0 && (
+      <section class="work-list" aria-label="Selected work">
+        <p class="section-label">Selected work</p>
+        <ul>
+          {work.map((w) => (
+            <li>
+              <h2><a href={`/work/${w.id}`}>{w.data.title}</a></h2>
+              <p class="meta">{w.data.company} <span class="dot">·</span> {w.data.product} <span class="dot">·</span> {w.data.role} <span class="dot">·</span> {w.data.years}</p>
+              <p class="problem">{w.data.problem}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .home {
+    padding-top: var(--s-10);
+    padding-bottom: var(--s-9);
+    position: relative;
+    z-index: 1;
+  }
+  .opener {
+    margin-bottom: var(--s-10);
+    max-width: var(--w-text);
+  }
+  .wordmark {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    color: var(--ink-bright);
+    margin-bottom: var(--s-4);
+  }
+  .positioning {
+    font-size: var(--size-body);
+    color: var(--ink);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .positioning em { color: var(--muted); font-style: italic; }
+
+  .work-list { max-width: var(--w-page); }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--s-6);
+    font-weight: 500;
+  }
+  .work-list ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-8);
+  }
+  .work-list li { max-width: var(--w-text); }
+  .work-list h2 {
+    font-size: var(--size-h2);
+    margin: 0 0 var(--s-3);
+  }
+  .work-list h2 a {
+    border-bottom: none;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .work-list h2 a:hover,
+  .work-list h2 a:focus-visible { color: var(--ink-bright); }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-meta);
+    color: var(--muted);
+    margin: 0 0 var(--s-3);
+    font-feature-settings: 'ss01', 'ss02';
+  }
+  .dot { color: var(--border); padding: 0 var(--s-1); }
+  .problem {
+    font-size: var(--size-body);
+    color: var(--ink);
+    margin: 0;
+    line-height: var(--lh-body);
+  }
+</style>

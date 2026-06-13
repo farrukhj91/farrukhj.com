@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.10"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="760" fill="#fafafa"/>
+
+  <!-- Title block -->
+  <text x="80" y="60" font-size="22" font-weight="600" fill="#111827">What data visualizations would help principals assess their school's overall performance?</text>
+  <text x="80" y="86" font-size="14" fill="#6b7280">Multi-select • 46 principal respondents • The top two results define the FINAL design's core surfaces</text>
+
+  <!-- Bars start at x=560 (label column ends), bars max width = 700px (mapped from 0–100%) -->
+  <!-- Bar group: 11 rows, y starts at 130, each row 48 tall -->
+
+  <!-- Row 1 — Analyze Academic Results — 93.5% — highlighted -->
+  <text x="540" y="160" text-anchor="end" font-size="14" fill="#111827" font-weight="500">Analyze Academic Results (Assessments, Tests, Exams)</text>
+  <rect x="560" y="142" width="654" height="26" rx="4" fill="#10b981"/>
+  <text x="1224" y="161" font-size="14" font-weight="600" fill="#065f46">93.5%</text>
+
+  <!-- Row 2 — Subject Wise Performance — 71.7% — highlighted -->
+  <text x="540" y="200" text-anchor="end" font-size="14" fill="#111827" font-weight="500">Subject Wise Performance</text>
+  <rect x="560" y="182" width="502" height="26" rx="4" fill="#10b981"/>
+  <text x="1072" y="201" font-size="14" font-weight="600" fill="#065f46">71.7%</text>
+
+  <!-- Row 3 — Student Achievement — 65.2% -->
+  <text x="540" y="240" text-anchor="end" font-size="14" fill="#374151">Student Achievement</text>
+  <rect x="560" y="222" width="456" height="26" rx="4" fill="#9ca3af"/>
+  <text x="1026" y="241" font-size="14" font-weight="500" fill="#374151">65.2%</text>
+
+  <!-- Row 4 — Class wise Performance — 60.9% -->
+  <text x="540" y="280" text-anchor="end" font-size="14" fill="#374151">Class wise Performance</text>
+  <rect x="560" y="262" width="426" height="26" rx="4" fill="#9ca3af"/>
+  <text x="996" y="281" font-size="14" font-weight="500" fill="#374151">60.9%</text>
+
+  <!-- Row 5 — Homework performance — 58.7% -->
+  <text x="540" y="320" text-anchor="end" font-size="14" fill="#374151">Homework performance</text>
+  <rect x="560" y="302" width="411" height="26" rx="4" fill="#9ca3af"/>
+  <text x="981" y="321" font-size="14" font-weight="500" fill="#374151">58.7%</text>
+
+  <!-- Row 6 — Attendance Rate — 54.3% -->
+  <text x="540" y="360" text-anchor="end" font-size="14" fill="#374151">Attendance Rate</text>
+  <rect x="560" y="342" width="380" height="26" rx="4" fill="#9ca3af"/>
+  <text x="950" y="361" font-size="14" font-weight="500" fill="#374151">54.3%</text>
+
+  <!-- Row 7 — Extra curricular — 43.5% -->
+  <text x="540" y="400" text-anchor="end" font-size="14" fill="#6b7280">Extra curricular</text>
+  <rect x="560" y="382" width="304" height="26" rx="4" fill="#d1d5db"/>
+  <text x="874" y="401" font-size="14" fill="#6b7280">43.5%</text>
+
+  <!-- Row 8 — No. of activities & time spent — 43.5% -->
+  <text x="540" y="440" text-anchor="end" font-size="14" fill="#6b7280">No. of activities &amp; time spent on platform</text>
+  <rect x="560" y="422" width="304" height="26" rx="4" fill="#d1d5db"/>
+  <text x="874" y="441" font-size="14" fill="#6b7280">43.5%</text>
+
+  <!-- Row 9 — Sharing remarks — 32.6% -->
+  <text x="540" y="480" text-anchor="end" font-size="14" fill="#6b7280">Assessing data and sharing remarks</text>
+  <rect x="560" y="462" width="228" height="26" rx="4" fill="#d1d5db"/>
+  <text x="798" y="481" font-size="14" fill="#6b7280">32.6%</text>
+
+  <!-- Row 10 — Graduation Rate — 13.0% -->
+  <text x="540" y="520" text-anchor="end" font-size="14" fill="#6b7280">Graduation Rate</text>
+  <rect x="560" y="502" width="91" height="26" rx="4" fill="#d1d5db"/>
+  <text x="661" y="521" font-size="14" fill="#6b7280">13.0%</text>
+
+  <!-- Footnote / interpretive line -->
+  <rect x="80" y="580" width="1240" height="120" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="110" y="612" font-size="14" font-weight="600" fill="#111827">The two highlighted bars at the top defined the design.</text>
+  <text x="110" y="640" font-size="13" fill="#374151">93.5% of principals asked for academic results analysis, and 71.7% specifically asked for subject-wise performance.</text>
+  <text x="110" y="660" font-size="13" fill="#374151">The Performance Trends card surfaces academic results across the network; the new Subject Performance card was added in the FINAL design</text>
+  <text x="110" y="680" font-size="13" fill="#374151">in direct response to the second bar.</text>
+
+  <!-- Legend -->
+  <g transform="translate(1060, 600)">
+    <rect width="14" height="14" rx="2" fill="#10b981"/>
+    <text x="22" y="12" font-size="12" fill="#374151">Top consensus — drove the design</text>
+    <rect y="22" width="14" height="14" rx="2" fill="#9ca3af"/>
+    <text x="22" y="34" font-size="12" fill="#374151">Strong support — secondary surfaces</text>
+    <rect y="44" width="14" height="14" rx="2" fill="#d1d5db"/>
+    <text x="22" y="56" font-size="12" fill="#374151">Lower priority — deprioritized</text>
+  </g>
+</svg>

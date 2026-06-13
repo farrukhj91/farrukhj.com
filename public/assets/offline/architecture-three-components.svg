@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.12"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="980" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="700" y="44" text-anchor="middle" font-size="24" font-weight="600" fill="#111827">Coach Offline — three-component architecture</text>
+  <text x="700" y="70" text-anchor="middle" font-size="14" fill="#6b7280">How the desktop app, patching utility, and server app combine across a school's network</text>
+
+  <!-- 1. KP Content Servers (cloud) -->
+  <g transform="translate(550, 110)">
+    <rect x="0" y="0" width="300" height="86" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="150" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="#1e3a8a">KP Content Servers</text>
+    <text x="150" y="62" text-anchor="middle" font-size="12" fill="#475569">internet-hosted, cloud</text>
+  </g>
+
+  <!-- Arrow: Cloud → Campus Admin -->
+  <line x1="700" y1="196" x2="700" y2="266" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="715" y="226" font-size="12" fill="#374151" font-style="italic">Initial download +</text>
+  <text x="715" y="244" font-size="12" fill="#374151" font-style="italic">monthly auto-sync (or app locks out)</text>
+
+  <!-- 2. Campus Admin Laptop -->
+  <g transform="translate(515, 266)">
+    <rect x="0" y="0" width="370" height="118" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="185" y="32" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Campus Admin Laptop</text>
+    <text x="185" y="52" text-anchor="middle" font-size="12" fill="#6b7280">Set up by one person at the school, once</text>
+    <g transform="translate(60, 70)">
+      <rect width="106" height="30" rx="15" fill="#dcfce7" stroke="#10b981" stroke-width="1"/>
+      <text x="53" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#065f46">Desktop App</text>
+    </g>
+    <g transform="translate(190, 70)">
+      <rect width="116" height="30" rx="15" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+      <text x="58" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#78350f">Patching Utility</text>
+    </g>
+  </g>
+
+  <!-- Branching path: Campus Admin → Teacher Laptops (left) and → Server-host Laptop (right) -->
+  <path d="M 615 384 L 615 432 L 295 432 L 295 482" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 785 384 L 785 432 L 1105 432 L 1105 482" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+  <text x="700" y="424" text-anchor="middle" font-size="12" fill="#374151" font-style="italic">Encrypted, compressed patch — walked across the school on USB</text>
+
+  <!-- 3a. LEFT — Teacher Laptops -->
+  <g transform="translate(120, 482)">
+    <rect x="0" y="0" width="350" height="128" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="175" y="32" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Teacher Laptops (×N)</text>
+    <text x="175" y="52" text-anchor="middle" font-size="12" fill="#6b7280">In-class delivery, clicker assessments</text>
+    <g transform="translate(45, 70)">
+      <rect width="106" height="30" rx="15" fill="#dcfce7" stroke="#10b981" stroke-width="1"/>
+      <text x="53" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#065f46">Desktop App</text>
+    </g>
+    <g transform="translate(175, 70)">
+      <rect width="116" height="30" rx="15" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+      <text x="58" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#78350f">Patching Utility</text>
+    </g>
+    <text x="175" y="118" text-anchor="middle" font-size="11" fill="#9ca3af" font-style="italic">Utility extracts the patch in-app; content stays encrypted</text>
+  </g>
+
+  <!-- 3b. RIGHT — Server-host Laptop -->
+  <g transform="translate(930, 482)">
+    <rect x="0" y="0" width="350" height="128" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="175" y="32" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Server-host Laptop</text>
+    <text x="175" y="52" text-anchor="middle" font-size="12" fill="#6b7280">School-lab scenario only</text>
+    <g transform="translate(117, 70)">
+      <rect width="116" height="30" rx="15" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+      <text x="58" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#3730a3">Server App</text>
+    </g>
+    <text x="175" y="118" text-anchor="middle" font-size="11" fill="#9ca3af" font-style="italic">No server-class hardware needed — any laptop works</text>
+  </g>
+
+  <!-- Arrow: Teacher Laptop → Clicker Base -->
+  <line x1="295" y1="610" x2="295" y2="668" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="310" y="644" font-size="12" fill="#374151" font-style="italic">Wireless handshake</text>
+
+  <!-- 4a. LEFT — Clicker Base Station -->
+  <g transform="translate(120, 668)">
+    <rect x="0" y="0" width="350" height="86" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="175" y="34" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Clicker Base Station</text>
+    <text x="175" y="58" text-anchor="middle" font-size="12" fill="#6b7280">System pairs clickers by hardware ID</text>
+  </g>
+
+  <!-- Arrow: Base Station → Student Clickers -->
+  <line x1="295" y1="754" x2="295" y2="804" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- 5. Student Clickers -->
+  <g transform="translate(170, 804)">
+    <rect x="0" y="0" width="250" height="86" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="125" y="34" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Student Clickers</text>
+    <text x="125" y="58" text-anchor="middle" font-size="12" fill="#6b7280">Paired once; persist across classes</text>
+  </g>
+
+  <!-- Arrow: Server App → Lab Workstations -->
+  <line x1="1105" y1="610" x2="1105" y2="668" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="1120" y="644" font-size="12" fill="#374151" font-style="italic">LAN</text>
+
+  <!-- 4b. RIGHT — Lab Workstations -->
+  <g transform="translate(930, 668)">
+    <rect x="0" y="0" width="350" height="86" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="175" y="34" text-anchor="middle" font-size="16" font-weight="600" fill="#111827">Lab Workstations</text>
+    <text x="175" y="58" text-anchor="middle" font-size="12" fill="#6b7280">Learners access content via browser on the LAN</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(390, 928)">
+    <text x="0" y="14" font-size="12" font-weight="600" fill="#374151">Components:</text>
+    <g transform="translate(96, 0)">
+      <rect width="106" height="24" rx="12" fill="#dcfce7" stroke="#10b981" stroke-width="1"/>
+      <text x="53" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#065f46">Desktop App</text>
+    </g>
+    <g transform="translate(216, 0)">
+      <rect width="116" height="24" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+      <text x="58" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#78350f">Patching Utility</text>
+    </g>
+    <g transform="translate(346, 0)">
+      <rect width="106" height="24" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+      <text x="53" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#3730a3">Server App</text>
+    </g>
+    <g transform="translate(462, 0)">
+      <rect width="120" height="24" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+      <text x="60" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#1e3a8a">Cloud / Internet</text>
+    </g>
+  </g>
+</svg>
