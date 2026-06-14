@@ -1,6 +1,6 @@
 # Farrukh Jamal — Portfolio · Project Scope (SSOT)
 
-**Last updated:** 2026-06-14 (Phase 4 Round 3)
+**Last updated:** 2026-06-14 (Phase 4 Round 4)
 **Current phase:** Phase 4 — Styling + content wiring, iterating
 **Domain:** farrukhj.com (Namecheap; git connected to Vercel)
 **Owner:** Farrukh Jamal · farrukh.jamal91@gmail.com
@@ -325,6 +325,11 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 | 2026-06-14 R3 | CV page populated from `_inbox/resume_extracted.md` — full timeline: summary, experience, education, certifications, skills | Two-column timeline (140px year + content); stacks single-col on ≤720px |
 | 2026-06-14 R3 | About page drafted from resume + case-study material — first-person narrative, trajectory, principles | Farrukh edits next; not Claude-default voice — pulls his own reflection-section principles verbatim |
 | 2026-06-14 R3 | Skills appear ONLY on CV page (standard resume content). NOT on home, About, or anywhere else | Maintains senior-portfolio posture |
+| 2026-06-14 R4 | Renamed `/cv` → `/experience`. `Experience` nav label. 301 redirect via vercel.json | Cleaner register, less British-formal |
+| 2026-06-14 R4 | Location corrected Rawalpindi → Islamabad across CV and About | |
+| 2026-06-14 R4 | New `.num` utility class — Geist Mono + `--ink-bright` for in-prose numerical anchors | Applied across About metrics ($70K, 100K+, 30+, 100+, 252K+, 50+, 71K+, 4.5M+, 10+) |
+| 2026-06-14 R4 | About learnings rendered as numbered aphorisms (counter `decimal-leading-zero`) with mono kicker + hairline top/bottom rules per row | User-picked treatment from mockup |
+| 2026-06-14 R4 | Home positioning sentence shipped: "Product manager with a design-led background. Eight years in, currently building AI-native product at Lead Pursuits." | Improved version of option 2 (dropped inaccurate "writing about the work") |
 
 ---
 
