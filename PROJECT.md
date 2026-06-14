@@ -333,13 +333,52 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 
 ---
 
-## 17. Open items
+## 17. Open items (next session priorities)
 
-- Vercel deploy auth flow — needs Farrukh-side `npx vercel login` first time. Subsequent deploys are non-interactive.
-- About / CV / Contact copy — Farrukh writes.
-- Convert markdown Figma-placeholder blockquotes to `<FramePending>` components — phase 4 R2.
-- Convert "By the numbers" blockquote in LMS Redesign to `<KeyStats>` numerals — phase 4 R2.
-- `process-problem-matrix-full.jpg` is 1.09 MB — re-encode in phase 5.
+### A. Monogram pick — three F·J variants ready to ship
+
+Once Farrukh picks A, B, or C, deploy: replace text wordmark in `Nav.astro` with the SVG mark, update `public/favicon.svg` to match, regenerate OG image. SVG paths below — all viewBox `0 0 32 32`:
+
+- **Variant A — Light stroke** (`fill="none"`, `stroke="currentColor"`, `stroke-width="3.5"`, `stroke-linejoin="miter"`, `stroke-linecap="square"`):
+  - `M11 4 L11 22 Q11 28 5 28`
+  - `M11 4 L24 4`
+  - `M11 13 L22 13`
+- **Variant B — Heavier stroke** (same attrs, `stroke-width="5"`):
+  - `M11 6 L11 22 Q11 27 6 27`
+  - `M11 6 L23 6`
+  - `M11 14 L21 14`
+- **Variant C — Solid fill** (`fill="currentColor"`):
+  - single path `M8 3 L26 3 L26 8 L13 8 L13 12 L24 12 L24 16 L13 16 L13 23 Q13 29 7 29 L3 29 L3 24 L7 24 Q8 24 8 23 Z`
+
+### B. Personal About writeup
+
+Farrukh writes raw notes to the following prompts; Claude then rewrites About in his voice (~300–350 words), dropping the existing career-narrative draft (which currently overlaps with Experience).
+
+1. Pivot moments: what made him walk from engineering school into Scrum facilitation? What pulled him from design into product? What's pulling him toward AI now?
+2. Non-work threads: travel, what he does outside work, kinds of teams he chooses, problems he can't stop thinking about
+3. A signature moment from his career — one decision or project that defined how he thinks now
+4. Something specific about being a Pakistani PM working with US / UK / UAE / Kenyan teams that shaped him
+5. What collaborators and reportees would say about him as a person
+
+### C. Liveliness package — discuss before shipping
+
+Five proposed moves; Farrukh has released the no-chromatic-accent rule for this. Hold for explicit go-ahead per move:
+
+1. **One restrained accent — Linear violet `#5E6AD2`** on link hover, focus rings, active TOC indicator, `→` / `↳` glyphs, status dot. Tokens: add `--accent: #5E6AD2` (dark), `--accent: #4F46C7` (light).
+2. **Mouse-aware spotlight glow on home hero** — cursor-tracked radial gradient `rgba(94, 106, 210, 0.10)` behind wordmark slot. Disabled below 1100px (no hover on touch). Pointer-events: none. RAF-throttled.
+3. **Reveal-on-scroll micro-animation** — sections fade up 250ms (opacity 0→1, translateY 6px→0) via IntersectionObserver. Honor `prefers-reduced-motion: reduce`.
+4. **Hover lift on case-study list rows** — extend R2 hover state with 1–2px translateY + soft violet outer-glow `0 0 24px -8px rgba(94, 106, 210, 0.25)`.
+5. **`● Currently building at Lead Pursuits` status pill in nav** — small, mono, hairline-bordered. Bullet pulses violet 0.4→1.0 over 2.4s. Single config field controls the text.
+
+### D. Personal photos
+
+Farrukh to send a candid for About page header (~280px square/3:4) + 4–5 candids for an "outside work" strip at About footer (~200px each). Any size 1200–2400px wide; Claude handles crops and optimization.
+
+### E. Deferred from earlier rounds
+
+- Convert markdown Figma-placeholder blockquotes in case studies to `<FramePending>` components.
+- Convert "By the numbers" blockquote in LMS Redesign to `<KeyStats>` numerals.
+- Re-encode `public/assets/offline/process-problem-matrix-full.jpg` (1.09 MB) for performance pass.
 
 ---
 
