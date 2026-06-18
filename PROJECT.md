@@ -1,6 +1,6 @@
 # Farrukh Jamal — Portfolio · Project Scope (SSOT)
 
-**Last updated:** 2026-06-14 (Phase 4 Round 4)
+**Last updated:** 2026-06-15 (Phase 4 Round 5)
 **Current phase:** Phase 4 — Styling + content wiring, iterating
 **Domain:** farrukhj.com (Namecheap; git connected to Vercel)
 **Owner:** Farrukh Jamal · farrukh.jamal91@gmail.com
@@ -184,7 +184,6 @@ Brightness gap is the accent; no chromatic color. (Bumped grid/glow opacity in R
 | `<KeyStats>` | "By the numbers" — numerals, no emoji |
 | `<RoleFooter>` | Metadata strip at end of case study |
 | `<FramePending>` | Designed placeholder for missing Figma exports |
-| `<StillInFlight>` | Quiet appendix wrapper |
 | `<ExecutiveSummary>` | Block before Context section: kicker (`Role · Timeframe`) + 3 lines (problem, approach, outcome). Renders from frontmatter `summary` object. |
 | `<CaseStudyToc>` | Sticky right-rail TOC. Reads H2 headings via Astro's `render()` API. Low-opacity until hover; IntersectionObserver scroll-spy highlights current section. Hidden below 1100px. |
 | `<HomeBackground>` | Home-page dot grid + radial glow layer |
@@ -221,7 +220,6 @@ Stable template (markdown body):
 7. `## Outcome`
 8. `## Reflection`
 9. Role footer line (italic metadata)
-10. `**Still in flight — what would lift this case study further**` appendix
 
 Layout (`/work/[...slug]`) renders: H1 + mono meta line + ExecutiveSummary, then markdown Content, sticky TOC rail on the right.
 
@@ -330,35 +328,24 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 | 2026-06-14 R4 | New `.num` utility class — Geist Mono + `--ink-bright` for in-prose numerical anchors | Applied across About metrics ($70K, 100K+, 30+, 100+, 252K+, 50+, 71K+, 4.5M+, 10+) |
 | 2026-06-14 R4 | About learnings rendered as numbered aphorisms (counter `decimal-leading-zero`) with mono kicker + hairline top/bottom rules per row | User-picked treatment from mockup |
 | 2026-06-14 R4 | Home positioning sentence shipped: "Product manager with a design-led background. Eight years in, currently building AI-native product at Lead Pursuits." | Improved version of option 2 (dropped inaccurate "writing about the work") |
+| 2026-06-15 R5 | About narrative rewritten in Farrukh's voice from his raw answers to §17B prompts. Replaces Claude-voiced career walkthrough that overlapped Experience. Six paragraphs + retained learnings list + new outside-of-work paragraph before contact close. Lead Pursuits intentionally not named (Experience carries it) | Voice samples: Farrukh's Medium/LinkedIn posts (financial literacy, NPS critique, UX fellowship grad). Calibrated tone: longer sentences, plain connectives, no em-dashes, direct emotional statements, source-name visibility (Fahim Akhter, Attabad lake) |
+| 2026-06-15 R5 | Monogram pick (§17A) deferred — Farrukh designing externally and will provide SVG | Three text-stroke variants (A/B/C) rejected; faceted geometric direction (v1 with 14 triangles, v2 with solid letterforms + 4 seams) also rejected. Farrukh handling offline |
+| 2026-06-15 R5 | About: 5 personal photos staged + wired. Header portrait (rooftop café) at top of page, 220px wide, 3:4; outside-of-work 4-photo square strip (football pitch at night, mountain valley dawn, mountain vertical, peaks/waterfalls) after the outside-work paragraph. Sharp pipeline `tools/process-about-photos.mjs` (mozjpeg, attention-based cover-crop) — total ~230KB across 5 files | Pushed back on 4 photos: 2 with a child, 2 with a partner — not portfolio-appropriate. Mobile: strip collapses 4-col → 2-col under 640px |
+| 2026-06-15 R5 | Offline LMS case study: 1 add + 3 replacements from the 82-file `_inbox/LMS - Offline Desktop App/` set. Added `process-user-journey-mapping.jpg` at end of "The Reframe" (Ms. Ayesha 12-step flow). Replaced teacher row → `design-teacher-my-classes.jpg`, clicker assignment → `design-clicker-assignment-v2.jpg` (cleaner UI with explicit Active/Inactive handshake column), clicker result → `design-assessment-live-results.jpg` (live in-class response grid replaces the post-assessment view; body text updated to introduce live moment + post view together). Sharp pipeline `tools/process-offline-screens.mjs` | Two candidate screens skipped (`Admin Setup - Download...` and `Learners - Lesson Listing View` rendered blank/white in the source PNGs). Old replaced JPGs left in `/public/assets/offline/` — unreferenced but kept for git history visibility |
+| 2026-06-15 R5 | Removed "Still in flight" appendix from all three case studies (offline-lms, lms-redesign, stakeholder-dashboards). Read as AI-generated leftover — listing what a case study lacks signals incompleteness, not transparency. `<StillInFlight>` component dropped from inventory and template (case study structure now ends at role footer line) | Internal "what would lift this" tracking moves out of the public site — keep in PROJECT.md §17 / per-case-study scratch notes if needed |
+| 2026-06-15 R5 | About strip: replaced `outside-peaks-waterfalls.jpg` with `outside-stargazing.jpg` (Milky Way + cabin window) to anchor the Attabad stargazing line in the outside-work paragraph. Strip arc: football night → valley dawn → bright mountain → Milky Way — balanced day/night. Second new stargazing candidate (snow peaks under stars) skipped: at 200px square it would have read as near-black | Old peaks-waterfalls asset left unreferenced in `public/assets/about/` |
 
 ---
 
 ## 17. Open items (next session priorities)
 
-### A. Monogram pick — three F·J variants ready to ship
+### A. Monogram pick — DEFERRED (2026-06-15)
 
-Once Farrukh picks A, B, or C, deploy: replace text wordmark in `Nav.astro` with the SVG mark, update `public/favicon.svg` to match, regenerate OG image. SVG paths below — all viewBox `0 0 32 32`:
+Farrukh is designing the monogram himself and will provide the SVG when ready. When it lands: replace text wordmark in `Nav.astro`, drop into `public/favicon.svg`, regenerate OG image. Aesthetic direction is a constructed geometric mark (faceted triangulation), not a typographic wordmark — confirmed via reference image Farrukh shared.
 
-- **Variant A — Light stroke** (`fill="none"`, `stroke="currentColor"`, `stroke-width="3.5"`, `stroke-linejoin="miter"`, `stroke-linecap="square"`):
-  - `M11 4 L11 22 Q11 28 5 28`
-  - `M11 4 L24 4`
-  - `M11 13 L22 13`
-- **Variant B — Heavier stroke** (same attrs, `stroke-width="5"`):
-  - `M11 6 L11 22 Q11 27 6 27`
-  - `M11 6 L23 6`
-  - `M11 14 L21 14`
-- **Variant C — Solid fill** (`fill="currentColor"`):
-  - single path `M8 3 L26 3 L26 8 L13 8 L13 12 L24 12 L24 16 L13 16 L13 23 Q13 29 7 29 L3 29 L3 24 L7 24 Q8 24 8 23 Z`
+### B. Personal About writeup — DONE (2026-06-15)
 
-### B. Personal About writeup
-
-Farrukh writes raw notes to the following prompts; Claude then rewrites About in his voice (~300–350 words), dropping the existing career-narrative draft (which currently overlaps with Experience).
-
-1. Pivot moments: what made him walk from engineering school into Scrum facilitation? What pulled him from design into product? What's pulling him toward AI now?
-2. Non-work threads: travel, what he does outside work, kinds of teams he chooses, problems he can't stop thinking about
-3. A signature moment from his career — one decision or project that defined how he thinks now
-4. Something specific about being a Pakistani PM working with US / UK / UAE / Kenyan teams that shaped him
-5. What collaborators and reportees would say about him as a person
+Rewrite shipped: six narrative paragraphs in Farrukh's voice, calibrated from his raw answers to all five prompts plus voice samples from his Medium/LinkedIn posts. Learnings list retained verbatim. New outside-of-work paragraph (Attabad lake, finance reading, spirituality, football) inserted between learnings list and Islamabad/contact close.
 
 ### C. Liveliness package — discuss before shipping
 
@@ -370,9 +357,9 @@ Five proposed moves; Farrukh has released the no-chromatic-accent rule for this.
 4. **Hover lift on case-study list rows** — extend R2 hover state with 1–2px translateY + soft violet outer-glow `0 0 24px -8px rgba(94, 106, 210, 0.25)`.
 5. **`● Currently building at Lead Pursuits` status pill in nav** — small, mono, hairline-bordered. Bullet pulses violet 0.4→1.0 over 2.4s. Single config field controls the text.
 
-### D. Personal photos
+### D. Personal photos — DONE (2026-06-15)
 
-Farrukh to send a candid for About page header (~280px square/3:4) + 4–5 candids for an "outside work" strip at About footer (~200px each). Any size 1200–2400px wide; Claude handles crops and optimization.
+Header portrait + 4-photo outside-of-work strip wired. Sharp pipeline at `tools/process-about-photos.mjs`. Source candids staged in `_inbox/Pictures of Me/`.
 
 ### E. Deferred from earlier rounds
 

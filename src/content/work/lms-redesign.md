@@ -202,13 +202,3 @@ The rest of this portfolio nests inside this project. Each product I'll walk thr
 ---
 
 *Role: Product Design Lead — led design, design-side roadmap, prioritization, engineering handoff, and cross-functional communications, reporting to the CEO and CTO • Duration: 6 months for core redesign • Cross-functional partners: in-house engineering, sales, BD, and outreach teams • External partner: GSMA design sprint facilitators • Markets: Pakistan, UK, Afghanistan*
-
----
-
-## Still in flight — what would lift this case study further
-
-- **Figma frame exports.** Three to five clean screen captures: the new learner dashboard, a signup screen showing the age-tiered flow, the lesson player, the new performance dashboard, and the teacher's assignment-creation flow. Placeholders are marked inline above where each one should sit.
-- **A short post-launch principal quote** on adopting the new dashboard as a primary performance-tracking tool. Slots into the Outcome section to ground the dashboard-adoption claim.
-- **A short sales/BD partner quote** on per-school onboarding time before and after the redesign. Slots into Decision #1 to ground the unit-economics argument.
-- **Firm school counts.** Live schools across Pakistan, the UK, and Afghanistan at launch and at the 12-month mark.
-- **Exact KPI count, before and after.** Currently described as "twenty-plus → a core set." A specific count on each side would tighten the claim.

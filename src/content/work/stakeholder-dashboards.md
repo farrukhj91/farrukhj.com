@@ -189,12 +189,3 @@ The Stakeholder Dashboards were the work that fit the research the most directly
 ---
 
 *Role: Product Lead — led product direction, prioritization, hierarchy and scope decisions, and was actively involved across the design process • Designer of record: **Tooba Malik** — led discovery, requirements synthesis, IA, and UI execution • Cross-functional partners: Tayyab (backend lead), Adeel Azad / Kashif / Saddam (backend engineering), Basit Siddiqui (frontend lead) • Status: shipped at product level, used primarily in the Pakistani market • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*
-
----
-
-**Still in flight — what would lift this case study further:**
-
-- **Figma frame exports of the FINAL dashboard surfaces** — the Network Head landing dashboard, the My Schools list, the Subject Performance card detail, and the Principal-side drill-ins. Two inline placeholders mark where they belong.
-- **Quantitative outcome data** — weekly active principals, time-on-dashboard, intervention-action rate from dashboard surfaces, and dashboard usage in renewal conversations. Outreach is collecting; will be folded in when available.
-- **A specific principal post-launch quote** on how the dashboards have changed their tracking workflow — currently the case study uses pre-launch research quotes, which carry the Problem and Research sections well but leave the Outcome section qualitatively framed.
-- **A short V1 → V2 → V3 comparison artifact** to visually anchor the Process section — available in the Figma file but pending export.

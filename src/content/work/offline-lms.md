@@ -57,6 +57,8 @@ The second insight came from observing what teachers actually did with the produ
 
 These two insights — *design against the bandwidth they actually have* and *prioritize the smallest, most-used content type* — drove almost every product decision that followed.
 
+<figure><img src="/assets/offline/process-user-journey-mapping.jpg" alt="A user story and journey map for a teacher using the offline app: switches on internet, downloads the app, logs in, lesson structure syncs, turns off internet, content stays accessible, decides what to grab next time she's online" /><figcaption>The teacher journey we designed against. A teacher with limited connectivity gets her lesson structure synced on first login, then keeps planning and teaching offline — only coming back online to pull in what she needs for the next class.</figcaption></figure>
+
 ---
 
 ## The Solution
@@ -77,7 +79,7 @@ Downloads are chunked and resumable. If the connection drops at 60%, the next se
 
 Teachers using the same app see only their own classes and the content their admin has downloaded. They can deliver lessons offline, run clicker assessments, and pull up performance dashboards — all without an internet connection. The dashboards on the teacher side became the first place principals and outreach team members could see *real* data instead of year-old snapshots.
 
-<figure><img src="/assets/offline/design-teacher-dashboard-row.jpg" alt="Teacher view: dashboard with their classes, the lesson listing with all content objects, and the in-lesson content player" /><figcaption>Teacher-side surfaces in the offline app: class list, lesson breakdown with content objects, and the lesson player.</figcaption></figure>
+<figure><img src="/assets/offline/design-teacher-my-classes.jpg" alt="A teacher's class list inside the offline desktop app. Three class cards — Mathematics 9th, Physics 7th, Mathematics 9th again — with student counts. Sidebar shows Classes, Downloads, Settings" /><figcaption>The teacher's classes view inside the offline desktop app. Same Knowledge Platform brand, same lesson structures — they just keep working without an internet connection.</figcaption></figure>
 
 ### Component 2 — A patching utility for multi-laptop schools
 
@@ -101,13 +103,13 @@ Once we were rebuilding the classroom flow anyway, we tackled the clicker assign
 
 The new assignment screen opens by connecting to the clicker base station and detecting which physical clickers are present and responding. The teacher then assigns *that specific clicker* — by hardware ID — to *that specific learner*, by their unique system username. Free-text name typing is gone. The system holds the pairing.
 
-<figure><img src="/assets/offline/design-clicker-assignment.jpg" alt="The new clicker assignment screen — base station handshake, status per clicker, assignment by unique username" /><figcaption>The new clicker assignment screen. The system shows the live status of each clicker after connecting to the base station, so a teacher can spot a dead unit before class instead of mid-assessment.</figcaption></figure>
+<figure><img src="/assets/offline/design-clicker-assignment-v2.jpg" alt="The clicker assignment screen showing student usernames bound to clicker hardware IDs (1 through 8), with per-clicker Active or Inactive status badges on the right. Header shows 100 students total, 90 participating" /><figcaption>The new clicker assignment screen. Each student's unique username is bound to a specific clicker hardware ID, and the Active/Inactive column shows live handshake status — a teacher spots a dead unit before class starts, not mid-assessment.</figcaption></figure>
 
 Once the assignment is set, it persists. Same student, different classes — the system tracks them correctly across all of them. Same physical clicker, different students in different classes — also tracked correctly, because the pairing knows whose username it's logging responses for at any given moment. If a clicker stops working, the screen shows it as offline and the teacher reassigns just that learner. If a student is absent, the order doesn't break.
 
-We also rebuilt the assessment-result view. Teachers now get a class-level skill-based performance breakdown, a per-question correctness chart, and a per-student row showing scores by unique username. And there's a downloadable PDF version of the report for paper-based distribution and parent meetings.
+We also rebuilt the assessment experience around the live in-class moment. As students respond via clickers, the per-student response grid updates in real time — teachers can spot misconceptions forming during the lesson, not after it. The post-assessment view layers on a class-level skill-based performance breakdown, a per-question correctness chart, a per-student row by unique username, and a downloadable PDF for paper-based distribution and parent meetings.
 
-<figure><img src="/assets/offline/design-clicker-assessment-result.jpg" alt="The new assessment result screen with skill-level performance, question-by-question chart, and per-student rows" /><figcaption>The new clicker assessment result screen. Skill-level performance rollups, a question-by-question correctness chart, and per-student results — with a downloadable PDF for offline distribution.</figcaption></figure>
+<figure><img src="/assets/offline/design-assessment-live-results.jpg" alt="The live in-class assessment view: an MCQ question on the left, a real-time per-student response grid on the right with tiles colored green for correct and red for incorrect. A hover tooltip surfaces 'Farrukh Jamal: Option B'. Summary stats show 50 students, 25 responses, 20 correct, 5 incorrect" /><figcaption>The live in-class assessment view. As students respond, the per-student grid updates in real time. Hover surfaces who answered what — so teachers can see patterns forming mid-class instead of waiting for the result screen.</figcaption></figure>
 
 The teachers we'd been watching lose fifteen minutes per class on clicker setup were getting that time back.
 
@@ -166,11 +168,3 @@ The offline product wasn't a feature on the side of the online product. It was a
 ---
 
 *Role: Product Lead — led product direction, decisions, and UX/flow design, working with engineering, outreach, and partner schools • Co-led design execution with Tooba Malik (Product Designer), who story-boarded, mapped user stories, designed flows, iterated, and built the final UI screens • Launched: MVP in 2023 • Markets: Pakistan (incl. TCF network), Afghanistan, UK • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*
-
----
-
-**Still in flight — what would lift this case study further:**
-
-- **Measured outcome numbers** from outreach: operational cost delta, sync-frequency delta, ticket-volume delta, schools-onboarded count over time, average per-school onboarding time before vs. after.
-- **A quote from a Campus Admin or principal** at a TCF school post-deployment.
-- **A pre/post pair on the clicker assignment screen** — the old free-text grid alongside the new hardware-handshake screen — if any record of the old screen still exists.
