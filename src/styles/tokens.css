@@ -7,6 +7,9 @@
   --border: #1F1F23;
   --grid-dot: rgba(255, 255, 255, 0.07);
   --glow-color: rgba(120, 140, 200, 0.10);
+  --accent: #5E6AD2;
+  --accent-glow: rgba(94, 106, 210, 0.25);
+  --spotlight-color: rgba(94, 106, 210, 0.10);
 
   --s-1: 4px;
   --s-2: 8px;
@@ -64,4 +67,7 @@
   --border: #E8E8EC;
   --grid-dot: rgba(0, 0, 0, 0.05);
   --glow-color: rgba(80, 100, 160, 0.08);
+  --accent: #4F46C7;
+  --accent-glow: rgba(79, 70, 199, 0.18);
+  --spotlight-color: rgba(79, 70, 199, 0.08);
 }

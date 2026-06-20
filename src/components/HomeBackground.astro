@@ -1,6 +1,7 @@
 ---
 ---
 <div class="bg" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
 
 <style>
   .bg {
@@ -20,4 +21,54 @@
     -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
     mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
   }
+  .spotlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(circle 320px at var(--mouse-x, 35%) var(--mouse-y, 18%), var(--spotlight-color), transparent 70%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  }
+  @media (hover: hover) and (min-width: 1100px) {
+    .spotlight { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spotlight { opacity: 0; }
+  }
 </style>
+
+<script>
+  const mql = window.matchMedia('(hover: hover) and (min-width: 1100px)');
+  const motionMql = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mql.matches && !motionMql.matches) {
+    const spotlight = document.querySelector<HTMLElement>('.spotlight');
+    if (spotlight) {
+      let px = '35%';
+      let py = '18%';
+      let scheduled = false;
+      const flush = () => {
+        spotlight.style.setProperty('--mouse-x', px);
+        spotlight.style.setProperty('--mouse-y', py);
+        scheduled = false;
+      };
+      const onMove = (e: PointerEvent) => {
+        const rect = spotlight.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        if (y < 0 || y > rect.height) return;
+        px = (e.clientX - rect.left) + 'px';
+        py = y + 'px';
+        if (!scheduled) {
+          scheduled = true;
+          requestAnimationFrame(flush);
+        }
+      };
+      window.addEventListener('pointermove', onMove, { passive: true });
+    }
+  }
+</script>

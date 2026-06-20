@@ -13,7 +13,7 @@ const hasMore = all.length > featured.length;
   <section class="home container">
     <header class="opener">
       <h1 class="wordmark">Farrukh Jamal</h1>
-      <p class="positioning">Product manager with a design-led background. Eight years in, currently building AI-native product at Lead Pursuits.</p>
+      <p class="positioning">Product manager with a design-led background. Eight years in, currently building AI-native product at <a href="https://leadpursuits.com">Lead Pursuits</a>.</p>
     </header>
 
     {featured.length > 0 && (
@@ -46,25 +46,40 @@ const hasMore = all.length > featured.length;
     z-index: 1;
   }
   .opener {
-    margin-bottom: var(--s-10);
+    margin-bottom: var(--s-8);
     max-width: var(--w-text);
   }
   .wordmark {
-    font-size: 22px;
+    font-size: var(--size-h1);
     font-weight: 600;
-    letter-spacing: -0.005em;
-    line-height: 1.3;
+    letter-spacing: -0.01em;
+    line-height: var(--lh-h1);
     color: var(--ink-bright);
-    margin-bottom: var(--s-4);
+    margin-bottom: var(--s-5);
   }
   .positioning {
-    font-size: var(--size-body);
+    font-size: 17px;
     color: var(--ink);
-    line-height: var(--lh-body);
+    line-height: 1.55;
     margin: 0;
+    max-width: 56ch;
+  }
+  .positioning a {
+    color: var(--ink-bright);
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .positioning a:hover,
+  .positioning a:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
 
-  .work-list { max-width: var(--w-page); }
+  .work-list {
+    max-width: var(--w-page);
+    border-top: 1px solid var(--border);
+    padding-top: var(--s-7);
+  }
   .work-list ul {
     display: flex;
     flex-direction: column;
@@ -77,13 +92,19 @@ const hasMore = all.length > featured.length;
     margin: 0 calc(-1 * var(--s-5));
     border: 1px solid transparent;
     border-radius: 2px;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     border-bottom: none;
   }
   .row:hover,
   .row:focus-visible {
     background-color: var(--bg-elevated);
     border-color: var(--border);
+    transform: translateY(-1px);
+    box-shadow: 0 0 24px -8px var(--accent-glow);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .row { transition: background-color 0.15s ease, border-color 0.15s ease; }
+    .row:hover, .row:focus-visible { transform: none; }
   }
   .row h2 {
     font-size: var(--size-h2);
@@ -99,7 +120,7 @@ const hasMore = all.length > featured.length;
   .arrow {
     font-family: var(--font-mono);
     font-size: var(--size-ui);
-    color: var(--ink-bright);
+    color: var(--accent);
     opacity: 0;
     transform: translateX(-6px);
     transition: opacity 0.15s ease, transform 0.15s ease;
@@ -139,7 +160,7 @@ const hasMore = all.length > featured.length;
   }
   .see-all:hover,
   .see-all:focus-visible {
-    color: var(--ink-bright);
-    border-bottom-color: var(--ink-bright);
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
 </style>

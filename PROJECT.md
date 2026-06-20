@@ -1,6 +1,6 @@
 # Farrukh Jamal — Portfolio · Project Scope (SSOT)
 
-**Last updated:** 2026-06-15 (Phase 4 Round 5)
+**Last updated:** 2026-06-19 (Phase 4 Round 5)
 **Current phase:** Phase 4 — Styling + content wiring, iterating
 **Domain:** farrukhj.com (Namecheap; git connected to Vercel)
 **Owner:** Farrukh Jamal · farrukh.jamal91@gmail.com
@@ -334,6 +334,9 @@ Cross-linking happens in prose: inline links inside case study bodies where cont
 | 2026-06-15 R5 | Offline LMS case study: 1 add + 3 replacements from the 82-file `_inbox/LMS - Offline Desktop App/` set. Added `process-user-journey-mapping.jpg` at end of "The Reframe" (Ms. Ayesha 12-step flow). Replaced teacher row → `design-teacher-my-classes.jpg`, clicker assignment → `design-clicker-assignment-v2.jpg` (cleaner UI with explicit Active/Inactive handshake column), clicker result → `design-assessment-live-results.jpg` (live in-class response grid replaces the post-assessment view; body text updated to introduce live moment + post view together). Sharp pipeline `tools/process-offline-screens.mjs` | Two candidate screens skipped (`Admin Setup - Download...` and `Learners - Lesson Listing View` rendered blank/white in the source PNGs). Old replaced JPGs left in `/public/assets/offline/` — unreferenced but kept for git history visibility |
 | 2026-06-15 R5 | Removed "Still in flight" appendix from all three case studies (offline-lms, lms-redesign, stakeholder-dashboards). Read as AI-generated leftover — listing what a case study lacks signals incompleteness, not transparency. `<StillInFlight>` component dropped from inventory and template (case study structure now ends at role footer line) | Internal "what would lift this" tracking moves out of the public site — keep in PROJECT.md §17 / per-case-study scratch notes if needed |
 | 2026-06-15 R5 | About strip: replaced `outside-peaks-waterfalls.jpg` with `outside-stargazing.jpg` (Milky Way + cabin window) to anchor the Attabad stargazing line in the outside-work paragraph. Strip arc: football night → valley dawn → bright mountain → Milky Way — balanced day/night. Second new stargazing candidate (snow peaks under stars) skipped: at 200px square it would have read as near-black | Old peaks-waterfalls asset left unreferenced in `public/assets/about/` |
+| 2026-06-15 R5 | Liveliness package partial ship: moves 1 (violet accent), 2 (mouse-aware spotlight), 4 (hover lift on rows). No-chromatic-accent rule released specifically for `#5E6AD2`. Move 3 (reveal-on-scroll) skipped — reads as portfolio cliché. Move 5 (status pill) held — conflicts with extended hard-no on "Currently / Now" sections | All three moves honor `prefers-reduced-motion`. Spotlight disabled below 1100px and on touch |
+| 2026-06-19 R5 | Home hero rework: wordmark 22px → 28px (matches H1 cap, restores hierarchy over case-study row titles); positioning text 16px → 17px with `Lead Pursuits` as inline link in `--ink-bright`; opener `margin-bottom` --s-10 → --s-8; case-study list gains `border-top: 1px solid var(--border)` + --s-7 padding-top so the transition from hero to work reads as a deliberate section break rather than a void | Wordmark hierarchy was flat — same size as row titles, contributing to "small hero" read. Hairline rule replaces the 128px gap |
+| 2026-06-19 R5 | `/work` page header: dropped mono kicker `<p class="kicker">Work</p>` (R2-era Linear-y decoration) in favor of `<h1>Work</h1>` matching About/Contact page-header convention. Reverses earlier R2 decision on grounds of cross-page consistency | Experience page keeps its CV-style header (H1 name + subtitle + contact line) — that's a resume convention, not a page-title pattern |
 
 ---
 
@@ -347,15 +350,18 @@ Farrukh is designing the monogram himself and will provide the SVG when ready. W
 
 Rewrite shipped: six narrative paragraphs in Farrukh's voice, calibrated from his raw answers to all five prompts plus voice samples from his Medium/LinkedIn posts. Learnings list retained verbatim. New outside-of-work paragraph (Attabad lake, finance reading, spirituality, football) inserted between learnings list and Islamabad/contact close.
 
-### C. Liveliness package — discuss before shipping
+### C. Liveliness package — partial ship (2026-06-15)
 
-Five proposed moves; Farrukh has released the no-chromatic-accent rule for this. Hold for explicit go-ahead per move:
+Moves 1, 2, 4 shipped. Moves 3 and 5 deferred.
 
-1. **One restrained accent — Linear violet `#5E6AD2`** on link hover, focus rings, active TOC indicator, `→` / `↳` glyphs, status dot. Tokens: add `--accent: #5E6AD2` (dark), `--accent: #4F46C7` (light).
-2. **Mouse-aware spotlight glow on home hero** — cursor-tracked radial gradient `rgba(94, 106, 210, 0.10)` behind wordmark slot. Disabled below 1100px (no hover on touch). Pointer-events: none. RAF-throttled.
-3. **Reveal-on-scroll micro-animation** — sections fade up 250ms (opacity 0→1, translateY 6px→0) via IntersectionObserver. Honor `prefers-reduced-motion: reduce`.
-4. **Hover lift on case-study list rows** — extend R2 hover state with 1–2px translateY + soft violet outer-glow `0 0 24px -8px rgba(94, 106, 210, 0.25)`.
-5. **`● Currently building at Lead Pursuits` status pill in nav** — small, mono, hairline-bordered. Bullet pulses violet 0.4→1.0 over 2.4s. Single config field controls the text.
+**Shipped:**
+1. ✅ **Linear violet accent `#5E6AD2`** — token added to `tokens.css` (`--accent`, `--accent-glow`, `--spotlight-color`). Applied to focus rings (global), prose link hover, TOC active indicator + dash, `→` arrows on row hover, `see-all` hover.
+2. ✅ **Mouse-aware spotlight glow** — second radial gradient layer in `HomeBackground.astro` tracks cursor via rAF-throttled pointermove. Disabled below 1100px, on touch, and under `prefers-reduced-motion`. Falls back to default 35%/18% position.
+4. ✅ **Hover lift on case-study list rows** — `.row:hover` on home and `/work` gets `translateY(-1px)` + `box-shadow: 0 0 24px -8px var(--accent-glow)`. Honors `prefers-reduced-motion: reduce`.
+
+**Not shipped:**
+3. ⏸ Reveal-on-scroll micro-animation — skipped; site is disciplined enough without it.
+5. ⏸ `● Currently building at Lead Pursuits` status pill — held; conflicts with extended hard-no list ("No 'Currently / Now / Reading / Listening' sections"). Revisit only if Farrukh explicitly reverses that rule.
 
 ### D. Personal photos — DONE (2026-06-15)
 
