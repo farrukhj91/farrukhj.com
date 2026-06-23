@@ -88,7 +88,7 @@ main { flex: 1; position: relative; }
 .prose blockquote em { font-style: normal; color: var(--muted); }
 .prose a {
   color: var(--ink);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--muted);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 .prose a:hover,
