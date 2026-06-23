@@ -8,10 +8,10 @@ markets: ["Pakistan"]
 problem: "Designing for principals who already do the job. A 47-principal survey shaped the brief."
 summary:
   problem: "Most LMSes treat school dashboards as decoration. We surveyed 47 principals across Pakistan and found 94% were already tracking school performance — just not with our tool. The design problem wasn't convincing them; it was being better than what they were already using."
-  approach: "Tooba and I built the new dashboards around what the survey told us directly: subject-wise performance as a first-class card, three design iterations before any engineering investment, financial features deliberately cut to protect product identity."
+  approach: "<a href='https://www.linkedin.com/in/toobamalick/'>Tooba</a> and I built the new dashboards around what the survey told us directly: subject-wise performance as a first-class card, three design iterations before any engineering investment, financial features deliberately cut to protect product identity."
   outcome: "The dashboards rolled out to every Network Head and principal in the Pakistani market. The first version where principals asked for more features, not fewer."
 order: 3
-collaborators: ["Tooba Malik"]
+collaborators: ["Tooba Malik (Product Designer)"]
 featured: true
 draft: false
 ---
@@ -21,7 +21,7 @@ draft: false
 
 Coach (KP's LMS) serves two stakeholders who run the schools using it. **Principals** operate at the level of a single campus. **Network Heads** run a chain of campuses — typically a Pakistani school network like Beaconhouse, Aspire Grammar, or The Educators with branches across several cities. Both need to see what's happening, fast enough to act on it. The Stakeholder Dashboards are the surface that lets them do that.
 
-This case study covers the dashboard rebuild we did as a follow-on to the [main LMS redesign](/work/lms-redesign). It shipped at the product level but saw its primary use in the Pakistani market. I led product direction, prioritization, and the cross-functional decisions on hierarchy and scope, and worked alongside the designer through the entire design process. **Tooba Malik led the design discovery, requirements synthesis, IA, and UI execution as the designer of record.** The decisions we landed at came out of working sessions we ran together — I directed, she designed.
+This case study covers the dashboard rebuild we did as a follow-on to the [main LMS redesign](/work/lms-redesign). It shipped at the product level but saw its primary use in the Pakistani market. I led product direction, prioritization, and the cross-functional decisions on hierarchy and scope, and worked alongside the designer through the entire design process. **[Tooba Malik](https://www.linkedin.com/in/toobamalick/) led the design discovery, requirements synthesis, IA, and UI execution as the designer of record.** The decisions we landed at came out of working sessions we ran together — I directed, she designed.
 
 ---
 
@@ -29,7 +29,7 @@ This case study covers the dashboard rebuild we did as a follow-on to the [main 
 
 The starting assumption inside the team was that we needed to *convince* principals to start tracking school performance. The research told us a different story.
 
-**Roughly 94% of principals we surveyed were already tracking school performance.** They had the will. They had the digital access — over 80% had both a smartphone and a computer or laptop on hand. What they didn't have was a tool that fit the job.
+**Roughly <span class="num">94%</span> of principals we surveyed were already tracking school performance.** They had the will. They had the digital access — over <span class="num">80%</span> had both a smartphone and a computer or laptop on hand. What they didn't have was a tool that fit the job.
 
 The frustration showed up in their own words. Across 47 principals from networks like Beaconhouse, Aspire Grammar, The Educators, United Charter Schools, and others, the challenges they described circled the same gap:
 
@@ -58,7 +58,7 @@ So the brief became: build a dashboard that's better than what they're currently
 
 ## The Research
 
-Tooba ran the discovery as a structured FigJam workspace, mapping four parallel investigations: what principals are *responsible for*, what *challenges* they hit, what *data points and features* they actually need, and how they *already communicate and collaborate*. Every sticky on those boards was authored by her. The synthesis below sits on top of her work.
+[Tooba](https://www.linkedin.com/in/toobamalick/) ran the discovery as a structured FigJam workspace, mapping four parallel investigations: what principals are *responsible for*, what *challenges* they hit, what *data points and features* they actually need, and how they *already communicate and collaborate*. Every sticky on those boards was authored by her. The synthesis below sits on top of her work.
 
 **Methodology shift.** Same approach we'd brought into the [main redesign research](/work/lms-redesign): open-ended, non-leading questions. Where most surveys would ask *"Rate the importance of subject-wise reporting from 1 to 10,"* we asked *"How do you think subject-wise information and reports may help you in improving the performance of the students?"* The answers were longer, messier, and far more useful.
 
@@ -68,9 +68,9 @@ Tooba ran the discovery as a structured FigJam workspace, mapping four parallel 
 
 <figure><img src="/assets/dashboards/research-q12-survey-results.svg" alt="Q12 survey results showing the principal-cohort preferences for dashboard data visualizations. 93.5% asked for academic results analysis and 71.7% specifically asked for subject-wise performance, with a long tail of lower-priority items behind them." /><figcaption>Principal-cohort responses on what data visualizations would help. The top two — academic results analysis and subject-wise performance — defined the structural shape of the FINAL design.</figcaption></figure>
 
-The top two bars were the entire design brief. **93.5% asked for academic results analysis. 71.7% specifically asked for subject-wise performance.** Consensus that high on a multi-select question is rare — it doesn't tell you what direction to go in, it tells you exactly what to build.
+The top two bars were the entire design brief. **<span class="num">93.5%</span> asked for academic results analysis. <span class="num">71.7%</span> specifically asked for subject-wise performance.** Consensus that high on a multi-select question is rare — it doesn't tell you what direction to go in, it tells you exactly what to build.
 
-**A second striking finding, from a separate question.** When we asked what data on *teacher* performance would help, the strongest result was 73.9% asking for teachers' class performance — and notably, no principal asked for teacher attendance as a top dashboard metric. Principals do not care, at this level, when teachers show up. They care whether teachers' classes are working. That's a counter-intuitive finding, and a useful one — it told us what *not* to build as much as it told us what to.
+**A second striking finding, from a separate question.** When we asked what data on *teacher* performance would help, the strongest result was <span class="num">73.9%</span> asking for teachers' class performance — and notably, no principal asked for teacher attendance as a top dashboard metric. Principals do not care, at this level, when teachers show up. They care whether teachers' classes are working. That's a counter-intuitive finding, and a useful one — it told us what *not* to build as much as it told us what to.
 
 The qualitative responses pointed to the *why.* Several principals talked about intervention as the real point of tracking:
 
@@ -85,7 +85,7 @@ The qualitative responses pointed to the *why.* Several principals talked about 
 
 The job wasn't analytical curiosity. It was timely, actionable insight that could be acted on before the term ended.
 
-**Tooba's brief, in her own words.** After the discovery work was synthesized, Tooba wrote a six-line product brief directly on the FigJam board — what the dashboard should let the user do:
+**[Tooba's](https://www.linkedin.com/in/toobamalick/) brief, in her own words.** After the discovery work was synthesized, [Tooba](https://www.linkedin.com/in/toobamalick/) wrote a six-line product brief directly on the FigJam board — what the dashboard should let the user do:
 
 > *The dashboard should allow us to:*
 >
@@ -143,7 +143,7 @@ The same logic applied at the dashboard surface level. Teacher attendance went u
 
 ### 4. The Financial cut.
 
-Tooba's FEATURES grid had "Financial Metrics" appearing twice. A handful of principals — and internal voices — had asked whether the dashboards could include fee collection, payables, financial-management reporting. We deliberately cut all of it.
+[Tooba's](https://www.linkedin.com/in/toobamalick/) FEATURES grid had "Financial Metrics" appearing twice. A handful of principals — and internal voices — had asked whether the dashboards could include fee collection, payables, financial-management reporting. We deliberately cut all of it.
 
 The reasoning wasn't about complexity. It was about product identity. Coach is a Learning Management System — its job is learning, performance visibility, and concept improvement for learners, teachers, and the people running their schools. Adding financial management would have pulled the product into School Management System territory: fee challan generation, payment tracking, debtor reports, accounting integrations. A different product, a different market, a different team. We chose not to follow that gravity well.
 
@@ -188,4 +188,4 @@ The Stakeholder Dashboards were the work that fit the research the most directly
 
 ---
 
-*Role: Product Lead — led product direction, prioritization, hierarchy and scope decisions, and was actively involved across the design process • Designer of record: **Tooba Malik** — led discovery, requirements synthesis, IA, and UI execution • Cross-functional partners: Tayyab (backend lead), Adeel Azad / Kashif / Saddam (backend engineering), Basit Siddiqui (frontend lead) • Status: shipped at product level, used primarily in the Pakistani market • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*
+*Role: Product Lead — led product direction, prioritization, hierarchy and scope decisions, and was actively involved across the design process • Designer of record: **[Tooba Malik](https://www.linkedin.com/in/toobamalick/)** — led discovery, requirements synthesis, IA, and UI execution • Cross-functional partners: Tayyab (backend lead), Adeel Azad / Kashif / Saddam (backend engineering), Basit Siddiqui (frontend lead) • Status: shipped at product level, used primarily in the Pakistani market • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*

@@ -160,7 +160,7 @@ The redesign shipped across Pakistan, the UK, and Afghanistan.
 
 > **By the numbers**
 >
-> ⏱ **Time to a lesson:** 15–20 seconds and 5 clicks → a handful of seconds and 2 clicks. Lesson load on top of that came down meaningfully.
+> ⏱ **Time to a lesson:** <span class="num">15–20</span> seconds and <span class="num">5</span> clicks → a handful of seconds and <span class="num">2</span> clicks. Lesson load on top of that came down meaningfully.
 >
 > 📈 **Break-even in launch year.** A first for the LMS at K.P.
 >

@@ -7,9 +7,9 @@ const { summary, role, years } = Astro.props as Props;
   <p class="kicker">
     <span class="key">Role</span> {role} <span class="sep">·</span> <span class="key">Timeframe</span> {years}
   </p>
-  <p class="line">{summary.problem}</p>
-  <p class="line">{summary.approach}</p>
-  <p class="line">{summary.outcome}</p>
+  <p class="line" set:html={summary.problem}></p>
+  <p class="line" set:html={summary.approach}></p>
+  <p class="line" set:html={summary.outcome}></p>
 </section>
 
 <style>

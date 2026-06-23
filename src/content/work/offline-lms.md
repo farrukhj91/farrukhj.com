@@ -8,10 +8,10 @@ markets: ["Pakistan", "UK", "Afghanistan"]
 problem: "Same product, second front. Rebuilding the on-premise deployment for low-bandwidth schools. WhatsApp-class internet as the floor."
 summary:
   problem: "Knowledge Platform's offline LMS was operationally exhausting — USB couriers, virus-infected drives, schools running on year-old data because patch updates required someone to fly out."
-  approach: "I led the rebuild with my design partner Tooba Malik around a single insight: the schools we called offline had WhatsApp-class connectivity. We designed for that — a few-megabyte installer, chunked resumable downloads, a patching utility for multi-laptop schools, and a lightweight server app for school labs."
+  approach: "I led the rebuild with my design partner <a href='https://www.linkedin.com/in/toobamalick/'>Tooba Malik</a> around a single insight: the schools we called offline had WhatsApp-class connectivity. We designed for that — a few-megabyte installer, chunked resumable downloads, a patching utility for multi-laptop schools, and a lightweight server app for school labs."
   outcome: "35 TCF schools deployed in the first wave. Every operational pain point that drove the rebuild was structurally addressed, not bandaged."
 order: 2
-collaborators: ["Tooba Malik"]
+collaborators: ["Tooba Malik (Product Designer)"]
 featured: true
 draft: false
 ---
@@ -25,7 +25,7 @@ Coach Offline is the on-premise deployment of the LMS we'd just rebuilt online. 
 
 An offline version of the product had existed for years before this work started, but it was heavy, expensive to deploy, and operationally exhausting to maintain. We launched the rebuild shortly after shipping the online redesign because the same architectural simplifications had unlocked something on the offline side: we could now make the product *light* enough to live on a normal school laptop without dedicated server hardware, and we could reorganize content delivery around the bandwidth our schools actually had instead of the bandwidth they wished they had.
 
-I started and led this work. Tooba Malik joined shortly after kickoff and led design execution alongside me as an integral partner — story-boarding, user-story mapping, user flows, rough iterations, and the final UI screens. I owned product direction, decisions, and the UX and flow design, working directly with engineering and our outreach team.
+I started and led this work. [Tooba Malik](https://www.linkedin.com/in/toobamalick/) joined shortly after kickoff and led design execution alongside me as an integral partner — story-boarding, user-story mapping, user flows, rough iterations, and the final UI screens. I owned product direction, decisions, and the UX and flow design, working directly with engineering and our outreach team.
 
 ---
 
@@ -145,11 +145,11 @@ The clicker fix is small in surface area but a useful principle in general: when
 
 The MVP launched in 2023.
 
-The most concrete pilot result is **35 TCF schools** that deployed the new offline product in their first wave — a network of schools serving remote and under-resourced communities in Pakistan, which had been hard to reach under the old deployment model and which the lightweight-server-app component was specifically designed for.
+The most concrete pilot result is **<span class="num">35</span> TCF schools** that deployed the new offline product in their first wave — a network of schools serving remote and under-resourced communities in Pakistan, which had been hard to reach under the old deployment model and which the lightweight-server-app component was specifically designed for.
 
 Existing schools that had been running the old offline product reported the new version as a meaningful operational simplification — lighter to install, easier to maintain, no more truck rolls for routine content updates. Our outreach team observed a clear drop in support-ticket volume relative to the old offline deployment, though the precise delta is still being pulled from records held by our outreach team and isn't yet a number I can publish.
 
-> **Designed-for target on the original brief:** roughly 70% reduction in operational costs of running the offline deployment at scale, driven by removing physical truck rolls for setup and updates, eliminating the per-laptop install model, and pushing routine maintenance to a self-serve Campus Admin role. This was the goal we designed against; the measured delta is still being collected and isn't reported here.
+> **Designed-for target on the original brief:** roughly <span class="num">70%</span> reduction in operational costs of running the offline deployment at scale, driven by removing physical truck rolls for setup and updates, eliminating the per-laptop install model, and pushing routine maintenance to a self-serve Campus Admin role. This was the goal we designed against; the measured delta is still being collected and isn't reported here.
 
 What I can say with confidence: every single operational pain point that drove the rebuild — USB virus loops, multi-week onboarding, year-old dashboard data, GB-scale patch shipments, clicker setup chaos — was structurally addressed in the new architecture, not just bandaged.
 
@@ -167,4 +167,4 @@ The offline product wasn't a feature on the side of the online product. It was a
 
 ---
 
-*Role: Product Lead — led product direction, decisions, and UX/flow design, working with engineering, outreach, and partner schools • Co-led design execution with Tooba Malik (Product Designer), who story-boarded, mapped user stories, designed flows, iterated, and built the final UI screens • Launched: MVP in 2023 • Markets: Pakistan (incl. TCF network), Afghanistan, UK • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*
+*Role: Product Lead — led product direction, decisions, and UX/flow design, working with engineering, outreach, and partner schools • Co-led design execution with [Tooba Malik](https://www.linkedin.com/in/toobamalick/) (Product Designer), who story-boarded, mapped user stories, designed flows, iterated, and built the final UI screens • Launched: MVP in 2023 • Markets: Pakistan (incl. TCF network), Afghanistan, UK • Companion case study to the [LMS flagship redesign](/work/lms-redesign)*
