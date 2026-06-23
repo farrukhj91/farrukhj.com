@@ -29,6 +29,8 @@ const sections = headings.filter((h) => h.depth === 2);
 
   if (items.length > 0) {
     let active: HTMLAnchorElement | null = null;
+    let clickLockUntil = 0;
+
     const setActive = (link: HTMLAnchorElement) => {
       if (active === link) return;
       if (active) active.classList.remove('active');
@@ -38,6 +40,7 @@ const sections = headings.filter((h) => h.depth === 2);
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() < clickLockUntil) return;
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -50,7 +53,13 @@ const sections = headings.filter((h) => h.depth === 2);
       { rootMargin: '-15% 0px -70% 0px', threshold: 0 }
     );
 
-    items.forEach(({ el }) => observer.observe(el));
+    items.forEach(({ el, link }) => {
+      observer.observe(el);
+      link.addEventListener('click', () => {
+        setActive(link);
+        clickLockUntil = Date.now() + 800;
+      });
+    });
     if (items[0]) setActive(items[0].link);
   }
 </script>
