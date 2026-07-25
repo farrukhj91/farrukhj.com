@@ -10,7 +10,7 @@ summary:
   problem: "Knowledge Platform's offline LMS was operationally exhausting — USB couriers, virus-infected drives, schools running on year-old data because patch updates required someone to fly out."
   approach: "I led the rebuild with my design partner <a href='https://www.linkedin.com/in/toobamalick/'>Tooba Malik</a> around a single insight: the schools we called offline had WhatsApp-class connectivity. We designed for that — a few-megabyte installer, chunked resumable downloads, a patching utility for multi-laptop schools, and a lightweight server app for school labs."
   outcome: "35 TCF schools deployed in the first wave. Every operational pain point that drove the rebuild was structurally addressed, not bandaged."
-order: 2
+order: 3
 collaborators: ["Tooba Malik (Product Designer)"]
 featured: true
 draft: false

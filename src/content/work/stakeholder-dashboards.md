@@ -10,7 +10,7 @@ summary:
   problem: "Most LMSes treat school dashboards as decoration. We surveyed 47 principals across Pakistan and found 94% were already tracking school performance — just not with our tool. The design problem wasn't convincing them; it was being better than what they were already using."
   approach: "<a href='https://www.linkedin.com/in/toobamalick/'>Tooba</a> and I built the new dashboards around what the survey told us directly: subject-wise performance as a first-class card, three design iterations before any engineering investment, financial features deliberately cut to protect product identity."
   outcome: "The dashboards rolled out to every Network Head and principal in the Pakistani market. The first version where principals asked for more features, not fewer."
-order: 3
+order: 4
 collaborators: ["Tooba Malik (Product Designer)"]
 featured: true
 draft: false
