@@ -1,0 +1,159 @@
+---
+title: "Turning 1-on-1 Quiz into Bonzo"
+role: "Product Design Lead"
+company: "Knowledge Platform"
+product: "Bonzo"
+years: "2023–2024"
+markets: ["Pakistan"]
+problem: "A game-based learning platform where usage collapsed between competitions. Rebranded from 1-on-1 Quiz to Bonzo, then rebuilt around streaks and habit loops rather than prize cycles. Games per unique user rose ~5.5× and time per unique user rose ~8×."
+summary:
+  problem: "1-on-1 Quiz worked in bursts. Users played hard for thirty-day competitions, then the platform went quiet until the next one. The competitions were also fragmenting the platform brand across separate landing pages for each program."
+  approach: "I ran a pattern analysis on years of engagement data, pitched a shift from reward-driven to habit-driven engagement, and rebuilt the platform around streaks, tiered achievements, and an AI simulation game template. Consolidated the branded competitions back under a single platform identity."
+  outcome: "Games per unique user went from 6.1 to 33.7 (~5.5×). Time per unique user went from about 5.6 minutes to about 45 minutes (~8×). Rewards redeemed dropped 77%. Engagement stopped depending on prize distribution."
+order: 4
+collaborators: ["Tooba Malik (Product Designer)"]
+featured: false
+draft: false
+---
+import FramePending from '../../components/FramePending.astro';
+
+<FramePending description="Hero: a Bonzo composition that reads as 'a place you return to' rather than 'a competition you enter'. Candidates: the streaks screen with the flame icon and freeze tokens visible, the achievements page mid-progression, or the platform dashboard." />
+
+---
+
+## Context
+
+Knowledge Platform ran a second product alongside its LMS. **1-on-1 Quiz** was a game-based learning platform built around short-form quiz games. Learners played single-player or challenged each other in turn-based multiplayer. Everything ran on a coin economy: a points formula based on accuracy, hat tricks, and time; points converted into coins; coins into leaderboard position and redeemable rewards.
+
+The platform had scale. A quarter of a million users across its lifetime. Over a million games played. Enough sponsor pull that we ran a math and English competition inside the **McDonald's app**, with the competition opening as a native experience for McDonald's users and 1-on-1 Quiz powering it behind the scenes.
+
+I moved onto 1-on-1 Quiz after the LMS revamp shipped. Formally still Product Design Lead, but running product management on this one end-to-end: discovery, roadmap, prioritization, stakeholder alignment, and design. This case study covers the three-to-four months where we rebranded the platform to Bonzo and repositioned it around a different theory of engagement. Learners ended up playing much more, for reasons that had nothing to do with prizes.
+
+---
+
+## The Problem
+
+Usage on 1-on-1 Quiz came in bursts and collapsed between them.
+
+The competitions were thirty-day events. A math cup, an English cup, a sponsored competition inside the McDonald's app, one of ours or one of a brand partner's. Users signed up, played hard for the thirty days, sometimes for hours a day, chasing coins. Then results were announced, prizes went out, and the platform went quiet until the next competition. Then the cycle repeated.
+
+I put a hypothesis on the table early: **if the only motivation to learn is the reward, users churn the moment the reward is claimed.** This wasn't fixable with a better competition or a bigger prize pool. Bigger prizes would make bigger bursts. The platform itself wasn't rewarding anything between competitions, so between competitions there was no reason to open it.
+
+A second problem sat next to the engagement one, and this one was brand-shaped. 1-on-1 Quiz ran competitions and programs under separate brand identities: GCLC, Sitarey, Quotient, others. Stakeholders wanted each one to have its own landing page and its own URL. Users came in through GCLC's landing page, ended up inside 1-on-1 Quiz once they started playing, and left with the impression that Knowledge Platform had five different products. Every competition-branded landing page was another piece of brand equity sitting outside the platform. The competitions were eating the platform.
+
+---
+
+## The Diagnostic
+
+There was no formal research phase in the GSMA-sprint sense. The data was the diagnosis. We had years of engagement records: session counts, session durations, retention curves after each competition, redemption rates. The pattern was consistent across every cohort. I ran a pattern analysis on the historical usage, spent time with the customer-facing team on what happened after each competition ended, and translated the read into a strategy pitch for leadership.
+
+The pitch was simple: **stop building for the reward-seeker. Start building for the habit.** If learners returned because they wanted to protect a streak or unlock an achievement, engagement would stop depending on prize distribution. Rewards would still exist. They'd just stop being the reason to come back.
+
+That framing landed, and the rebuild started.
+
+---
+
+## The Process
+
+The rebuild ran in two phases. I want to be honest about the shape of each.
+
+**Phase 1 was a rename and visual freshening.** The platform was renamed from 1-on-1 Quiz to Bonzo, and the visual identity got a playfulness pass with new icons, new brand marks, and a rounder, brighter surface. I was not the owner of brand direction on this phase. That sat with someone else on the team. I flagged that some of the icon choices skewed the platform's tone more juvenile than I thought served the audience, and I lost that argument. The product itself, the game templates, the coin economy, the multiplayer format, carried across from 1-on-1 Quiz mostly intact. Phase 1 was largely cosmetic. The metrics that mattered didn't move because the metrics that mattered were about behavior, not brand.
+
+**Phase 2 was the actual product repositioning.** New game templates. A habit-loop architecture built on streaks, badges, and achievements. An AI simulation template. New IA and navigation that treated the platform as a learning surface first and a competition surface second. Consolidation of the branded competitions back under the Bonzo identity. Phase 2 is what the rest of this case study is about.
+
+---
+
+## Decisions
+
+### 1. From reward economy to habit loop.
+
+The core question of Phase 2: what makes a learner open Bonzo on a day when there's no prize?
+
+We built the answer around three systems that worked together.
+
+**Streaks.** A visible streak count, a flame icon that intensified as the streak grew, milestone celebrations at 7, 14, and 30 days, and a streak freeze system. Users got three freezes by default and earned one more per fourteen days of activity. Miss a day, a freeze is spent, streak survives. Run out of freezes and miss a day, streak resets. The freeze system was deliberate loss-aversion cushioning. Without it, a single missed day undoes weeks of investment, and users learn to give up rather than try again.
+
+**Achievements, tiered across a year.** Ten streak-based tiers from *Rookie Streaker* at three days to *365 Days of Brilliance* at a full year. A parallel milestone track based on games completed (5, 10, 25, 50, 75, 100, 150, 250, 500). A third track for consistency behaviors: three active days in a rolling seven, ten active days a month, three months of ten-plus active days, six months of fifteen-plus. A fourth for behavioral variety: playing three games across three programs, returning after a seven-day break, playing at unusual hours, going five consecutive games without a hint. Four intersecting progression systems meant almost every session moved something forward, and no single system was easy to farm.
+
+**Badges at the content level.** Content designers could attach custom badges to topics through the CMS, awarded automatically on topic completion. This kept the achievement architecture extensible without needing product involvement each time a new competition or program launched.
+
+The principle underneath all of this was the one I'd pitched in the diagnostic: **reward habit, and reward will stop being the reason people come back.** Streaks weren't a decoration on top of the competition model. They replaced the competition model as the primary engagement engine.
+
+<FramePending description="The streaks-and-achievements screen, ideally showing streak count, freeze tokens, and one or two unlocked tiers." />
+
+### 2. From competition brand to platform brand.
+
+The competitions were valuable. Each one brought a wave of users, media attention, and sometimes a distribution partner like McDonald's. What was not valuable was letting each of them carry its own brand identity in a way that fragmented the platform.
+
+I pushed hard, over multiple review cycles, for a single position: **Bonzo is the platform. GCLC, Sitarey, Quotient are seasonal deployments on Bonzo.** The landing pages would exist during the competition window and then retire. Users would land on Bonzo, learn about the competition inside Bonzo, and stay on Bonzo when it ended.
+
+This wasn't the initial preference. Stakeholders wanted separate sites because separate sites felt like separate products, and separate products felt like more assets. My argument was that users had already been telling us the opposite. The confusion around "how many products does Knowledge Platform have" was measurable in support conversations, and every competition-branded landing page was another chance for a user to bounce before ever reaching the platform.
+
+We consolidated. The competitions still ran, and still had their identity during the window, but the platform brand stopped bleeding out into short-term surfaces.
+
+<FramePending description="A program landing page inside Bonzo, or a before/after comparing a competition-era standalone site with the consolidated program surface." />
+
+### 3. The AI simulation template.
+
+The most useful new piece of Phase 2 was a game template built around an AI simulation that behaved like a purpose-trained tutor.
+
+The template worked like this. A concept was picked: the water cycle, or a moment in history, or a math principle. The AI was trained on that concept and given a firm rule. **It would answer any question about the concept, but it would never give the answer to the assessment away.** The learner's job was to prompt the AI, extract what they needed, and submit their own answer. The AI graded the response.
+
+The template was two-purpose on purpose. First purpose: subject learning. Second purpose: prompt literacy. How to ask a language model a question. How to break a big question into small ones. How to notice when the model was helping you understand versus when you were just fishing for the answer. In Pakistan and other markets where large numbers of learners were about to be handed AI tools they didn't know how to use, we wanted the platform to teach the tool alongside the topic.
+
+<FramePending description="The AI simulation template in play. Ideally showing a prompt, a response, and the answer-submission flow." />
+
+---
+
+## Outcome
+
+The clearest signal Phase 2 worked is the engagement pattern per user.
+
+> **Engagement, 1-on-1 Quiz vs Bonzo (all-time stats)**
+>
+> |                        | 1-on-1 Quiz   | Bonzo         |
+> |------------------------|---------------|---------------|
+> | Total users            | 252,499       | 71,692        |
+> | Unique users           | 204,626       | 42,859        |
+> | Games played           | 1,254,845     | 1,445,903     |
+> | ...single player       | 1,111,663     | 1,216,008     |
+> | ...multiplayer         | 143,182       | 229,900       |
+> | Time spent             | 19,000 hours  | 32,000 hours  |
+> | Questions attempted    | 4,997,421     | 4,571,481     |
+> | Coins earned           | 202,391,250   | 44,899,269    |
+> | Rewards redeemed       | 24,375        | 5,600         |
+>
+> Read per unique user, the picture is clearer:
+>
+> - Games per unique user: **<span class="num">6.1</span> on 1-on-1 Quiz → <span class="num">33.7</span> on Bonzo (~<span class="num">5.5×</span>)**
+> - Time per unique user: **~<span class="num">5.6</span> minutes on 1-on-1 Quiz → ~<span class="num">45</span> minutes on Bonzo (~<span class="num">8×</span>)**
+> - Multiplayer games in absolute terms: **+<span class="num">61%</span> on roughly a fifth of the unique user base**
+> - Rewards redeemed: **down <span class="num">77%</span>**
+>
+> *Note: 1-on-1 Quiz totals reflect a longer cumulative window than Bonzo's, so the raw totals aren't directly comparable. The per-user ratios are the honest read.*
+
+The last row is the point. Fewer users chasing prizes, while games played and time spent went up substantially. That's what happens when engagement stops depending on redemption. Users are staying because the platform gives them something to protect, a streak, a set to complete, a tier to reach, not because there's a voucher waiting at the end.
+
+The platform-brand consolidation held. Bonzo became the single URL that programs deploy under. The fragmentation stopped compounding.
+
+---
+
+## Reflection
+
+The lesson I keep coming back to from this project: **reward-driven engagement is easy to buy and easy to lose. Habit-driven engagement is harder to build and much harder to lose.** Every competition-and-prize cycle we'd run on 1-on-1 Quiz had proven the first half of that. The Bonzo numbers are the first evidence of the second half.
+
+A few things I carry forward.
+
+Data can be the diagnostic. There was no formal research phase on Bonzo. The pattern in the historical engagement data was the case for the rebuild, and it was strong enough on its own. Not every product bet needs primary research. Sometimes it needs pattern recognition on what you already have.
+
+Loss aversion is a design material. The streak-freeze mechanic did more work for retention than any single reward tier. A missed day without a freeze feels like a punishment. A missed day with a freeze feels like a save. Different affect, low build cost.
+
+Hold the position on brand equity. Separate landing pages felt like more, and stakeholders wanted more. The right call was fewer, better-connected surfaces. This one took multiple review cycles to land.
+
+Teach the tool alongside the topic. The AI simulation template's second purpose, prompt literacy, is the piece I'm proudest of. Products aimed at learners in emerging markets have a real responsibility here.
+
+The honest note. Phase 1's visual direction wasn't mine to own, and some of the tonal calls in the icon set skewed more juvenile than I thought served the audience. A subtle miscalibration for the older secondary and higher-secondary learners the platform's engagement depth actually depended on. I flagged it and lost the argument. If I had that decision to make again, I'd have pushed harder earlier in the process, before the visual language was locked, rather than after.
+
+---
+
+*Role: Product Design Lead, acting as product manager. Owned discovery, roadmap, prioritization, design, and stakeholder alignment. Duration: 3–4 months for the Bonzo phase. Cross-functional design partner: [Tooba Malik](https://www.linkedin.com/in/toobamalick/) (Product Designer). Markets: Pakistan, and program deployments across the Knowledge Platform footprint. Live at: bonzo.knowledgeplatform.com*
