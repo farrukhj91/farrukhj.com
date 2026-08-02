@@ -331,13 +331,11 @@ img{max-width:100%;display:block}
 .dots i{width:7px;height:7px;border-radius:50%;background:var(--line-2);display:block}
 .dots i.on{width:24px;border-radius:4px;background:var(--or)}
 
-/* ------------------------------------------- angled gradient band ------- */
-/* The Stripe move: a defined gradient plane cut on a shallow angle.
-   Crisp edges, no halo. One per page maximum. */
-.band{position:relative;color:#fff;padding:calc(var(--pad) + 28px) 0;overflow:hidden;
+/* ------------------------------------------- gradient band -------------- */
+/* A defined gradient plane, square edges. Crisp, no halo. One per page max. */
+.band{position:relative;color:#fff;padding:var(--pad) 0;overflow:hidden;
   background:linear-gradient(108deg,var(--navy-d) 0%,var(--navy) 34%,var(--navy-l) 58%,
-    var(--indigo) 82%,var(--indigo-l) 100%);
-  clip-path:polygon(0 0,100% 2.4vw,100% 100%,0 calc(100% - 2.4vw))}
+    var(--indigo) 82%,var(--indigo-l) 100%)}
 .band::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(820px 360px at 94% 6%,rgba(254,99,2,.30),transparent 62%)}
 .band>.wrap{position:relative;z-index:2}
