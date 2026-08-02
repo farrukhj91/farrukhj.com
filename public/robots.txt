@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /writing/
+Disallow: /slickflo/
 Sitemap: https://farrukhj.com/sitemap-index.xml
