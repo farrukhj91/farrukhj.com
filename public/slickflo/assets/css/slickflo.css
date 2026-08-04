@@ -222,6 +222,23 @@ img{max-width:100%;display:block}
   filter:grayscale(1) opacity(.52);transition:filter .25s}
 .logos img:hover{filter:grayscale(0) opacity(1)}
 
+/* ------------------------------------------------------- tool logo grid ---
+   The "Platforms and Tools We Work With" strips. Same greyscale-to-colour
+   treatment as the client logos, but on a grid so 4 to 10 logos of wildly
+   different aspect ratios still line up. */
+.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;
+  margin-top:36px}
+@media(max-width:900px){.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:680px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tool{display:grid;place-items:center;height:78px;padding:14px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-xs);
+  transition:border-color var(--t),transform var(--t),box-shadow var(--t)}
+.tool:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);transform:translateY(-3px)}
+.tool img{max-height:34px;max-width:100%;width:auto;object-fit:contain;
+  filter:grayscale(1) opacity(.62);transition:filter .25s}
+.tool:hover img{filter:grayscale(0) opacity(1)}
+
 /* ------------------------------------------------------------- tiles --- */
 .ic-t{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;flex:none;
   transition:background .22s,color .22s,border-color .22s}
