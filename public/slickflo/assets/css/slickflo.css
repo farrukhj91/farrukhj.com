@@ -157,16 +157,18 @@ img{max-width:100%;display:block}
   font-variant-numeric:tabular-nums}
 .hmeta span{font-size:14px;color:var(--mute)}
 
-/* rotating service line — grid-stacked so it can never overflow its column */
+/* rotating service line — grid-stacked so it can never overflow its column.
+   Duration and per-item delay are emitted by build.py from the length of the
+   list. They used to be nth-child rules here covering children 2-4 only, so a
+   fifth item ran with no delay and faded in on top of the first. Each item is
+   fully out at 20% — one fifth of the cycle — before the next begins. */
 .rot{display:grid;margin-top:.34em;color:var(--or);
   font-size:clamp(21px,2.7vw,32px);line-height:1.22;letter-spacing:-.024em}
 .rot i{grid-area:1/1;font-style:normal;opacity:0;
-  animation:rot 17.2s infinite var(--ease)}
-.rot i:nth-child(2){animation-delay:4.3s}
-.rot i:nth-child(3){animation-delay:8.6s}
-.rot i:nth-child(4){animation-delay:12.9s}
+  animation-name:rot;animation-iteration-count:infinite;
+  animation-timing-function:var(--ease);animation-fill-mode:both}
 @keyframes rot{0%{opacity:0;transform:translateY(9px)}
-  2.5%,22%{opacity:1;transform:none}25%,100%{opacity:0;transform:translateY(-9px)}}
+  2%,17%{opacity:1;transform:none}20%,100%{opacity:0;transform:translateY(-9px)}}
 
 /* inner-page hero — shorter, no image column */
 .phero{position:relative;padding:76px 0 68px;overflow:hidden;
@@ -243,15 +245,17 @@ img{max-width:100%;display:block}
    `height:78px;display:grid` and rendered as a large empty box (client
    feedback 2026-08-07, "the box around the tools is oddly sized").
 
-   Each tile is a lockup: greyscale mark above the platform's name. The live
-   uploads mix wordmark logos with symbol-only marks, so the marks alone were
-   unidentifiable and inconsistent in weight; the name below makes every tile
-   read the same way. Centred so a strip of 4 does not sit left of a 5-wide
-   grid. */
+   Wordmark files, no printed name — the client's preference. Centred so a
+   strip of 4 does not sit left of a 5-wide grid.
+
+   `.sq` is for marks squarer than 1.6:1. A square app icon and a wide wordmark
+   set to the same max-height do not read at the same weight — the square one
+   looks half the size and its lettering goes illegible. build.py adds the
+   class from the logo's real pixel size. */
 .tools{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px}
-.tools .tool{display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:11px;width:calc((100% - 4*14px)/5);min-width:130px;
-  height:104px;padding:16px 12px;background:var(--card);
+.tools .tool{display:flex;align-items:center;justify-content:center;
+  width:calc((100% - 4*14px)/5);min-width:130px;
+  height:88px;padding:16px 18px;background:var(--card);
   border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-xs);
   transition:border-color var(--t),transform var(--t),box-shadow var(--t)}
 @media(max-width:900px){.tools .tool{width:calc((100% - 3*14px)/4)}}
@@ -259,12 +263,10 @@ img{max-width:100%;display:block}
 @media(max-width:420px){.tools .tool{width:calc((100% - 14px)/2)}}
 .tools .tool:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);
   transform:translateY(-3px)}
-.tools .tool img{max-height:30px;max-width:100%;width:auto;object-fit:contain;
+.tools .tool img{max-height:32px;max-width:100%;width:auto;object-fit:contain;
   filter:grayscale(1) opacity(.62);transition:filter .25s}
+.tools .tool.sq img{max-height:46px}
 .tools .tool:hover img{filter:grayscale(0) opacity(1)}
-.tools .tname{font-size:13.4px;font-weight:520;letter-spacing:-.01em;color:var(--body);
-  line-height:1.25;text-align:center;transition:color .25s}
-.tools .tool:hover .tname{color:var(--ink)}
 
 /* ------------------------------------------------------------- tiles --- */
 .ic-t{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;flex:none;
