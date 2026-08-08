@@ -232,8 +232,12 @@ img{max-width:100%;display:block}
 .trust{padding:38px 0;border-bottom:1px solid var(--line)}
 .trust .wrap{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
 .trust>.wrap>p{font-size:14px;color:var(--mute);flex:none;margin:0}
-.logos{display:flex;align-items:center;gap:42px;flex-wrap:wrap;flex:1}
-.logos img{height:30px;width:auto;max-width:132px;object-fit:contain;
+/* Height comes from content.CLIENTS, inline per logo, so marks of very
+   different proportions cover the same optical area. 150px is the width cap
+   that height calculation assumes. Row gap is tighter than the column gap
+   because the strip now wraps to two rows. */
+.logos{display:flex;align-items:center;gap:22px 38px;flex-wrap:wrap;flex:1}
+.logos img{width:auto;max-width:150px;object-fit:contain;
   filter:grayscale(1) opacity(.52);transition:filter .25s}
 .logos img:hover{filter:grayscale(0) opacity(1)}
 
