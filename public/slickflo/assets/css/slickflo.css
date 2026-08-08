@@ -232,14 +232,45 @@ img{max-width:100%;display:block}
 .trust{padding:38px 0;border-bottom:1px solid var(--line)}
 .trust .wrap{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
 .trust>.wrap>p{font-size:14px;color:var(--mute);flex:none;margin:0}
-/* Height comes from content.CLIENTS, inline per logo, so marks of very
+/* Trusted By marquee. .logos is the viewport and clips the motion to the strip;
+   .ltrack holds the logo set twice and slides by exactly one set width, which
+   is what makes the loop seamless.
+
+   The translate is -(50% + gap/2), not -50%: the track has 2N items and 2N-1
+   gaps, so half its width overshoots one set by half a gap. Keep the 19px in
+   step with the 38px gap.
+
+   min-width:0 because .logos is a flex item holding content wider than its
+   track — see the note in PLAN §4.
+
+   Height comes from content.CLIENTS, inline per logo, so marks of very
    different proportions cover the same optical area. 150px is the width cap
-   that height calculation assumes. Row gap is tighter than the column gap
-   because the strip now wraps to two rows. */
-.logos{display:flex;align-items:center;gap:22px 38px;flex-wrap:wrap;flex:1}
-.logos img{width:auto;max-width:150px;object-fit:contain;
+   that calculation assumes. */
+.logos{flex:1;min-width:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24px,
+    #000 calc(100% - 24px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 24px,
+    #000 calc(100% - 24px),transparent 100%)}
+.ltrack{display:flex;align-items:center;gap:38px;width:max-content;
+  animation:logoscroll 42s linear infinite}
+.logos:hover .ltrack{animation-play-state:paused}
+@keyframes logoscroll{from{transform:translateX(0)}
+  to{transform:translateX(calc(-50% - 19px))}}
+.logos img{width:auto;max-width:150px;object-fit:contain;flex:none;
   filter:grayscale(1) opacity(.52);transition:filter .25s}
 .logos img:hover{filter:grayscale(0) opacity(1)}
+/* On a phone the inline "Trusted by" label plus its gap left the marquee about
+   190px to run in. Stack the label so the track gets the full width. */
+@media(max-width:600px){
+  .trust .wrap{flex-direction:column;align-items:flex-start;gap:16px}
+  .logos{flex:none;width:100%}
+}
+/* No motion: fall back to the static wrapped rows. */
+@media(prefers-reduced-motion:reduce){
+  .logos{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .ltrack{flex-wrap:wrap;width:auto;gap:22px 38px;animation:none}
+  .ltrack img[aria-hidden="true"]{display:none}
+}
 
 /* ------------------------------------------------------- tool logo grid ---
    The "Platforms and Tools We Work With" strips.
@@ -331,6 +362,21 @@ img{max-width:100%;display:block}
 .rowcard:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);transform:translateY(-2px)}
 .rowcard h3{font-size:18px;letter-spacing:-.022em;margin-bottom:8px}
 .rowcard p{font-size:14.8px;line-height:1.6;color:var(--mute)}
+
+/* --------------------------------------------------- Our Strengths row ---
+   The heading owns row 1 of the left column; both lists share row 2, so the
+   first deliverable card aligns with the first strength rather than with the
+   heading. A margin-top would have done it only until the heading wrapped. */
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 56px;align-items:start}
+.sg-head{grid-column:1;grid-row:1;margin-bottom:22px}
+.sg-l{grid-column:1;grid-row:2}
+.sg-r{grid-column:2;grid-row:2}
+@media(max-width:820px){
+  .sgrid{grid-template-columns:minmax(0,1fr)}
+  .sg-head,.sg-l,.sg-r{grid-column:1;grid-row:auto}
+  .sg-r{margin-top:32px}
+}
 
 /* ---------------------------------------------------- deliverable list --- */
 .stack{display:flex;flex-direction:column;gap:11px}
