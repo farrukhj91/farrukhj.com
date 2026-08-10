@@ -377,13 +377,28 @@ img{max-width:100%;display:block}
 .sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
   gap:0 56px;align-items:start}
 .sg-head{grid-column:1;grid-row:1;margin-bottom:22px}
+.sg-head2{grid-column:2}
+.sg-head h2{font-size:clamp(26px,3.2vw,36px);line-height:1.1;letter-spacing:-.032em}
 .sg-l{grid-column:1;grid-row:2}
 .sg-r{grid-column:2;grid-row:2}
 @media(max-width:820px){
   .sgrid{grid-template-columns:minmax(0,1fr)}
-  .sg-head,.sg-l,.sg-r{grid-column:1;grid-row:auto}
-  .sg-r{margin-top:32px}
+  .sg-head,.sg-head2,.sg-l,.sg-r{grid-column:1;grid-row:auto}
+  .sg-head2{margin-top:44px}
 }
+
+/* Impact rows: "Documentation -> Fewer support tickets" over a line of
+   explanation. Wider than a plain .dl row, so the description wraps instead of
+   being clipped, and the arrow and outcome carry the emphasis. */
+.dl.imp{align-items:flex-start;padding:18px 20px}
+.dl.imp .di{margin-top:2px}
+.dl.imp .dn b{display:flex;align-items:center;flex-wrap:wrap;gap:7px;
+  font-size:15px;margin-bottom:5px}
+.dl.imp .dn b svg{color:var(--or);flex:none}
+.dl.imp .dn b em{font-style:normal;color:var(--navy)}
+.dl.imp .dn span{display:block;font-size:13.6px;line-height:1.55;color:var(--mute);
+  white-space:normal}
+.dl.imp:hover{transform:none;border-color:var(--line-2);box-shadow:var(--sh-sm)}
 
 /* ---------------------------------------------------- deliverable list --- */
 .stack{display:flex;flex-direction:column;gap:11px}
@@ -626,6 +641,13 @@ img{max-width:100%;display:block}
    sideways on a 320px screen. */
 .ci span{font-size:15.6px;font-weight:550;color:var(--ink);letter-spacing:-.014em;
   min-width:0;overflow-wrap:anywhere}
+/* The LinkedIn row was already an anchor but did not read as one, so it gets
+   explicit link text (client, 2026-08-11). The arrow shifts on hover like
+   every other .go on the site. */
+.ci-go{display:inline-flex;margin-top:5px;font-size:13.8px;font-weight:550;
+  color:var(--indigo)}
+.ci:hover .ci-go{color:var(--or-d)}
+.ci:hover .ci-go svg{transform:translateX(3px)}
 
 /* ----------------------------------------------------------- articles --- */
 .art{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
