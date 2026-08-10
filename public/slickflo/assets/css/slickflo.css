@@ -184,14 +184,21 @@ img{max-width:100%;display:block}
 /* A live lead line written as an arrow chain ("Make operations: Leaner ->
    Intelligent -> Scalable"). It was rendering as a stray paragraph below the
    hero; the client calls it the key line for the page, so it sits on the
-   cover. Verbatim live copy, re-set as a lockup. */
-.hflow{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:26px 0 0}
-.hflow em{font-style:normal;font-size:15px;font-weight:550;color:var(--body);
-  letter-spacing:-.012em}
-.hflow i{font-style:normal;font-size:15px;font-weight:560;letter-spacing:-.014em;
-  padding:8px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);
-  box-shadow:var(--sh-xs);color:var(--navy)}
-.hflow svg{color:var(--or);flex:none}
+   cover. Verbatim live copy, re-set as a lockup.
+
+   Scaled up about 20% on 2026-08-10 — the client wants it to carry the page
+   without dominating the h1 above it. */
+.hflow{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin:28px 0 0}
+.hflow em{font-style:normal;font-size:18px;font-weight:550;color:var(--body);
+  letter-spacing:-.014em}
+.hflow i{font-style:normal;font-size:18px;font-weight:560;letter-spacing:-.016em;
+  padding:10px 19px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  box-shadow:var(--sh-sm);color:var(--navy)}
+.hflow svg{color:var(--or);flex:none;width:20px;height:20px}
+@media(max-width:560px){
+  .hflow em,.hflow i{font-size:16px}
+  .hflow i{padding:9px 16px}
+}
 .phero .hflow+.hcta{margin-top:30px}
 
 .crumb{display:flex;gap:8px;align-items:center;font-size:13.8px;color:var(--mute);
@@ -478,6 +485,14 @@ img{max-width:100%;display:block}
 .pstep h3{font-size:17px;letter-spacing:-.022em;line-height:1.3;margin-bottom:9px}
 .pstep p{font-size:14.6px;line-height:1.6;color:var(--mute)}
 .parr{display:grid;place-items:center;color:var(--line-2);flex:none;align-self:center}
+/* Steps whose live copy carries no description — most "Our Approach" strips.
+   Same component, but the box is not padded out for prose that is not there,
+   and the number sits beside the label rather than above it. Narrower basis so
+   five short steps still make one row. */
+.proc.lean .pstep{flex:1 1 150px;flex-direction:row;align-items:center;gap:12px;
+  padding:15px 20px}
+.proc.lean .pstep .pn{margin-bottom:0;width:29px;height:29px;font-size:13px}
+.proc.lean .pstep h3{margin-bottom:0;font-size:16px}
 @media(max-width:900px){.pstep{flex:1 1 240px}}
 @media(max-width:680px){
   .proc{flex-direction:column;align-items:stretch}
