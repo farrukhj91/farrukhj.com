@@ -371,34 +371,50 @@ img{max-width:100%;display:block}
 .rowcard p{font-size:14.8px;line-height:1.6;color:var(--mute)}
 
 /* --------------------------------------------------- Our Strengths row ---
-   The heading owns row 1 of the left column; both lists share row 2, so the
-   first deliverable card aligns with the first strength rather than with the
-   heading. A margin-top would have done it only until the heading wrapped. */
+   Two columns of tiles under two headings, every cell placed explicitly: each
+   heading owns row 1 of its own column, and tile i on the left shares row i+2
+   with tile i on the right. That shared row is what holds the columns level.
+   As two independent flex stacks they had different row pitches (~112px
+   against ~143px), so each pair sat further out than the one above it and the
+   fourth was ~95px adrift. Stretching the cells also makes each pair the same
+   height. A margin would fix neither, and would break the moment a heading or
+   a description wrapped.
+   The row index arrives from build.py as --r rather than from an nth-child
+   rule, so it follows the length of the lists — and, being a stylesheet
+   declaration rather than an inline one, the media query below can still
+   reset it. */
 .sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:0 56px;align-items:start}
-.sg-head{grid-column:1;grid-row:1;margin-bottom:22px}
+  gap:11px 56px;align-items:stretch}
+.sg-head{grid-column:1;grid-row:1;margin-bottom:11px}
 .sg-head2{grid-column:2}
 .sg-head h2{font-size:clamp(26px,3.2vw,36px);line-height:1.1;letter-spacing:-.032em}
-.sg-l{grid-column:1;grid-row:2}
-.sg-r{grid-column:2;grid-row:2}
+.sgrid>.sg-l{grid-column:1;grid-row:var(--r)}
+.sgrid>.sg-r{grid-column:2;grid-row:var(--r)}
+/* Source order is heading, the four strengths, heading, the four impacts, so
+   the single column stacks in reading order with no `order` needed. */
 @media(max-width:820px){
   .sgrid{grid-template-columns:minmax(0,1fr)}
-  .sg-head,.sg-head2,.sg-l,.sg-r{grid-column:1;grid-row:auto}
+  .sg-head,.sg-head2,.sgrid>.sg-l,.sgrid>.sg-r{grid-column:1;grid-row:auto}
   .sg-head2{margin-top:44px}
 }
 
-/* Impact rows: "Documentation -> Fewer support tickets" over a line of
-   explanation. Wider than a plain .dl row, so the description wraps instead of
-   being clipped, and the arrow and outcome carry the emphasis. */
-.dl.imp{align-items:flex-start;padding:18px 20px}
-.dl.imp .di{margin-top:2px}
-.dl.imp .dn b{display:flex;align-items:center;flex-wrap:wrap;gap:7px;
-  font-size:15px;margin-bottom:5px}
+/* One component in both columns. The strengths were borderless, vertically
+   centred rows styled inline in build.py, sitting beside bordered top-aligned
+   impact cards, so neither the icons nor the first line of text registered
+   across the two columns even where a pair happened to be level. Both are the
+   same card now; only what the title line holds differs. */
+.dl.str,.dl.imp{align-items:flex-start;padding:18px 20px}
+.dl.str .di,.dl.imp .di{margin-top:2px}
+.dl.str .dn b,.dl.imp .dn b{font-size:15px;margin-bottom:5px}
+.dl.str .dn span,.dl.imp .dn span{display:block;font-size:13.6px;line-height:1.55;
+  color:var(--mute);white-space:normal}
+.dl.str:hover,.dl.imp:hover{transform:none;border-color:var(--line-2);
+  box-shadow:var(--sh-sm)}
+/* Impact only: "Documentation -> Fewer support tickets" wraps as a unit, with
+   the arrow and the outcome carrying the emphasis. */
+.dl.imp .dn b{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
 .dl.imp .dn b svg{color:var(--or);flex:none}
 .dl.imp .dn b em{font-style:normal;color:var(--navy)}
-.dl.imp .dn span{display:block;font-size:13.6px;line-height:1.55;color:var(--mute);
-  white-space:normal}
-.dl.imp:hover{transform:none;border-color:var(--line-2);box-shadow:var(--sh-sm)}
 
 /* ---------------------------------------------------- deliverable list --- */
 .stack{display:flex;flex-direction:column;gap:11px}
@@ -637,15 +653,24 @@ img{max-width:100%;display:block}
   background:var(--t-navy);color:var(--navy)}
 .ci b{display:block;font-size:13.5px;color:var(--mute);font-weight:450}
 /* The email and the LinkedIn URL are single unbreakable tokens. Without
-   min-width:0 the flex item refuses to shrink below them and the page scrolls
+   min-width:0 the text block refuses to shrink below them and the page scrolls
    sideways on a 320px screen. */
-.ci span{font-size:15.6px;font-weight:550;color:var(--ink);letter-spacing:-.014em;
-  min-width:0;overflow-wrap:anywhere}
+.ci>span{min-width:0}
+/* The value is styled by its own class, never by `.ci span`. A descendant
+   selector here is 0-1-1 and silently out-specified .ci-go below it, so the
+   LinkedIn URL and its link cue rendered at identical size, weight and colour
+   — and, both being inline, on the same line. They read as one long URL. */
+/* The size steps down just enough to keep the LinkedIn URL on one line at
+   375px, where it was 3px too wide and wrapped a single orphan character.
+   Narrower than that it has to wrap, and the <wbr>s in the markup give it
+   somewhere sensible to do so; overflow-wrap is the last resort. */
+.ci-v{display:block;font-size:clamp(14.6px,3.9vw,15.6px);font-weight:550;
+  color:var(--ink);letter-spacing:-.014em;overflow-wrap:anywhere}
 /* The LinkedIn row was already an anchor but did not read as one, so it gets
-   explicit link text (client, 2026-08-11). The arrow shifts on hover like
-   every other .go on the site. */
-.ci-go{display:inline-flex;margin-top:5px;font-size:13.8px;font-weight:550;
-  color:var(--indigo)}
+   explicit link text (client, 2026-08-11). Own line, a step down in size and
+   in indigo, so it reads as a cue rather than as more of the URL above it. */
+.ci-go{display:flex;margin-top:7px;font-size:13.5px;font-weight:550;
+  color:var(--indigo);letter-spacing:0}
 .ci:hover .ci-go{color:var(--or-d)}
 .ci:hover .ci-go svg{transform:translateX(3px)}
 
