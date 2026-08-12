@@ -416,8 +416,10 @@ img{max-width:100%;display:block}
 .dl.imp .dn b svg{color:var(--or);flex:none}
 .dl.imp .dn b em{font-style:normal;color:var(--navy)}
 
-/* ---------------------------------------------------- deliverable list --- */
-.stack{display:flex;flex-direction:column;gap:11px}
+/* ---------------------------------------------------- deliverable list ---
+   `.stack`, the flex column these rows used to sit in, went with the Our
+   Strengths restructure — the tiles are grid children of .sgrid now and their
+   spacing is its row-gap. It had no other users. */
 .dl{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);
   border-radius:12px;padding:16px 18px;box-shadow:var(--sh-xs);
   transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
