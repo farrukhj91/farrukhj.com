@@ -68,6 +68,19 @@
     }, 1600);
   }
 
+  /* ---- before/after compare ----
+     The range input drives a CSS clip on two stacked panels. Both panels carry
+     their full text either way, so with JS off the slider simply sits at its
+     default 50% split and both lists stay readable. */
+  Array.prototype.forEach.call(document.querySelectorAll(".cmp"), function (cmp) {
+    var range = cmp.querySelector(".cmp-range");
+    var stack = cmp.querySelector(".cmp-stack");
+    if (!range || !stack) return;
+    var apply = function () { stack.style.setProperty("--x", range.value + "%"); };
+    range.addEventListener("input", apply);
+    apply();
+  });
+
   /* ---- header shadow once scrolled ---- */
   var top = document.querySelector(".top");
   if (top) {

@@ -205,6 +205,16 @@ img{max-width:100%;display:block}
   max-width:14ch}
 .hero .sub{font-size:18px;line-height:1.6;max-width:47ch;margin:26px 0 34px}
 .hcta{display:flex;gap:13px;flex-wrap:wrap;align-items:center}
+/* On a narrow phone a long hero label ("Our Technical Writing Services") is
+   wider than the whole content box, and .btn is nowrap with a fixed height, so
+   it pushed the hero 9px past the viewport. Full-width stacked buttons here,
+   and only here is wrapping safe: the height goes auto at the same time, so a
+   second line grows the button instead of spilling out of it. */
+@media(max-width:420px){
+  .hcta{flex-direction:column;align-items:stretch;width:100%}
+  .hcta .btn{width:100%;height:auto;min-height:50px;padding:13px 18px;
+    white-space:normal;text-align:center}
+}
 .hmeta{display:flex;gap:30px;margin-top:38px;padding-top:26px;border-top:1px solid var(--line);
   flex-wrap:wrap}
 .hmeta div{display:flex;align-items:baseline;gap:8px}
@@ -835,6 +845,121 @@ img{max-width:100%;display:block}
    space-between row they sat in the middle. `margin-left:auto` keeps them right
    however many there are, so adding Terms of Service later needs no change. */
 .flegal{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+
+/* ------------------------------------------ narrative (Technical Writing) ---
+   Components for the story built around the two preserved live sections
+   (client brief 2026-08-17). Every one of them holds its full text in the DOM;
+   motion only affects how a thing arrives, never whether it is readable. */
+
+/* Complexity -> clarity. The left set is tumbled off-axis and the right set is
+   squared up: the tilt is the argument, so it is CSS on the items rather than
+   an illustration. The rotation is a static transform, not a transition, so
+   the reduced-motion block does not touch it and does not need to — nothing
+   moves, and the meaning survives without it either way, since each side is
+   labelled and the right-hand items carry ticks. */
+.tf{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:20px;align-items:center;margin-top:38px;max-width:860px}
+.tf-col{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:20px;box-shadow:var(--sh-xs)}
+.tf-col b{display:block;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+.tf-set{display:flex;flex-wrap:wrap;gap:8px}
+.tf-bit{display:inline-flex;align-items:center;gap:6px;font-size:13.6px;
+  font-weight:550;padding:6px 11px;border-radius:8px;line-height:1.3}
+.tf-in .tf-bit{background:var(--bg-alt);color:var(--body);border:1px dashed var(--line-2);
+  transform:rotate(calc((var(--i) - 2) * 1.6deg))}
+.tf-out .tf-bit{background:var(--t-navy);color:var(--navy)}
+.tf-out .tf-bit svg{color:var(--or);flex:none}
+.tf-arrow{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  background:var(--t-or);color:var(--or-d);flex:none}
+@media(max-width:760px){
+  .tf{grid-template-columns:minmax(0,1fr);gap:14px}
+  .tf-arrow{transform:rotate(90deg);justify-self:center}
+  .tf-in .tf-bit{transform:none}
+}
+
+/* Pain points. Four columns while they fit, a snapping swipe rail once they do
+   not, from one rule rather than two implementations. */
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(238px,1fr);
+  gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px;margin:0 -4px;
+  scrollbar-width:thin}
+.rail:focus-visible{outline:2px solid var(--indigo);outline-offset:4px;border-radius:14px}
+.rail-card{scroll-snap-align:start;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:22px;box-shadow:var(--sh-xs);
+  transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
+.rail-card:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--line-2)}
+.rail-card .ic-t{width:42px;height:42px;border-radius:10px;margin-bottom:16px}
+.rail-card h3{font-size:16.5px;letter-spacing:-.02em;margin-bottom:8px}
+.rail-card p{font-size:14.4px;line-height:1.6;color:var(--mute)}
+
+/* The recognition question: the largest thing in its band, on purpose. */
+.bigask{max-width:20ch;margin:48px auto 0;text-align:center;
+  font-size:clamp(24px,3.2vw,34px);line-height:1.22;letter-spacing:-.03em;
+  font-weight:600;color:var(--ink);text-wrap:balance}
+
+/* Cause and effect. A single column so it reads as one run downward. */
+.cc{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:36px}
+.cc-step{background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:11px 20px;font-size:14.8px;font-weight:550;color:var(--ink);
+  text-align:center;box-shadow:var(--sh-xs)}
+.cc-link{display:grid;place-items:center;color:var(--line-2)}
+.lede{max-width:60ch;margin:34px auto 0;text-align:center;font-size:17.4px;
+  line-height:1.66;color:var(--body)}
+
+/* One sentence given the weight of a section, with the route it describes. */
+.stmt{max-width:900px;margin:44px auto 0;text-align:center;padding:36px 30px;
+  border-radius:18px;background:linear-gradient(135deg,var(--t-navy),var(--t-orl));
+  border:1px solid var(--line)}
+.stmt p{margin:0;font-size:clamp(20px,2.6vw,28px);line-height:1.28;
+  letter-spacing:-.026em;font-weight:600;color:var(--navy);text-wrap:balance}
+.br{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;
+  margin-top:26px}
+.br-node{background:#fff;border:1px solid var(--line-2);border-radius:20px;
+  padding:6px 15px;font-size:13.4px;font-weight:600;color:var(--navy)}
+.br-link{display:grid;place-items:center;color:var(--or)}
+
+/* Five adjectives, set rather than boxed. */
+.wrow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 34px;margin-top:36px}
+.wrow span{font-size:clamp(17px,2.1vw,22px);font-weight:600;letter-spacing:-.024em;
+  color:var(--navy);position:relative}
+.wrow span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+  background:var(--or);opacity:.5;border-radius:2px}
+
+/* Before / after. Both panels sit in one grid cell so they are the same size
+   and both lists are in the DOM in order; the reveal is a clip driven by a
+   native range input, which is keyboard operable without any work. */
+.cmp{max-width:900px;margin:38px auto 0}
+.cmp-stack{position:relative;display:grid;--x:50%}
+.cmp-pane{grid-area:1/1;border-radius:16px;padding:26px 28px;border:1px solid var(--line)}
+.cmp-b{background:var(--bg-alt);clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+.cmp-a{background:#fff;box-shadow:var(--sh-sm);clip-path:inset(0 0 0 var(--x))}
+.cmp-tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:16px}
+.cmp-b .cmp-tag{color:var(--mute)}
+.cmp-a .cmp-tag{color:var(--or-d)}
+.cmp-pane ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.cmp-pane li{font-size:15.2px;font-weight:550;line-height:1.4;
+  padding-left:22px;position:relative}
+.cmp-b li{color:var(--mute)}
+.cmp-b li::before{content:"";position:absolute;left:0;top:.55em;width:11px;height:2px;
+  background:var(--line-2);border-radius:2px}
+.cmp-a li{color:var(--ink)}
+.cmp-a li::before{content:"";position:absolute;left:0;top:.34em;width:11px;height:6px;
+  border-left:2px solid var(--or);border-bottom:2px solid var(--or);
+  transform:rotate(-45deg)}
+.cmp-line{position:absolute;top:0;bottom:0;left:var(--x);width:2px;
+  background:var(--or);pointer-events:none}
+/* Explicit horizontal margin: the UA stylesheet gives <input> 2px each side,
+   which pushed the block 2px past its own container. */
+.cmp-range{display:block;width:100%;margin:16px 0 0;accent-color:var(--or);
+  cursor:ew-resize}
+/* On a phone the clip cuts words in half, and the brief asks for sliders to
+   become plain stacked content there. Both panels show in full instead. */
+@media(max-width:760px){
+  .cmp-stack{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+  .cmp-pane{grid-area:auto;clip-path:none!important}
+  .cmp-line,.cmp-range{display:none}
+}
 
 /* ------------------------------------------------------------- reveal --- */
 /* Hidden only once JS has confirmed it is running, so a script failure can
