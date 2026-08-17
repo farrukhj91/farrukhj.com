@@ -46,11 +46,11 @@ body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);
   font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;overflow-x:hidden}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 30px}
-/* The header is position:sticky at 76px, so an anchor jump lands *under* it
+/* The header is position:sticky at 80px, so an anchor jump lands *under* it
    without this. Applies to every in-page target — the menu's Product & Web
    Design entries land on a card, Careers on a block, the hero button on a
    section. #page-top clamps to 0 and is unaffected. */
-[id]{scroll-margin-top:92px}
+[id]{scroll-margin-top:96px}
 a{color:inherit;text-decoration:none}
 h1,h2,h3,h4{margin:0;color:var(--ink);text-wrap:balance;font-weight:600}
 p{margin:0}
@@ -79,19 +79,24 @@ img{max-width:100%;display:block}
   backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line);
   transition:box-shadow .25s var(--ease)}
 .top.stuck{box-shadow:0 1px 0 var(--line),0 6px 24px rgba(7,25,90,.06)}
-.top .wrap{display:flex;align-items:center;gap:26px;height:76px}
+.top .wrap{display:flex;align-items:center;gap:20px;height:80px}
 .brand{display:flex;align-items:center;flex:none}
 .brand img{height:34px;width:auto}
-.nav{display:flex;gap:2px;margin-left:4px}
+/* The header logo is larger than the footer's, client 2026-08-17, paid for by
+   the CTA leaving. 40px needs the bar 4px taller to keep its breathing room. */
+.top .brand img{height:40px}
+.nav{display:flex;gap:2px}
 .nav>li{list-style:none;position:relative}
-/* 13px and nowrap, client 2026-08-17: at 14.6px all five labels broke across
-   two lines. Measured — on one line the row needs 877px and only 838px is free
-   at the widest .wrap ever gets (1180px less the logo, the CTA and their gaps),
-   so it could not have fitted at the old size. 13px brings it to ~800px.
-   nowrap is what makes a too-narrow nav an overflow you can measure rather than
-   a silent second line. */
+/* Sized to the row, not picked. nowrap means a label that does not fit
+   overflows the header instead of silently going to two lines, so this number
+   is a measurement: dropping the 124px CTA bought room to go 13px -> 14px and
+   to grow the logo 34px -> 40px. At 14.2px the row came out at exactly 0px of
+   slack at 1181px, the narrowest width the desktop nav is shown at — correct on
+   paper and one rounding away from overflowing. 14px leaves ~22px there and
+   ~36px once .wrap hits its 1180px cap. Re-measure if a nav item is added or
+   renamed. */
 .nav a.lnk{display:flex;align-items:center;gap:4px;padding:9px 11px;border-radius:7px;
-  font-size:13px;white-space:nowrap;color:var(--body);
+  font-size:14px;white-space:nowrap;color:var(--body);
   transition:color .18s,background .18s}
 .nav a.lnk:hover,.nav li:hover>a.lnk,.nav a.lnk[aria-current=page]{color:var(--navy);
   background:var(--t-navy)}
@@ -110,6 +115,25 @@ img{max-width:100%;display:block}
   color:var(--body);transition:background .16s,color .16s}
 .drop a:hover{background:var(--t-navy);color:var(--navy)}
 .hact{margin-left:auto;display:flex;align-items:center;gap:12px}
+/* Menu button at the far right, client 2026-08-17 (referencing xgrid.co, whose
+   header is logo + links + a bare toggle and no CTA). Dropping "Get in Touch"
+   is what paid for the bigger logo and the bigger nav labels. */
+.mwrap{position:relative;display:none}
+@media(min-width:1181px){.mwrap{display:block}}
+.mbtn{display:grid;place-items:center;width:44px;height:44px;border-radius:9px;
+  border:1px solid var(--line-2);background:#fff;color:var(--navy);cursor:pointer;
+  transition:border-color .18s,background .18s,color .18s}
+.mbtn:hover,.mbtn[aria-expanded=true]{border-color:var(--navy);background:var(--t-navy)}
+/* Right-anchored: the button is the last thing in the row, so a left-anchored
+   panel would hang off the page. */
+.hmenu{position:absolute;top:calc(100% + 10px);right:0;min-width:200px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-lg);padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .18s,transform .18s var(--ease),visibility .18s}
+.hmenu.open{opacity:1;visibility:visible;transform:none}
+.hmenu a{display:block;padding:9px 12px;border-radius:8px;font-size:14px;
+  color:var(--body);white-space:nowrap;transition:background .16s,color .16s}
+.hmenu a:hover{background:var(--t-navy);color:var(--navy)}
 .burger{display:none;width:42px;height:42px;border:1px solid var(--line-2);
   border-radius:9px;background:#fff;cursor:pointer;place-items:center;color:var(--navy)}
 /* The burger takes over below --max rather than at 1080px. Five nowrap labels
@@ -122,16 +146,12 @@ img{max-width:100%;display:block}
   .nav{display:none}
   .burger{display:grid}
 }
-/* Phone header. The logo, the CTA and the burger need 310px at full size and a
-   320px screen offers 260. It used to "fit" only because the CTA label wrapped
-   inside its own fixed-height box — now that buttons are nowrap, the row is
-   tightened instead, which keeps the CTA rather than dropping it. 375px had
-   5px of slack before this, so it gets the same treatment. */
+/* Phone header. With the CTA gone this row is only the logo and the burger, so
+   the squeeze that used to be needed here is not — the logo just comes down
+   from its 40px desktop size to something proportionate to a 320px bar. */
 @media(max-width:420px){
-  .top .wrap{gap:12px}
-  .top .brand img{height:27px}
-  .hact{gap:8px}
-  .top .hact .btn-sm{height:38px;padding:0 13px;font-size:13.2px}
+  .top .wrap{gap:12px;height:70px}
+  .top .brand img{height:32px}
   .burger{width:38px;height:38px}
 }
 .mnav{display:none;border-top:1px solid var(--line);background:#fff;padding:14px 0 20px}
@@ -146,7 +166,7 @@ img{max-width:100%;display:block}
 .mnav a:last-child{border-bottom:0}
 /* The open menu can be taller than the screen; keep it scrollable under the
    sticky header rather than pushing links out of reach. */
-.mnav.open{max-height:calc(100vh - 76px);overflow-y:auto;overscroll-behavior:contain}
+.mnav.open{max-height:calc(100vh - 80px);overflow-y:auto;overscroll-behavior:contain}
 
 /* ------------------------------------------------------------ buttons --- */
 /* nowrap: the height is fixed, so a wrapped label does not make the button

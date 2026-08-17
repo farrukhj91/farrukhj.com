@@ -87,4 +87,30 @@
       burger.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
+
+  /* ---- header menu button (About / Careers / Blog / Contact Us) ----
+     Click-toggled, per the brief. Closes on outside click and on Escape,
+     because a panel you can only shut by hitting the same small button again
+     is the usual complaint about this pattern. */
+  var mbtn = document.querySelector(".mbtn");
+  var hmenu = document.querySelector(".hmenu");
+  if (mbtn && hmenu) {
+    var setMenu = function (open) {
+      hmenu.classList.toggle("open", open);
+      mbtn.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    mbtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setMenu(!hmenu.classList.contains("open"));
+    });
+    document.addEventListener("click", function (e) {
+      if (hmenu.classList.contains("open") && !hmenu.contains(e.target)) setMenu(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && hmenu.classList.contains("open")) {
+        setMenu(false);
+        mbtn.focus();
+      }
+    });
+  }
 })();
