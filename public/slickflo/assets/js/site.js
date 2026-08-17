@@ -69,14 +69,24 @@
   }
 
   /* ---- before/after compare ----
-     The range input drives a CSS clip on two stacked panels. Both panels carry
-     their full text either way, so with JS off the slider simply sits at its
-     default 50% split and both lists stay readable. */
+     The range drives two things: --x, the clip position both panels share, and
+     --f, the fade on the Before text. Dimming Before as the handle travels is
+     what moves the attention onto After rather than leaving two equally loud
+     columns. Both panels carry their full text either way, so with JS off the
+     control simply sits at 0 and the page shows Before in full, which is the
+     state the brief asks it to load in. */
   Array.prototype.forEach.call(document.querySelectorAll(".cmp"), function (cmp) {
     var range = cmp.querySelector(".cmp-range");
     var stack = cmp.querySelector(".cmp-stack");
     if (!range || !stack) return;
-    var apply = function () { stack.style.setProperty("--x", range.value + "%"); };
+    var apply = function () {
+      var x = +range.value;
+      stack.style.setProperty("--x", x + "%");
+      stack.style.setProperty("--f", (1 - x / 100).toFixed(3));
+      /* Past 62% the handle is close enough to the right edge that its label
+         would hang outside the panel, so it moves to the other side. */
+      stack.classList.toggle("flip", x > 62);
+    };
     range.addEventListener("input", apply);
     apply();
   });

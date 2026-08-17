@@ -851,75 +851,104 @@ img{max-width:100%;display:block}
    (client brief 2026-08-17). Every one of them holds its full text in the DOM;
    motion only affects how a thing arrives, never whether it is readable. */
 
-/* Complexity -> clarity. The left set is tumbled off-axis and the right set is
-   squared up: the tilt is the argument, so it is CSS on the items rather than
-   an illustration. The rotation is a static transform, not a transition, so
-   the reduced-motion block does not touch it and does not need to — nothing
-   moves, and the meaning survives without it either way, since each side is
-   labelled and the right-hand items carry ticks. */
-.tf{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  gap:20px;align-items:center;margin-top:38px;max-width:860px}
-.tf-col{background:#fff;border:1px solid var(--line);border-radius:14px;
-  padding:20px;box-shadow:var(--sh-xs)}
-.tf-col b{display:block;font-size:12.5px;font-weight:600;letter-spacing:.02em;
-  text-transform:uppercase;color:var(--mute);margin-bottom:14px}
-.tf-set{display:flex;flex-wrap:wrap;gap:8px}
-.tf-bit{display:inline-flex;align-items:center;gap:6px;font-size:13.6px;
-  font-weight:550;padding:6px 11px;border-radius:8px;line-height:1.3}
-.tf-in .tf-bit{background:var(--bg-alt);color:var(--body);border:1px dashed var(--line-2);
-  transform:rotate(calc((var(--i) - 2) * 1.6deg))}
-.tf-out .tf-bit{background:var(--t-navy);color:var(--navy)}
-.tf-out .tf-bit svg{color:var(--or);flex:none}
-.tf-arrow{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
-  background:var(--t-or);color:var(--or-d);flex:none}
-@media(max-width:760px){
-  .tf{grid-template-columns:minmax(0,1fr);gap:14px}
-  .tf-arrow{transform:rotate(90deg);justify-self:center}
-  .tf-in .tf-bit{transform:none}
+/* Hero: copy left, animation right (client 2026-08-17). */
+.ph-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:46px;align-items:center}
+.phero-split h1{max-width:none}
+.phero-split .sub{max-width:46ch}
+@media(max-width:960px){
+  .ph-grid{grid-template-columns:minmax(0,1fr);gap:38px}
 }
 
-/* Pain points. Four columns while they fit, a snapping swipe rail once they do
-   not, from one rule rather than two implementations. */
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(238px,1fr);
-  gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px;margin:0 -4px;
-  scrollbar-width:thin}
-.rail:focus-visible{outline:2px solid var(--indigo);outline-offset:4px;border-radius:14px}
-.rail-card{scroll-snap-align:start;background:#fff;border:1px solid var(--line);
-  border-radius:14px;padding:22px;box-shadow:var(--sh-xs);
+/* Product knowledge becoming documentation.
+   The left chips knock around their box, a gate between the boxes pulses as
+   they arrive, and the right list resolves one item at a time. Every keyframe
+   runs `backwards` from a perturbed state INTO the element's natural one, so
+   the finished state is simply what the CSS says without any animation at all.
+   That is what makes prefers-reduced-motion safe here: the site-wide
+   `*{animation:none!important}` leaves both boxes complete and readable, and
+   no information is carried by the motion. */
+.tf{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:16px;align-items:stretch}
+.tf-col{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px;box-shadow:var(--sh-xs);min-width:0}
+.tf-col b{display:block;font-size:11.5px;font-weight:600;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:13px}
+.tf-set{display:flex;flex-wrap:wrap;gap:7px}
+.tf-bit{display:inline-flex;align-items:center;gap:6px;font-size:13px;
+  font-weight:550;padding:6px 10px;border-radius:8px;line-height:1.3}
+.tf-in{overflow:hidden}
+.tf-in .tf-bit{background:var(--bg-alt);color:var(--body);
+  border:1px dashed var(--line-2);
+  animation:tf-knock 3.4s cubic-bezier(.5,.05,.5,.95) calc(var(--i) * .16s) infinite alternate
+            backwards}
+.tf-out .tf-bit{background:var(--t-navy);color:var(--navy);
+  animation:tf-land .5s var(--ease) calc(1.1s + var(--i) * .26s) backwards}
+.tf-out .tf-bit svg{color:var(--or);flex:none}
+/* Odd items drift the other way, so the box reads as knocked about rather than
+   as one block sliding. */
+.tf-in .tf-bit:nth-child(even){animation-direction:alternate-reverse;
+  animation-duration:2.9s}
+@keyframes tf-knock{
+  0%{transform:translate3d(0,0,0) rotate(-2deg)}
+  35%{transform:translate3d(9px,-7px,0) rotate(2.5deg)}
+  70%{transform:translate3d(-7px,5px,0) rotate(-1.5deg)}
+  100%{transform:translate3d(5px,3px,0) rotate(1deg)}
+}
+@keyframes tf-land{from{opacity:0;transform:translateX(-14px) scale(.94)}}
+/* The gate they pass through. */
+.tf-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;color:var(--or-d)}
+.tf-gate i{flex:1;width:2px;background:linear-gradient(var(--line),var(--or-l));
+  border-radius:2px;min-height:14px}
+.tf-gate svg{flex:none;padding:7px;border-radius:50%;background:var(--t-or);
+  animation:tf-pulse 3.4s ease-in-out infinite}
+@keyframes tf-pulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(254,99,2,.28)}
+  50%{transform:scale(1.09);box-shadow:0 0 0 9px rgba(254,99,2,0)}
+}
+@media(max-width:760px){
+  .tf{grid-template-columns:minmax(0,1fr);gap:12px}
+  .tf-gate{flex-direction:row;height:26px}
+  .tf-gate i{flex:1;height:2px;width:auto;min-height:0;
+    background:linear-gradient(90deg,var(--line),var(--or-l))}
+}
+
+/* The problem, as a sequence: what ships, the turn, what it costs. */
+.stg{margin-top:34px}
+.stg-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.stg-chip{background:#fff;border:1px solid var(--line-2);border-radius:24px;
+  padding:9px 18px;font-size:14.4px;font-weight:550;color:var(--ink);
+  box-shadow:var(--sh-xs)}
+.stg-turn{max-width:52ch;margin:30px auto;text-align:center;
+  font-size:clamp(18px,2.2vw,22px);line-height:1.42;font-weight:600;
+  letter-spacing:-.02em;color:var(--navy);text-wrap:balance}
+.stg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media(max-width:760px){.stg-grid{grid-template-columns:minmax(0,1fr)}}
+.stg-card{display:flex;gap:15px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:19px 20px;box-shadow:var(--sh-xs);
   transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
-.rail-card:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--line-2)}
-.rail-card .ic-t{width:42px;height:42px;border-radius:10px;margin-bottom:16px}
-.rail-card h3{font-size:16.5px;letter-spacing:-.02em;margin-bottom:8px}
-.rail-card p{font-size:14.4px;line-height:1.6;color:var(--mute)}
+.stg-card:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);
+  border-color:var(--line-2)}
+.stg-card .ic-t{width:40px;height:40px;border-radius:10px;margin-top:2px}
+.stg-card h3{font-size:15.8px;letter-spacing:-.02em;margin-bottom:6px}
+.stg-card p{font-size:14.2px;line-height:1.58;color:var(--mute)}
 
-/* The recognition question: the largest thing in its band, on purpose. */
-.bigask{max-width:20ch;margin:48px auto 0;text-align:center;
-  font-size:clamp(24px,3.2vw,34px);line-height:1.22;letter-spacing:-.03em;
-  font-weight:600;color:var(--ink);text-wrap:balance}
-
-/* Cause and effect. A single column so it reads as one run downward. */
-.cc{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:36px}
-.cc-step{background:#fff;border:1px solid var(--line);border-radius:10px;
-  padding:11px 20px;font-size:14.8px;font-weight:550;color:var(--ink);
-  text-align:center;box-shadow:var(--sh-xs)}
-.cc-link{display:grid;place-items:center;color:var(--line-2)}
-.lede{max-width:60ch;margin:34px auto 0;text-align:center;font-size:17.4px;
+/* Cause and effect. Horizontal and wrapping: the vertical column it replaced
+   ran the height of a screen for six short labels (client 2026-08-17). */
+.cc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:10px;margin-top:34px}
+.cc-step{background:#fff;border:1px solid var(--line);border-radius:22px;
+  padding:9px 17px;font-size:14.2px;font-weight:550;color:var(--ink);
+  box-shadow:var(--sh-xs)}
+.cc-link{display:grid;place-items:center;color:var(--or);flex:none}
+.lede{max-width:60ch;margin:32px auto 0;text-align:center;font-size:17.4px;
   line-height:1.66;color:var(--body)}
 
-/* One sentence given the weight of a section, with the route it describes. */
-.stmt{max-width:900px;margin:44px auto 0;text-align:center;padding:36px 30px;
-  border-radius:18px;background:linear-gradient(135deg,var(--t-navy),var(--t-orl));
-  border:1px solid var(--line)}
-.stmt p{margin:0;font-size:clamp(20px,2.6vw,28px);line-height:1.28;
-  letter-spacing:-.026em;font-weight:600;color:var(--navy);text-wrap:balance}
-.br{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;
-  margin-top:26px}
-.br-node{background:#fff;border:1px solid var(--line-2);border-radius:20px;
-  padding:6px 15px;font-size:13.4px;font-weight:600;color:var(--navy)}
-.br-link{display:grid;place-items:center;color:var(--or)}
-
 /* Five adjectives, set rather than boxed. */
-.wrow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 34px;margin-top:36px}
+.wlead{margin:38px auto 0;text-align:center;font-size:17px;font-weight:600;
+  color:var(--navy);letter-spacing:-.016em}
+.wrow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 34px;margin-top:22px}
 .wrow span{font-size:clamp(17px,2.1vw,22px);font-weight:600;letter-spacing:-.024em;
   color:var(--navy);position:relative}
 .wrow span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
@@ -928,11 +957,21 @@ img{max-width:100%;display:block}
 /* Before / after. Both panels sit in one grid cell so they are the same size
    and both lists are in the DOM in order; the reveal is a clip driven by a
    native range input, which is keyboard operable without any work. */
+/* Starts at 0, so the page lands on Before and the handle is dragged rightward
+   to bring After in. --f is the fade on the Before text: dimming it as the
+   handle travels is what moves the attention across, rather than the clip
+   alone (client 2026-08-17). */
 .cmp{max-width:900px;margin:38px auto 0}
-.cmp-stack{position:relative;display:grid;--x:50%}
+.cmp-stack{position:relative;display:grid;--x:0%;--f:1}
 .cmp-pane{grid-area:1/1;border-radius:16px;padding:26px 28px;border:1px solid var(--line)}
-.cmp-b{background:var(--bg-alt);clip-path:inset(0 calc(100% - var(--x)) 0 0)}
-.cmp-a{background:#fff;box-shadow:var(--sh-sm);clip-path:inset(0 0 0 var(--x))}
+/* After is revealed from the left edge as the handle travels right, so at the
+   default 0 the whole box is Before and each new line of After appears at the
+   handle as it passes. Getting this the wrong way round hides Before on load,
+   which is the one thing the brief is explicit about. */
+.cmp-b{background:var(--bg-alt);clip-path:inset(0 0 0 var(--x))}
+.cmp-b ul,.cmp-b .cmp-tag{opacity:var(--f);transition:opacity .12s linear}
+.cmp-a{background:#fff;box-shadow:var(--sh-sm);
+  clip-path:inset(0 calc(100% - var(--x)) 0 0)}
 .cmp-tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;margin-bottom:16px}
 .cmp-b .cmp-tag{color:var(--mute)}
@@ -947,8 +986,22 @@ img{max-width:100%;display:block}
 .cmp-a li::before{content:"";position:absolute;left:0;top:.34em;width:11px;height:6px;
   border-left:2px solid var(--or);border-bottom:2px solid var(--or);
   transform:rotate(-45deg)}
-.cmp-line{position:absolute;top:0;bottom:0;left:var(--x);width:2px;
-  background:var(--or);pointer-events:none}
+/* The handle carries the "After" label, so what the control does is legible
+   before anyone drags it. */
+.cmp-handle{position:absolute;top:0;bottom:0;left:var(--x);width:2px;
+  background:var(--or);pointer-events:none;display:flex;align-items:center;
+  justify-content:center}
+/* The label sits beside the line, never centred on it: centred, it hangs half
+   outside the panel at 0 and at 100. It rides on the Before side while there
+   is room and flips to the After side once the handle passes 62%, so it is
+   always fully inside the box. */
+.cmp-handle b{position:absolute;left:12px;display:inline-flex;align-items:center;
+  gap:6px;background:var(--or);color:#fff;font-size:11.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:20px;
+  white-space:nowrap;box-shadow:var(--sh-sm)}
+.cmp-stack.flip .cmp-handle b{left:auto;right:12px;flex-direction:row-reverse}
+.cmp-stack.flip .cmp-handle b svg{transform:rotate(180deg)}
+.cmp-handle b svg{flex:none;opacity:.9}
 /* Explicit horizontal margin: the UA stylesheet gives <input> 2px each side,
    which pushed the block 2px past its own container. */
 .cmp-range{display:block;width:100%;margin:16px 0 0;accent-color:var(--or);
@@ -958,7 +1011,8 @@ img{max-width:100%;display:block}
 @media(max-width:760px){
   .cmp-stack{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
   .cmp-pane{grid-area:auto;clip-path:none!important}
-  .cmp-line,.cmp-range{display:none}
+  .cmp-b ul,.cmp-b .cmp-tag{opacity:1!important}
+  .cmp-handle,.cmp-range{display:none}
 }
 
 /* ------------------------------------------------------------- reveal --- */
