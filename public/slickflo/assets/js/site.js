@@ -6,24 +6,57 @@
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---- staggered scroll reveal (Stripe-style: fade up, once) ---- */
-  var targets = document.querySelectorAll(".rv");
+  var slice = function (list) { return Array.prototype.slice.call(list); };
+  var reveal = function (el) {
+    var delay = parseInt(el.getAttribute("data-rv-delay") || "0", 10);
+    if (delay) setTimeout(function () { el.classList.add("in"); }, delay);
+    else el.classList.add("in");
+  };
+
+  var all = slice(document.querySelectorAll(".rv"));
+  /* A [data-rv-group] container is one trigger for everything inside it, so a
+     row set moves as a single gesture instead of each card waiting to scroll
+     in on its own (Business Outcomes, client 2026-08-17). Its children are
+     taken out of the per-element list — observed both ways, the top row would
+     fire on its own entry and the "at the same time" would be luck. */
+  var groups = slice(document.querySelectorAll("[data-rv-group]"));
+  var grouped = [];
+  groups.forEach(function (g) { grouped = grouped.concat(slice(g.querySelectorAll(".rv"))); });
+  var singles = all.filter(function (el) { return grouped.indexOf(el) === -1; });
+
   if (reduced || !("IntersectionObserver" in window)) {
-    Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
+    all.forEach(function (el) { el.classList.add("in"); });
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var delay = parseInt(el.getAttribute("data-rv-delay") || "0", 10);
-        setTimeout(function () { el.classList.add("in"); }, delay);
-        io.unobserve(el);
+        reveal(entry.target);
+        io.unobserve(entry.target);
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
-    /* Failsafe: if the observer never fires (odd viewports, embedded webviews),
-       reveal anything still hidden rather than leaving the page blank. */
+    singles.forEach(function (el) { io.observe(el); });
+
+    var gio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        slice(entry.target.querySelectorAll(".rv")).forEach(reveal);
+        gio.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    groups.forEach(function (g) { gio.observe(g); });
+
+    /* Failsafe: if neither observer fires (odd viewports, embedded webviews),
+       reveal everything rather than leaving the page blank.
+
+       Guarded on nothing having been revealed at all, which is the actual
+       failure being insured against. Unconditional, it revealed every .rv on
+       the page 1.6s after load — so anything below the first screen was
+       already shown by the time the reader scrolled to it and its reveal
+       never ran. Every page opens with .rv content in view, so a working
+       observer always trips this check within a frame. */
     setTimeout(function () {
-      Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
+      var working = all.some(function (el) { return el.classList.contains("in"); });
+      if (!working) all.forEach(function (el) { el.classList.add("in"); });
     }, 1600);
   }
 
