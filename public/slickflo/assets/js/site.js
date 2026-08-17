@@ -36,13 +36,21 @@
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     singles.forEach(function (el) { io.observe(el); });
 
+    /* A group fires later than a lone element, and deliberately. At the shared
+       -8% / 0.08 the group tripped while it was still a sliver at the bottom of
+       the screen, roughly a viewport before the reader was looking at it, so
+       the movement was over by the time they got there — it read as "so fast
+       not even visible" (client, 2026-08-17) when the speed was only half of
+       it. -22% raises the trigger line well up the viewport and 0.2 waits for a
+       fifth of the group to clear it, so the animation runs while it is being
+       watched. */
     var gio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         slice(entry.target.querySelectorAll(".rv")).forEach(reveal);
         gio.unobserve(entry.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -22% 0px", threshold: 0.2 });
     groups.forEach(function (g) { gio.observe(g); });
 
     /* Failsafe: if neither observer fires (odd viewports, embedded webviews),
