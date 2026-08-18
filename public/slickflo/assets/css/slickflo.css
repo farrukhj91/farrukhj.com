@@ -942,6 +942,12 @@ img{max-width:100%;display:block}
   padding:9px 17px;font-size:14.2px;font-weight:550;color:var(--ink);
   box-shadow:var(--sh-xs)}
 .cc-link{display:grid;place-items:center;color:var(--or);flex:none}
+/* Two labelled runs, 2026-08-18. No box around either: they are two ways the
+   same gap plays out, and carding them would read as two things to compare. */
+.scns{display:grid;gap:30px;margin-top:26px}
+.scn-tag{display:block;text-align:center;font-size:11.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--or-d)}
+.scn .cc{margin-top:14px}
 .lede{max-width:60ch;margin:32px auto 0;text-align:center;font-size:17.4px;
   line-height:1.66;color:var(--body)}
 
@@ -991,17 +997,23 @@ img{max-width:100%;display:block}
 .cmp-handle{position:absolute;top:0;bottom:0;left:var(--x);width:2px;
   background:var(--or);pointer-events:none;display:flex;align-items:center;
   justify-content:center}
-/* The label sits beside the line, never centred on it: centred, it hangs half
-   outside the panel at 0 and at 100. It rides on the Before side while there
-   is room and flips to the After side once the handle passes 62%, so it is
-   always fully inside the box. */
-.cmp-handle b{position:absolute;left:12px;display:inline-flex;align-items:center;
-  gap:6px;background:var(--or);color:#fff;font-size:11.5px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:20px;
-  white-space:nowrap;box-shadow:var(--sh-sm)}
-.cmp-stack.flip .cmp-handle b{left:auto;right:12px;flex-direction:row-reverse}
-.cmp-stack.flip .cmp-handle b svg{transform:rotate(180deg)}
-.cmp-handle b svg{flex:none;opacity:.9}
+/* 2026-08-18: the label was a filled pill sitting mid-bar beside the arrow,
+   and it read as a button to be clicked rather than a slider to be dragged.
+   It is now a plain label low on the bar, and the knob is the only thing that
+   looks interactive.
+   Both still sit beside or on the line, never centred across it: centred, they
+   hang half outside the panel at 0 and at 100. The label rides on the Before
+   side while there is room and flips to the After side once the handle passes
+   62%, so it is always fully inside the box. */
+.cmp-handle b{position:absolute;bottom:14px;left:12px;font-size:11.5px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--or-d);white-space:nowrap}
+.cmp-stack.flip .cmp-handle b{left:auto;right:12px}
+/* The knob. The old rule for this was `.cmp-handle b svg`, which never matched
+   anything: the arrow is a sibling of the label, not a child of it, so the
+   handle has been drawing an unstyled bare arrow all along. */
+.cmp-handle svg{flex:none;color:#fff;background:var(--or);border-radius:50%;
+  padding:6px;box-shadow:var(--sh-sm)}
 /* Explicit horizontal margin: the UA stylesheet gives <input> 2px each side,
    which pushed the block 2px past its own container. */
 .cmp-range{display:block;width:100%;margin:16px 0 0;accent-color:var(--or);
