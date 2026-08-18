@@ -957,6 +957,17 @@ img{max-width:100%;display:block}
   border-radius:10px 10px 0 0}
 .fork-arms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .fork-arm .cc{margin-top:12px}
+/* 2026-08-18 (5.0): branches run downward. Three steps never fit one line in
+   an arm, so they wrapped and the arrow at the end of a line pointed away from
+   the box it led to. The arrow turns with the flow. */
+.cc-down{flex-direction:column;align-items:center;gap:8px}
+.cc-down .cc-link svg{transform:rotate(90deg)}
+/* The closing step is the consequence, not another event. Filled, and it says
+   so, because "shown differently" on its own does not say what it is. */
+.cc-imp{background:var(--t-or);border-color:var(--or-l)!important;
+  color:var(--navy);font-weight:650;text-align:center;padding-top:7px}
+.cc-imp b{display:block;font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--or-d);margin-bottom:2px}
 .scn-tag{display:block;text-align:center;font-size:11.5px;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;color:var(--or-d)}
 /* Once the arms stack, a two-legged connector points at nothing. Plain stem. */
@@ -985,8 +996,11 @@ img{max-width:100%;display:block}
    to bring After in. --f is the fade on the Before text: dimming it as the
    handle travels is what moves the attention across, rather than the clip
    alone (client 2026-08-17). */
-.cmp{max-width:900px;margin:38px auto 0}
-.cmp-stack{position:relative;display:grid;--x:0%;--f:1}
+/* --x, --f and --p live here rather than on .cmp-stack: the label under the
+   slider is a sibling of the stack and needs the same position. They inherit,
+   so everything inside still reads them. */
+.cmp{max-width:900px;margin:38px auto 0;--x:0%;--f:1;--p:0}
+.cmp-stack{position:relative;display:grid}
 .cmp-pane{grid-area:1/1;border-radius:16px;padding:26px 28px;border:1px solid var(--line)}
 /* After is revealed from the left edge as the handle travels right, so at the
    default 0 the whole box is Before and each new line of After appears at the
@@ -1023,24 +1037,24 @@ img{max-width:100%;display:block}
    hang half outside the panel at 0 and at 100. The label rides on the Before
    side while there is room and flips to the After side once the handle passes
    62%, so it is always fully inside the box. */
-/* 2026-08-18 (4.0): no knob on the line at all. The client's question was how
-   a visitor is meant to know the thing can be dragged, and a dot centred on a
-   rule does not answer it. The label and an arrow now sit together low on the
-   line, and the arrow nudges rightward on a loop, which is the part that reads
-   as an instruction. The arrow is inside the <b> now, so `.cmp-handle b svg`
-   finally matches the markup it was written for. */
-.cmp-handle b{position:absolute;bottom:12px;left:12px;display:inline-flex;
-  align-items:center;gap:7px;font-size:11.5px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;color:var(--or-d);
-  white-space:nowrap}
-.cmp-handle b svg{flex:none;animation:cmp-nudge 1.5s ease-in-out infinite}
+/* 2026-08-18 (5.0): the handle is only the line now. The label sits under the
+   range thumb instead, which is the thing a visitor actually drags, so the
+   instruction is attached to the control rather than floating on the divider.
+   Nothing is centred on the 2px rule any more, so it no longer reports a
+   scrollWidth past its own box either. */
+.cmp-ctl{position:relative;margin-top:16px}
+/* The thumb's centre travels from half a thumb in to half a thumb short of the
+   end, so its position is not a bare percentage of the track. --tw is the
+   thumb width. --half keeps the label from hanging off either end; it is a
+   little over half the label's own width. */
+.cmp-hint{--tw:18px;--half:44px;position:absolute;top:calc(100% + 7px);
+  left:clamp(var(--half), calc(var(--tw) / 2 + (100% - var(--tw)) * var(--p)),
+             calc(100% - var(--half)));
+  transform:translateX(-50%);display:inline-flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--or-d);white-space:nowrap;pointer-events:none}
+.cmp-hint svg{flex:none;animation:cmp-nudge 1.5s ease-in-out infinite}
 @keyframes cmp-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
-/* Past 62% the label flips to the After side; the nudge flips with it, so it
-   reads as "drag back" rather than pointing off the panel. */
-.cmp-stack.flip .cmp-handle b{left:auto;right:12px;flex-direction:row-reverse}
-.cmp-stack.flip .cmp-handle b svg{animation-name:cmp-nudge-back}
-@keyframes cmp-nudge-back{0%,100%{transform:rotate(180deg) translateX(0)}
-  50%{transform:rotate(180deg) translateX(5px)}}
 /* Explicit horizontal margin: the UA stylesheet gives <input> 2px each side,
    which pushed the block 2px past its own container. */
 .cmp-range{display:block;width:100%;margin:16px 0 0;accent-color:var(--or);
@@ -1051,7 +1065,7 @@ img{max-width:100%;display:block}
   .cmp-stack{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
   .cmp-pane{grid-area:auto;clip-path:none!important}
   .cmp-b ul,.cmp-b .cmp-tag{opacity:1!important}
-  .cmp-handle,.cmp-range{display:none}
+  .cmp-handle,.cmp-range,.cmp-ctl{display:none}
 }
 
 /* ------------------------------------------------------------- reveal --- */

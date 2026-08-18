@@ -77,15 +77,18 @@
      state the brief asks it to load in. */
   Array.prototype.forEach.call(document.querySelectorAll(".cmp"), function (cmp) {
     var range = cmp.querySelector(".cmp-range");
-    var stack = cmp.querySelector(".cmp-stack");
-    if (!range || !stack) return;
+    if (!range) return;
     var apply = function () {
       var x = +range.value;
-      stack.style.setProperty("--x", x + "%");
-      stack.style.setProperty("--f", (1 - x / 100).toFixed(3));
-      /* Past 62% the handle is close enough to the right edge that its label
-         would hang outside the panel, so it moves to the other side. */
-      stack.classList.toggle("flip", x > 62);
+      /* Set on .cmp rather than .cmp-stack: as of 2026-08-18 the label lives
+         under the slider, which is a sibling of the stack, and both need the
+         position. Custom properties inherit, so the stack still reads them.
+         --p is the same value unitless, which is what lets the label track the
+         range thumb: a thumb's centre travels one thumb-width short of the
+         full track, so the offset cannot be expressed as a bare percentage. */
+      cmp.style.setProperty("--x", x + "%");
+      cmp.style.setProperty("--f", (1 - x / 100).toFixed(3));
+      cmp.style.setProperty("--p", (x / 100).toFixed(4));
     };
     range.addEventListener("input", apply);
     apply();
