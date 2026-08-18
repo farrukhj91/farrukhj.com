@@ -983,11 +983,29 @@ img{max-width:100%;display:block}
 /* Five adjectives, set rather than boxed. */
 .wlead{margin:38px auto 0;text-align:center;font-size:17px;font-weight:600;
   color:var(--navy);letter-spacing:-.016em}
-.wrow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 34px;margin-top:22px}
-.wrow span{font-size:clamp(17px,2.1vw,22px);font-weight:600;letter-spacing:-.024em;
+/* 2026-08-18 (6.0): the definition on the right, the qualities building down
+   the left. Explicit row and column on both children because the right column
+   comes FIRST in the DOM: the markup keeps the heading before the list it
+   introduces, and only the placement is swapped. */
+.basics{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+  gap:26px 52px;align-items:start}
+.basics-r{grid-column:2;grid-row:1}
+.basics-l{grid-column:1;grid-row:1}
+/* .shead is centred with a 56px drop by default; in a column neither applies. */
+.basics .shead{margin:0 0 20px;max-width:none}
+.basics .wlead{margin:0;text-align:left}
+.wcol{display:flex;flex-direction:column;align-items:flex-start;gap:22px;
+  margin-top:28px}
+.wcol span{font-size:clamp(19px,2.3vw,26px);font-weight:600;letter-spacing:-.024em;
   color:var(--navy);position:relative}
-.wrow span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+.wcol span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
   background:var(--or);opacity:.5;border-radius:2px}
+/* Stacked, the definition leads and the qualities follow it, which is the DOM
+   order already. */
+@media(max-width:860px){
+  .basics{grid-template-columns:minmax(0,1fr);gap:32px}
+  .basics-r,.basics-l{grid-column:1;grid-row:auto}
+}
 
 /* Before / after. Both panels sit in one grid cell so they are the same size
    and both lists are in the DOM in order; the reveal is a clip driven by a
