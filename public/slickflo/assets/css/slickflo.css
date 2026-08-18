@@ -994,12 +994,31 @@ img{max-width:100%;display:block}
 /* .shead is centred with a 56px drop by default; in a column neither applies. */
 .basics .shead{margin:0 0 20px;max-width:none}
 .basics .wlead{margin:0;text-align:left}
-.wcol{display:flex;flex-direction:column;align-items:flex-start;gap:22px;
-  margin-top:28px}
-.wcol span{font-size:clamp(19px,2.3vw,26px);font-weight:600;letter-spacing:-.024em;
-  color:var(--navy);position:relative}
-.wcol span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+/* 2026-08-18 (6.2): four corners and a centre. Only five of the nine cells are
+   ever filled; the middle row and column are what hold the corners apart. */
+.wgrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  justify-items:center;align-items:center;gap:20px 14px;margin-top:30px}
+.wgrid span{font-size:clamp(16px,1.9vw,22px);font-weight:600;letter-spacing:-.024em;
+  color:var(--navy);position:relative;text-align:center}
+.wgrid span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
   background:var(--or);opacity:.5;border-radius:2px}
+.wgrid span:nth-child(1){grid-area:1/1}
+.wgrid span:nth-child(2){grid-area:1/3}
+.wgrid span:nth-child(3){grid-area:3/1}
+.wgrid span:nth-child(4){grid-area:3/3}
+.wgrid span:nth-child(5){grid-area:2/2}
+/* Not five words: place nothing, stack them. */
+.wgrid-flow{grid-template-columns:minmax(0,1fr);justify-items:start}
+.wgrid-flow span{grid-area:auto!important;text-align:left}
+/* 360, not 560: measured, not guessed. At 375 the shape still has 19px between
+   "Structured" and "Maintainable" and nothing wraps. At 320 the 1fr column is
+   narrower than "Structured", which then hangs 4px outside its own cell, and
+   the centre gap is down to 6px. So the corners hold on a phone and only give
+   up on the narrowest ones. */
+@media(max-width:360px){
+  .wgrid{grid-template-columns:minmax(0,1fr);justify-items:start;gap:24px}
+  .wgrid span{grid-area:auto!important;text-align:left}
+}
 @media(max-width:860px){
   .basics{grid-template-columns:minmax(0,1fr);gap:32px}
 }
