@@ -923,16 +923,23 @@ img{max-width:100%;display:block}
 .stg-turn{max-width:52ch;margin:30px auto;text-align:center;
   font-size:clamp(18px,2.2vw,22px);line-height:1.42;font-weight:600;
   letter-spacing:-.02em;color:var(--navy);text-wrap:balance}
-.stg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-@media(max-width:760px){.stg-grid{grid-template-columns:minmax(0,1fr)}}
-.stg-card{display:flex;gap:15px;background:#fff;border:1px solid var(--line);
-  border-radius:14px;padding:19px 20px;box-shadow:var(--sh-xs);
+/* 2026-08-18 (6.4): one row of four rather than two rows of two, and the icon
+   inline at the head of the title rather than in its own column. Dropping that
+   column hands the text back 55px, which is why a quarter-width card wraps
+   less than the half-width one it replaces. */
+.stg-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media(max-width:1000px){.stg-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.stg-grid{grid-template-columns:minmax(0,1fr)}}
+.stg-card{background:#fff;border:1px solid var(--line);border-radius:13px;
+  padding:15px 16px;box-shadow:var(--sh-xs);
   transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
 .stg-card:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);
   border-color:var(--line-2)}
-.stg-card .ic-t{width:40px;height:40px;border-radius:10px;margin-top:2px}
-.stg-card h3{font-size:15.8px;letter-spacing:-.02em;margin-bottom:6px}
-.stg-card p{font-size:14.2px;line-height:1.58;color:var(--mute)}
+.stg-card .ic-t{width:26px;height:26px;border-radius:7px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center}
+.stg-card h3{display:flex;align-items:center;gap:9px;font-size:15px;
+  letter-spacing:-.02em;line-height:1.3;margin-bottom:7px}
+.stg-card p{font-size:13.6px;line-height:1.55;color:var(--mute)}
 
 /* Cause and effect. Horizontal and wrapping: the vertical column it replaced
    ran the height of a screen for six short labels (client 2026-08-17). */
