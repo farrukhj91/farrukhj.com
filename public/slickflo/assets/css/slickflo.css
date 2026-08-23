@@ -1354,3 +1354,11 @@ html.js .rv.rv-l.in,html.js .rv.rv-r.in,html.js .rv.rv-up.in{transform:none}
   .plane{padding:30px 22px}
   .bar{grid-template-columns:82px minmax(0,1fr)}
 }
+/* The bars draw themselves once the plane is reached. Both start together and
+   the run time is proportional to the distance, so the short one stops early
+   while the long one is still going: that gap is the point being made.
+   The full width is the natural state, matching the .rv guard above, so a
+   script that never runs leaves both bars drawn rather than empty. */
+.bar i{width:var(--w)}
+html.js .bar i{width:0}
+html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
