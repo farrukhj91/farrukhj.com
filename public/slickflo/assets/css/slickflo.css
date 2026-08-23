@@ -711,6 +711,11 @@ img{max-width:100%;display:block}
 .ccol p{margin-top:14px;font-size:16.4px;line-height:1.68;color:var(--body)}
 .ccol .cinfo{width:100%}
 .ccol>.btn{margin-top:22px}
+/* .checks is a two-up grid centred in an 840px section. In a half-width
+   column that reads as two cramped columns shoved to the middle, so it
+   is a single column here. */
+.ccol .checks{grid-template-columns:minmax(0,1fr);max-width:none;
+  margin:22px 0 0;gap:13px}
 
 .cinfo{display:flex;flex-direction:column;gap:12px;margin-top:30px}
 .ci{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);
