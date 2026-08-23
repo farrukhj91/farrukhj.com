@@ -92,6 +92,59 @@
     };
     range.addEventListener("input", apply);
     apply();
+
+    /* 2026-08-24: the client asked to be able to grab the After label itself
+       and pull it right, not only the range thumb. The native input stays
+       exactly as it is and keeps the keyboard, the focus ring and clicks on
+       the track; this only adds a second pointer target that drives it.
+
+       The maths is the same one .cmp-hint uses to sit under the thumb: a
+       thumb's centre travels from half a thumb in to half a thumb short of the
+       end, so the usable track is (width - THUMB) and the pointer has to be
+       measured from (left + THUMB/2). Using a bare percentage of the width
+       makes the label run ahead of the thumb at one end and behind it at the
+       other. THUMB matches --tw in the stylesheet; they have to move together.
+
+       Pointer capture is what keeps the drag alive when the pointer leaves the
+       label, which it does immediately, since the label is much smaller than
+       the distance being dragged. */
+    var hint = cmp.querySelector(".cmp-hint");
+    if (!hint || !window.PointerEvent) return;
+    var THUMB = 18;
+    var track = function (clientX) {
+      var r = range.getBoundingClientRect();
+      var span = r.width - THUMB;
+      if (span <= 0) return;
+      var pct = ((clientX - r.left - THUMB / 2) / span) * 100;
+      range.value = Math.max(0, Math.min(100, pct));
+      apply();
+    };
+    /* move/up are on window, not on the label. The pointer leaves the label
+       almost immediately once a drag starts, and a listener on the label alone
+       would stop tracking there. Pointer capture would also solve it, but it
+       throws on some inputs and would take the drag with it, so it is set as a
+       best effort and nothing depends on it. */
+    var dragging = false;
+    hint.addEventListener("pointerdown", function (e) {
+      /* The label is decorative to assistive tech and the input is the real
+         control, so never take focus off it here. */
+      e.preventDefault();
+      dragging = true;
+      try { hint.setPointerCapture(e.pointerId); } catch (err) {}
+      hint.classList.add("dragging");
+      track(e.clientX);
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (dragging) track(e.clientX);
+    });
+    var end = function (e) {
+      if (!dragging) return;
+      dragging = false;
+      try { hint.releasePointerCapture(e.pointerId); } catch (err) {}
+      hint.classList.remove("dragging");
+    };
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", end);
   });
 
   /* ---- header shadow once scrolled ---- */
