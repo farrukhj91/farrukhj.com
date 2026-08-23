@@ -1362,3 +1362,11 @@ html.js .rv.rv-l.in,html.js .rv.rv-r.in,html.js .rv.rv-up.in{transform:none}
 .bar i{width:var(--w)}
 html.js .bar i{width:0}
 html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
+/* Tool wordmarks, set in type because three of the four have no logo file.
+   Same 3px lift as every other card on the site, per section 3. */
+.stack{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.stack-i{border:1px solid var(--line);background:#fff;border-radius:10px;
+  padding:12px 18px;font-size:15.4px;font-weight:650;letter-spacing:-.02em;
+  color:var(--navy);box-shadow:var(--sh-xs);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.stack-i:hover{transform:translateY(-3px);box-shadow:var(--sh-sm)}
