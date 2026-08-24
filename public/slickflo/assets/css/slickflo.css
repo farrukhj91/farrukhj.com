@@ -1493,3 +1493,79 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 @media(max-width:760px){
   .slab-i{margin-left:0;padding:16px 17px;gap:14px}
 }
+
+/* ==========================================================================
+   Data Engineering & Management page only, 2026-08-24
+   --------------------------------------------------------------------------
+   Own components where the argument needs them, shared ones where it does not.
+   Left aligned per section 3, which rejects "everything centred".
+   ========================================================================== */
+
+/* ---- tool wordmarks, reinstated for a page with no logo files ---------- */
+.stack{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.stack-i{border:1px solid var(--line);background:#fff;border-radius:10px;
+  padding:12px 18px;font-size:15.4px;font-weight:650;letter-spacing:-.02em;
+  color:var(--navy);box-shadow:var(--sh-xs);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.stack-i:hover{transform:translateY(-3px);box-shadow:var(--sh-sm)}
+
+/* ---- hero: many sources becoming one store ---------------------------- */
+.cv{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,.9fr);
+  gap:0;align-items:center}
+.cv-in{display:grid;gap:8px}
+.cv-src{background:#fff;border:1px dashed var(--line-2);border-radius:9px;
+  padding:9px 13px;font-size:12.8px;font-weight:550;color:var(--body)}
+/* The lines that meet. A bracket rather than an SVG, so it stretches. */
+.cv-join{position:relative;height:100%;min-height:120px}
+.cv-join::before{content:"";position:absolute;left:0;top:12%;bottom:12%;
+  width:22px;border:2px solid var(--line-2);border-right:0;
+  border-radius:10px 0 0 10px}
+.cv-join::after{content:"";position:absolute;left:22px;top:50%;right:0;
+  height:2px;background:var(--or);transform:translateY(-1px)}
+.cv-out{background:var(--t-navy);border:1px solid var(--line);
+  border-radius:12px;padding:16px;display:grid;gap:7px;align-content:start;
+  box-shadow:var(--sh-xs)}
+.cv-out b{font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+.cv-out i{display:block;height:8px;border-radius:3px;background:#fff}
+.cv-out i:first-of-type{background:var(--or);width:56%}
+@media(max-width:640px){
+  .cv{grid-template-columns:minmax(0,1fr);gap:16px}
+  .cv-join{min-height:26px;height:26px}
+  .cv-join::before{left:12%;right:12%;top:0;bottom:auto;width:auto;height:14px;
+    border:2px solid var(--line-2);border-bottom:0;border-radius:10px 10px 0 0}
+  .cv-join::after{left:50%;top:14px;right:auto;bottom:0;width:2px;height:auto;
+    transform:translateX(-1px)}
+}
+
+/* ---- the pipeline: one bar cut into segments -------------------------- */
+/* Not a row of cards and not another node rail. One flow that changes the
+   material as it passes through, so it is drawn as one bar. The tint runs from
+   the palest brand step to full orange, which carries the refining idea the
+   hero sets up without needing a caption. */
+.pipe{margin-top:36px}
+.pipe-bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.pipe-bar i{display:block;height:12px;
+  background:color-mix(in srgb, var(--or) calc((var(--i) + 1) / var(--n) * 100%),
+             var(--t-orl));
+  border-radius:2px}
+.pipe-bar i:first-child{border-radius:7px 2px 2px 7px}
+.pipe-bar i:last-child{border-radius:2px 7px 7px 2px}
+.pipe-cols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;
+  margin-top:16px}
+.pipe-cols>div{padding-right:14px}
+.pipe-cols b{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;
+  color:var(--or-d)}
+.pipe-cols h3{margin-top:5px;font-size:15px;letter-spacing:-.02em;
+  color:var(--ink)}
+.pipe-cols p{margin-top:5px;font-size:13.4px;line-height:1.55;color:var(--body)}
+@media(max-width:900px){
+  .pipe-bar,.pipe-cols{grid-auto-flow:row;grid-auto-columns:auto}
+  .pipe-bar{grid-template-columns:repeat(5,1fr);grid-auto-flow:column}
+  .pipe-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px;
+    margin-top:22px}
+  .pipe-cols>div{padding-right:0}
+}
+@media(max-width:520px){
+  .pipe-cols{grid-template-columns:minmax(0,1fr)}
+}
