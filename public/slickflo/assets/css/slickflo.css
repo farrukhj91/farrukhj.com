@@ -1362,3 +1362,55 @@ html.js .rv.rv-l.in,html.js .rv.rv-r.in,html.js .rv.rv-up.in{transform:none}
 .bar i{width:var(--w)}
 html.js .bar i{width:0}
 html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
+
+/* ---- past work: three screens per project, cycling like a GIF ---------- */
+/* Client 2026-08-24. There are no UI/UX case studies anywhere: all 22 in
+   case-studies.json are technical writing, so every frame here is a
+   placeholder and NO client name, industry or outcome is invented to fill it.
+   Dropping in real screenshots is a swap of the three <b> blocks for an <img>.
+
+   The cycle is pure CSS. Three frames share one grid cell and take the same
+   6s animation at negative delays, which is what staggers them without three
+   separate keyframe blocks. Each project also carries --o so the three cards
+   are not flipping in unison, which would read as a page glitch. */
+.pw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;
+  margin-top:36px}
+.pw-item{--o:0s}
+.pw-stack{position:relative;display:grid;border:1px solid var(--line);
+  border-radius:13px;overflow:hidden;background:var(--bg-alt);
+  box-shadow:var(--sh-xs);aspect-ratio:4/3}
+.pw-frame{grid-area:1/1;padding:16px;display:grid;gap:9px;align-content:start;
+  background:var(--bg-alt);opacity:0}
+/* Frame one is the resting state, so prefers-reduced-motion leaves a legible
+   screen rather than an empty box. */
+.pw-frame.f1{opacity:1}
+.pw-frame b{display:block;background:var(--line);border-radius:4px}
+.pw-frame .r-hd{height:11px;width:46%;background:var(--line-2)}
+.pw-frame .r-a{height:8px;width:88%}
+.pw-frame .r-b{height:8px;width:70%}
+.pw-frame .r-blk{height:44px;width:100%}
+.pw-frame .r-half{height:34px;width:100%}
+.pw-grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.pw-tag{position:absolute;right:10px;bottom:10px;font-size:10px;font-weight:700;
+  letter-spacing:.06em;color:var(--mute);background:#fff;border:1px solid var(--line);
+  border-radius:20px;padding:3px 9px}
+@media(prefers-reduced-motion:no-preference){
+  .pw-frame{animation:pw-cycle 6s linear infinite}
+  .pw-frame.f1{animation-delay:var(--o)}
+  .pw-frame.f2{animation-delay:calc(var(--o) - 4s)}
+  .pw-frame.f3{animation-delay:calc(var(--o) - 2s)}
+}
+@keyframes pw-cycle{
+  0%{opacity:0} 4%{opacity:1} 29%{opacity:1} 33%{opacity:0} 100%{opacity:0}
+}
+.pw-item h3{margin-top:14px;font-size:15.6px;letter-spacing:-.02em;color:var(--ink)}
+.pw-item p{margin-top:5px;font-size:13.6px;line-height:1.55;color:var(--mute)}
+.pw-note{margin-top:22px;font-size:14px;color:var(--mute);max-width:60ch}
+@media(max-width:900px){.pw{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.pw{grid-template-columns:minmax(0,1fr)}}
+/* Frame three is a detail view: a main pane and a side column. It used to be
+   frame one's blocks in a different order, which read as the same screen
+   flickering rather than as a third one. */
+.pw-detail{display:grid;grid-template-columns:1.55fr 1fr;gap:9px}
+.pw-detail>div{display:grid;gap:7px;align-content:start}
+.pw-frame .r-tall{height:78px;width:100%}
