@@ -1579,3 +1579,15 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .tgrp-l{display:block;font-size:12.8px;font-weight:700;letter-spacing:-.004em;
   color:var(--mute)}
 .tgrp .tools{justify-content:flex-start;margin-top:12px}
+/* Centred variant, for the tool strips on the live-derived pages. Those
+   sections are centred like every other live section, so the left-aligned
+   label block the authored pages use reads as a mistake inside one.
+
+   The gap is WIDER than the left-aligned variant, not narrower. Left-aligned
+   groups are held together by a shared left edge; centred ones have only
+   proximity, so the distance from a label to its own strip (12px) has to beat
+   the distance to the group above it by a clear margin or the labels start
+   reading as captions under the wrong strip. */
+.tgrps.tc{gap:34px}
+.tgrps.tc .tgrp-l{text-align:center}
+.tgrps.tc .tools{justify-content:center}
