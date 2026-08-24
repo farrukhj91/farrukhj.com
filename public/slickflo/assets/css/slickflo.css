@@ -1569,3 +1569,9 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 @media(max-width:520px){
   .pipe-cols{grid-template-columns:minmax(0,1fr)}
 }
+/* Grouped logo strips. Left aligned like the rest of that page, where the flat
+   .tools strip centres itself for the live-derived pages. */
+.tgrps{display:grid;gap:28px;margin-top:32px}
+.tgrp-l{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mute)}
+.tgrp .tools{justify-content:flex-start;margin-top:12px}
