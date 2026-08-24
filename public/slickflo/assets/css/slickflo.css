@@ -1615,10 +1615,19 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .sect-k{font-size:12.8px;font-weight:700;letter-spacing:-.004em;
   color:var(--mute);margin-bottom:14px}
 
-/* Stacked steps. Reuses .pstep wholesale, so the tiles, the c1-c4 tints and
-   the reveal behaviour are the ones every other approach block already uses;
-   only the flow direction changes. */
-.proc.vert{display:grid;grid-auto-flow:row;gap:10px}
+/* Two across, not stacked. Client 2026-08-25: five tiles in one column ran
+   571px against a 190px description and the section was mostly white space.
+   Two per row brings it to three rows, about 350px.
+
+   The fifth tile spans the full width rather than sitting alone in the left
+   cell: an odd tile half-width at the end reads as a missing sixth step. Keyed
+   on :last-child:nth-child(odd) so it holds for any odd count, and does
+   nothing at all for an even one.
+
+   Reuses .pstep wholesale, so the tiles, the c1-c4 tints and the reveal
+   behaviour are the ones every other approach block already uses. */
+.proc.vert{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.proc.vert .pstep:last-child:nth-child(odd){grid-column:1/-1}
 .proc.vert .pstep{width:100%;min-width:0;text-align:left;
   display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;
   align-items:center;padding:14px 18px}
@@ -1628,6 +1637,11 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 
 @media(max-width:900px){
   .sect{grid-template-columns:minmax(0,1fr);gap:30px}
+}
+/* One column again once two tiles cannot hold a step title and its
+   description on a sane measure. */
+@media(max-width:560px){
+  .proc.vert{grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:520px){
   .sect{gap:26px}
