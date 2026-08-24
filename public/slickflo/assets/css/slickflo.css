@@ -1591,3 +1591,12 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .tgrps.tc{gap:34px}
 .tgrps.tc .tgrp-l{text-align:center}
 .tgrps.tc .tools{justify-content:center}
+
+/* ---- L&D: the line that closes the "what we offer" section ------------- */
+/* Not a `.prose` block: one sentence in a 74ch centred column reads as an
+   orphaned paragraph. Held to the width of the card row above it and given the
+   section's own centring, so it reads as the row's caption rather than as the
+   start of something new. */
+.ld-close{max-width:760px;margin:26px auto 0;text-align:center;
+  font-size:16.4px;line-height:1.62;color:var(--body)}
+@media(max-width:640px){.ld-close{font-size:15.4px;margin-top:20px}}
