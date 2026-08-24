@@ -1682,6 +1682,26 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .pmeta time{color:var(--mute)}
 .pmeta time::before{content:"·";margin-right:14px;color:var(--line-2)}
 
+/* ---- cover image ------------------------------------------------------- */
+/* Wider than the text measure and narrower than the wrap: a cover that runs
+   the full column width dwarfs the article under it, and one set to 68ch
+   reads as an illustration rather than as the head of the piece. 2:1, which
+   is close enough to the 1200x630 social card that one file can serve both. */
+.pcover{max-width:880px;margin:0 auto 40px;aspect-ratio:2/1;
+  border-radius:16px;overflow:hidden;background:var(--t-navy);
+  border:1px solid var(--line);box-shadow:var(--sh-xs)}
+.pcover img{width:100%;height:100%;object-fit:cover;display:block}
+/* The placeholder holds the exact space the picture will take, so dropping the
+   file in later moves nothing. Dashed, and it says what it is: a placeholder
+   that looks like a design decision is one nobody remembers to replace. */
+.pcover-ph{display:grid;place-items:center;background:var(--bg-alt);
+  border:1px dashed var(--line-2);box-shadow:none}
+.pcover-ph span{font-size:13.4px;font-weight:600;letter-spacing:-.01em;
+  color:var(--mute)}
+@media(max-width:640px){
+  .pcover{margin-bottom:30px;border-radius:13px}
+}
+
 /* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
    under a heading, this is eleven hundred words and the measure has to hold
    up over the whole of it. */
