@@ -1591,3 +1591,45 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .tgrps.tc{gap:34px}
 .tgrps.tc .tgrp-l{text-align:center}
 .tgrps.tc .tools{justify-content:center}
+
+/* ==========================================================================
+   Paired sector sections, Proposal Writing, 2026-08-25
+   --------------------------------------------------------------------------
+   Client: merge each sector with the approach that follows it, description
+   left and approach right. Six sections became three.
+
+   Left column is wider than the right: the description is prose that wants a
+   comfortable measure, the approach is five short labelled steps that do not.
+   ========================================================================== */
+/* Centred, not top-aligned. The description runs 163 to 190px against a
+   571px column of steps, so aligning to the top left ~380px of white under it
+   and the section read as top-heavy rather than as a pair. */
+.sect{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:52px;align-items:center}
+.sect-l h2{font-size:clamp(24px,2.5vw,31px);letter-spacing:-.03em;
+  line-height:1.18;color:var(--ink)}
+.sect-l p{margin-top:16px;font-size:16.4px;line-height:1.68;color:var(--body)}
+.sect-l p + p{margin-top:13px}
+/* Not a section heading: it labels the column beside it. Sized down to the
+   kicker scale so it cannot compete with the sector name across the gap. */
+.sect-k{font-size:12.8px;font-weight:700;letter-spacing:-.004em;
+  color:var(--mute);margin-bottom:14px}
+
+/* Stacked steps. Reuses .pstep wholesale, so the tiles, the c1-c4 tints and
+   the reveal behaviour are the ones every other approach block already uses;
+   only the flow direction changes. */
+.proc.vert{display:grid;grid-auto-flow:row;gap:10px}
+.proc.vert .pstep{width:100%;min-width:0;text-align:left;
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;
+  align-items:center;padding:14px 18px}
+.proc.vert .pstep .pn{margin:0}
+.proc.vert .pstep h3{grid-column:2;font-size:15.4px}
+.proc.vert .pstep p{grid-column:2;margin-top:2px;font-size:13.6px}
+
+@media(max-width:900px){
+  .sect{grid-template-columns:minmax(0,1fr);gap:30px}
+}
+@media(max-width:520px){
+  .sect{gap:26px}
+  .proc.vert .pstep{padding:13px 15px;gap:12px}
+}
