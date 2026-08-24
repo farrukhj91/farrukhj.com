@@ -1674,10 +1674,22 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    short enough that the eye finds the next line without hunting, and headings
    with enough air above them to work as waypoints in a long scroll.
    ========================================================================== */
-.phero-post{padding-bottom:8px}
-.phero-post h1{max-width:20ch}
-.phero-post h1{max-width:none}
-.pmeta{margin-top:14px;font-size:14.6px;color:var(--mute);
+/* Visually hidden, still read aloud and still indexed. The article <h1> uses
+   it because the title lives in the cover artwork now; nothing else on this
+   site should. Not display:none, which removes it from the accessibility tree
+   as well and would defeat the point entirely. */
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* The cover is the page header now, so the band above it goes: the site
+   header sits directly on top of the picture. */
+.post-head{padding-top:26px;padding-bottom:0}
+.post-body{padding-top:34px}
+
+/* Byline and date, aligned to the ARTICLE column rather than centred under
+   the cover: it gives the text a single left edge running the whole page. */
+.pmeta-w{max-width:68ch;margin:20px auto 0;font-size:17px}
+.pmeta{font-size:14.6px;color:var(--mute);
   display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
 .pmeta time{color:var(--mute)}
 .pmeta time::before{content:"·";margin-right:14px;color:var(--line-2)}
@@ -1687,7 +1699,9 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    the full column width dwarfs the article under it, and one set to 68ch
    reads as an illustration rather than as the head of the piece. 2:1, which
    is close enough to the 1200x630 social card that one file can serve both. */
-.pcover{max-width:880px;margin:0 auto 40px;aspect-ratio:2/1;
+/* Full content width, not 880px: it stopped being an illustration inside the
+   article on 2026-08-25 and became the header of the page. */
+.pcover{max-width:none;margin:0 auto;aspect-ratio:2/1;
   border-radius:16px;overflow:hidden;background:var(--t-navy);
   border:1px solid var(--line);box-shadow:var(--sh-xs)}
 .pcover img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1699,7 +1713,10 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .pcover-ph span{font-size:13.4px;font-weight:600;letter-spacing:-.01em;
   color:var(--mute)}
 @media(max-width:640px){
-  .pcover{margin-bottom:30px;border-radius:13px}
+  .pcover{border-radius:13px}
+  .post-head{padding-top:18px}
+  .pmeta-w{margin-top:16px;font-size:16.2px}
+  .pmeta{font-size:13.8px}
 }
 
 /* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
