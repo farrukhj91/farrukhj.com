@@ -1426,3 +1426,8 @@ html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
   .pwv-stage{aspect-ratio:auto;display:grid;gap:12px}
   .pwv-shot{position:static;width:100%}
 }
+/* Slower than the reveal system's 1.05s default. These are the largest things
+   that move on the site and they were arriving at the same speed as a card,
+   which read as a flick rather than a cascade. Pairs with the 850ms stagger in
+   build.pastwork(); change the two together or the sequence stops reading. */
+html.js .pwv-shot.rv{transition-duration:1.25s}
