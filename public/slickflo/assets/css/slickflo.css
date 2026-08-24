@@ -1666,3 +1666,44 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
   .sect{gap:26px}
   .proc.vert .pstep{padding:13px 15px;gap:12px}
 }
+
+/* ==========================================================================
+   Blog post pages, 2026-08-25
+   --------------------------------------------------------------------------
+   An article, not a service page. The one job is a comfortable read: a measure
+   short enough that the eye finds the next line without hunting, and headings
+   with enough air above them to work as waypoints in a long scroll.
+   ========================================================================== */
+.phero-post{padding-bottom:8px}
+.phero-post h1{max-width:20ch}
+.phero-post h1{max-width:none}
+.pmeta{margin-top:14px;font-size:14.6px;color:var(--mute);
+  display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.pmeta time{color:var(--mute)}
+.pmeta time::before{content:"·";margin-right:14px;color:var(--line-2)}
+
+/* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
+   under a heading, this is eleven hundred words and the measure has to hold
+   up over the whole of it. */
+.post{max-width:68ch;margin:0 auto;font-size:17px;line-height:1.72;
+  color:var(--body)}
+.post > *:first-child{margin-top:0}
+.post p{margin-top:20px}
+/* Space above a heading, not below it: a heading belongs to what follows. */
+.post h2{margin-top:46px;font-size:clamp(21px,2.2vw,26px);letter-spacing:-.028em;
+  line-height:1.25;color:var(--ink)}
+.post h3{margin-top:34px;font-size:18.4px;letter-spacing:-.02em;
+  line-height:1.35;color:var(--ink)}
+.post h2 + p,.post h3 + p{margin-top:12px}
+.post ul{margin-top:16px;padding-left:0;list-style:none;display:grid;gap:9px}
+.post li{position:relative;padding-left:26px}
+.post li::before{content:"";position:absolute;left:6px;top:11px;
+  width:6px;height:6px;border-radius:50%;background:var(--or)}
+.post a{color:var(--or-d);text-decoration:underline;
+  text-underline-offset:2px;text-decoration-thickness:1px}
+.post a:hover{text-decoration-thickness:2px}
+@media(max-width:640px){
+  .post{font-size:16.2px;line-height:1.68}
+  .post h2{margin-top:38px}
+  .post h3{margin-top:28px}
+}
