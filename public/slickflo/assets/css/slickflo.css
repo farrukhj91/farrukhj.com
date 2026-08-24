@@ -1392,21 +1392,29 @@ html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
   text-transform:uppercase;color:var(--mute);padding-top:2px}
 .pwv-facts dd{margin:0;font-size:14.6px;color:var(--ink);font-weight:550}
 /* ---- the cascade ---- */
-/* 2/1 is derived, not picked: the shots are 60% wide on a 912x516 source, so
-   each is 0.34 of the stage width tall, and the last one starts 30% down. That
-   puts its floor at 0.49 of the width, so a stage half as tall as it is wide
-   closes the gap under the cascade with a few pixels to spare. */
-.pwv-stage{position:relative;aspect-ratio:2/1}
-/* 60% wide at 20% offsets, so each screen covers two thirds of the one behind
-   it. The stage aspect is set so the third shot lands inside it: at 16/11 the
-   bottom of s3 sits about 5% clear of the floor. */
-.pwv-shot{position:absolute;width:60%;border:1px solid var(--line);
-  border-radius:11px;overflow:hidden;background:#fff;
-  box-shadow:var(--sh-sm)}
-.pwv-shot img{display:block;width:100%;height:auto}
+/* Derived, not picked. Shots are half the stage wide at 5/6, so each is 0.6 of
+   the stage width tall, and the last starts 26% down. At 6/5 its floor lands
+   about 10px clear of the stage bottom. */
+.pwv-stage{position:relative;aspect-ratio:6/5}
+/* Half the stage wide at 25% offsets: each screen covers exactly half of the
+   one behind it, which is what he asked for, and the third lands flush with
+   the right edge so the cascade spans the stage rather than stopping short.
+   Portrait, because the client's note was that the first cut looked zoomed
+   in: these are whole pages now, not the hero band of one.
+
+   object-fit:cover with a top anchor is what lets three differently shaped
+   sources share one frame. The two pages a reader actually sees are 0.49 and
+   0.61 tall, so the frame shows most of them; s1 is a wider crop but it sits
+   furthest back with two thirds covered, and cover trims the side nobody can
+   see anyway. */
+.pwv-shot{position:absolute;width:50%;aspect-ratio:5/6;
+  border:1px solid var(--line);border-radius:11px;overflow:hidden;
+  background:#fff;box-shadow:var(--sh-sm)}
+.pwv-shot img{display:block;width:100%;height:100%;object-fit:cover;
+  object-position:top center}
 .pwv-shot.s1{left:0;top:0;z-index:1}
-.pwv-shot.s2{left:20%;top:15%;z-index:2}
-.pwv-shot.s3{left:40%;top:30%;z-index:3}
+.pwv-shot.s2{left:25%;top:13%;z-index:2}
+.pwv-shot.s3{left:50%;top:26%;z-index:3}
 
 @media(max-width:900px){
   .pwv-row{grid-template-columns:minmax(0,1fr);gap:30px}
