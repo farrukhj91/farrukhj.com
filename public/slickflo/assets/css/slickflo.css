@@ -626,9 +626,15 @@ img{max-width:100%;display:block}
 .chk span{font-size:15.4px;line-height:1.55;color:var(--body)}
 
 /* -------------------------------------------------------- testimonial ---
-   All five live testimonials at once. auto-fit handles the 3 + 2 wrap without
-   leaving a hole in the grid. */
-.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+   Six testimonials at once, 3 + 3 at desktop. auto-fit handles the wrap
+   without leaving a hole in the grid.
+
+   min(290px,100%) rather than a bare 290px: at a 320px viewport the .wrap
+   content box is 260px, so a hard 290px track rendered 290px wide and clipped
+   30px off the right of every card. body{overflow-x:hidden} hid that from a
+   page-level scroll check, which is why it survived several sweeps. */
+.tgrid{display:grid;gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}
 .tst{display:flex;flex-direction:column;background:var(--card);
   border:1px solid var(--line);border-radius:var(--r);padding:28px;margin:0;
   box-shadow:var(--sh-sm);transition:border-color var(--t),transform var(--t),
@@ -645,9 +651,13 @@ img{max-width:100%;display:block}
 .tmeta .av.c2{background:var(--t-indigo);color:var(--indigo)}
 .tmeta .av.c3{background:var(--t-orl);color:var(--or-l)}
 .tmeta .av.c4{background:var(--t-or);color:var(--or-d)}
-.tmeta .tn b{display:block;font-size:15px;font-weight:600;color:var(--ink);
-  letter-spacing:-.016em}
-.tmeta .tn span{font-size:13.6px;color:var(--mute)}
+/* Two lines under the quote: "Name; Designation", then
+   "Company, Country | Sector". The name is bold and INLINE, not block, so the
+   designation stays on its line with it. */
+.tmeta .tn{font-size:15px;line-height:1.5;color:var(--body);letter-spacing:-.016em}
+.tmeta .tn b{font-weight:600;color:var(--ink)}
+.tmeta .tn .torg{display:block;margin-top:3px;font-size:13.6px;
+  color:var(--mute);letter-spacing:0}
 
 /* ------------------------------------------- gradient band -------------- */
 /* A defined gradient plane, square edges. Crisp, no halo. One per page max. */
