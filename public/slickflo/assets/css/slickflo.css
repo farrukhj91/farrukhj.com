@@ -1700,11 +1700,18 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 
    40/21 matches the artwork exactly, so nothing is cropped, and `min-height`
    catches the case the ratio cannot: a long headline at a narrow width. */
-/* `background-position` is TOP, not centre, and the height is capped. The full
-   40/21 ran 664px at 1280, which is the whole first screen for a title; capped
-   at 500 the box is shorter than the picture, so something has to be cropped,
-   and centring it would cut the logo off the top. Top-aligned crops the foot
-   of the photograph instead, which the CSS gradient then covers anyway. */
+/* NO max-height. There was one, 500px, added to stop the banner filling the
+   first screen; it made the box shorter than the picture and `cover` then
+   cropped 164px, a QUARTER of every photograph, off the bottom. The card on
+   /blog/ showed the whole image and the banner showed three quarters of it,
+   which is exactly what "fine on the thumbnail, very zoomed in on the page"
+   describes. Client 2026-08-25.
+
+   The banner is the artwork's own 40/21 now and crops nothing. It is tall,
+   664px at 1280, and that is the honest cost of showing a 1200x630 picture
+   whole at full bleed. `background-position` stays at the top so that a
+   viewport too narrow to satisfy min-height crops the foot rather than the
+   logo. */
 /* `width:100%` is load-bearing. With `aspect-ratio` and `max-height` and no
    explicit width, the box solves the ratio the other way round and derives its
    WIDTH from the capped height: the banner came out 952px wide instead of full
@@ -1714,7 +1721,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .pbanner{position:relative;width:100%;
   background-size:cover;background-position:50% 0%;
   background-color:var(--navy-d);aspect-ratio:40/21;
-  min-height:340px;max-height:500px;
+  min-height:340px;
   display:flex;align-items:flex-end}
 /* The gradient the picture no longer carries. In CSS it sits at the foot of
    the BANNER rather than the foot of the image, so it is under the headline at
@@ -1764,8 +1771,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    a 197px-tall banner is a scrim fighting a photograph and losing; separating
    them is legible at any length. */
 @media(max-width:760px){
-  .pbanner{display:block;aspect-ratio:auto;min-height:0;max-height:none;
-    background:none}
+  .pbanner{display:block;aspect-ratio:auto;min-height:0;background:none}
   /* No overlay once the headline is under the picture rather than on it. */
   .pbanner::after{content:none}
   .pbanner::before{content:"";display:block;aspect-ratio:40/21;
