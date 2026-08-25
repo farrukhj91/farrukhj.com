@@ -761,14 +761,22 @@ img{max-width:100%;display:block}
    the ~90px trimmed off their top and bottom is white space, and the logo,
    title, illustration and strapline all survive intact.
 
-   40/21, NOT 2/1. The covers are 1200x630, which is 1.905:1, and a 2:1 box
-   was still shaving 5% off the top and bottom of them: enough to bite into
-   the headline, which sits near the foot of the artwork. The same number is
-   on .pcover, so the article header does not crop it either. Change both
-   together or one of them starts lying about the picture. */
-.art .thumb{aspect-ratio:40/21;overflow:hidden;background:var(--bg-alt);
+   3:1 as of 2026-08-25, following the covers themselves; it was 40/21 while
+   they were 1200x630. THE CARD AND THE BANNER SHARE THIS NUMBER. They show the
+   same file, and when they disagreed by 25% the page read as zoomed against
+   its own thumbnail. Change both together or one of them starts lying about
+   the picture. */
+.art .thumb{aspect-ratio:3/1;overflow:hidden;background:var(--bg-alt);
   border-bottom:1px solid var(--line)}
 .art .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+/* Not every card image is 3:1. The articles still on their original WordPress
+   tile are 4:3 graphics with the headline printed on them, and `cover` would
+   crop 56% and cut the title. Contained and set on white, which is the tiles'
+   own background, so it reads as a smaller picture rather than a broken one.
+   Retire this rule when the last article is supplied with a real cover. */
+.art .thumb-legacy{background:#fff}
+.art .thumb-legacy img{object-fit:contain}
+.art:hover .thumb-legacy img{transform:none}
 .art:hover .thumb img{transform:scale(1.04)}
 .art .ab{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
 .art .tag{font-size:12.5px;font-weight:550;color:var(--or-d);margin-bottom:9px}
@@ -1707,11 +1715,13 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    which is exactly what "fine on the thumbnail, very zoomed in on the page"
    describes. Client 2026-08-25.
 
-   The banner is the artwork's own 40/21 now and crops nothing. It is tall,
-   664px at 1280, and that is the honest cost of showing a 1200x630 picture
-   whole at full bleed. `background-position` stays at the top so that a
-   viewport too narrow to satisfy min-height crops the foot rather than the
-   logo. */
+   The banner is the artwork's own ratio and crops nothing. That ratio is now
+   3:1, not 40/21: at 40/21 it ran 664px on a 1280 screen and the client had to
+   scroll to reach his own headline. 3:1 is 421px, and it is what xgrid.co runs
+   on the page he gave as the reference. The covers are generated at 3:1 to
+   match, so shortening the frame costs no crop. `background-position` stays at
+   the top so that a viewport too narrow to satisfy min-height crops the foot
+   rather than the logo. */
 /* `width:100%` is load-bearing. With `aspect-ratio` and `max-height` and no
    explicit width, the box solves the ratio the other way round and derives its
    WIDTH from the capped height: the banner came out 952px wide instead of full
@@ -1720,8 +1730,8 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    the difference. */
 .pbanner{position:relative;width:100%;
   background-size:cover;background-position:50% 0%;
-  background-color:var(--navy-d);aspect-ratio:40/21;
-  min-height:340px;
+  background-color:var(--navy-d);aspect-ratio:3/1;
+  min-height:300px;
   display:flex;align-items:flex-end}
 /* The gradient the picture no longer carries. In CSS it sits at the foot of
    the BANNER rather than the foot of the image, so it is under the headline at
@@ -1731,9 +1741,10 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
      dark photographs and read fine; the WordPress cover he swapped in on
      2026-08-25 is a white tablet screen, and the headline's worst backdrop
      came out at luminance 115, a contrast ratio of 2.17 against the 3.0 large
-     text needs. The ramp now reaches .75 by 58%, which is where the top line
-     of a two-line headline sits in a 500px banner, so the worst case lands
-     around 77 and 3.2:1.
+     text needs. Re-tuned again when the banner went to 3:1: the frame got
+     shorter, so the headline sits proportionally HIGHER in it, at 58% rather
+     than near the foot, and the ramp had slipped back to 3.28. It now reaches
+     .78 by 52%, which puts the worst case near 3.8:1.
 
      Steep at the bottom and gentle at the top on purpose: the photograph is
      still a photograph for its top half, and only the strip the words sit on
@@ -1741,8 +1752,8 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
      softening this; a brighter photograph than the tablet one would need
      more, not less. */
   background:linear-gradient(to bottom,
-    rgba(5,15,59,0) 0%, rgba(5,15,59,.08) 20%, rgba(5,15,59,.40) 45%,
-    rgba(5,15,59,.75) 58%, rgba(5,15,59,.96) 100%)}
+    rgba(5,15,59,0) 0%, rgba(5,15,59,.10) 18%, rgba(5,15,59,.42) 38%,
+    rgba(5,15,59,.78) 52%, rgba(5,15,59,.96) 100%)}
 /* A flex item does not take `margin:0 auto` from the base .wrap, so it sat at
    952px and the headline started 42px left of the article below it. Explicit
    basis and auto inline margins put the two on one edge. */
@@ -1774,7 +1785,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
   .pbanner{display:block;aspect-ratio:auto;min-height:0;background:none}
   /* No overlay once the headline is under the picture rather than on it. */
   .pbanner::after{content:none}
-  .pbanner::before{content:"";display:block;aspect-ratio:40/21;
+  .pbanner::before{content:"";display:block;aspect-ratio:3/1;
     background-image:inherit;background-size:cover;background-position:50% 50%;
     background-color:var(--navy-d);border-radius:0}
   .pb-in{padding:24px 0 0;max-width:none}
