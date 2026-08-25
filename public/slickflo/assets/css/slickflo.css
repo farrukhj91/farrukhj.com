@@ -1748,6 +1748,19 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .post li{position:relative;padding-left:26px}
 .post li::before{content:"";position:absolute;left:6px;top:11px;
   width:6px;height:6px;border-radius:50%;background:var(--or)}
+/* Pull quote. A rule down the left rather than quotation marks set large:
+   the author's own quote marks are already in the text, and a decorative pair
+   on top of them reads as a typo. */
+.post blockquote{margin:34px 0;padding:4px 0 4px 26px;
+  border-left:3px solid var(--or);font-size:19.4px;line-height:1.6;
+  letter-spacing:-.014em;color:var(--ink)}
+@media(max-width:640px){
+  .post blockquote{margin:26px 0;padding-left:18px;font-size:17.6px}
+}
+/* Without a byline the meta is a date alone, and the separator before it would
+   be a stray dot at the start of the line. */
+.pmeta time:first-child::before{content:none}
+
 .post a{color:var(--or-d);text-decoration:underline;
   text-underline-offset:2px;text-decoration-thickness:1px}
 .post a:hover{text-decoration-thickness:2px}
