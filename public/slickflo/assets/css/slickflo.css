@@ -1693,45 +1693,77 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-/* The cover is the page header now, so the band above it goes: the site
-   header sits directly on top of the picture. */
-.post-head{padding-top:26px;padding-bottom:0}
-.post-body{padding-top:34px}
+/* ---- article banner: photo behind, headline in front ------------------ */
+/* Replaces the cover-as-<img> header on 2026-08-25. The picture is a
+   background because it is decoration now: the headline on top carries the
+   meaning, and role="img" + aria-label keeps the photograph described.
 
-/* Byline and date, aligned to the ARTICLE column rather than centred under
-   the cover: it gives the text a single left edge running the whole page. */
-.pmeta-w{max-width:776px;margin:20px 0 0;font-size:17px}
-.pmeta{font-size:14.6px;color:var(--mute);
-  display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
-.pmeta time{color:var(--mute)}
-.pmeta time::before{content:"·";margin-right:14px;color:var(--line-2)}
+   40/21 matches the artwork exactly, so nothing is cropped, and `min-height`
+   catches the case the ratio cannot: a long headline at a narrow width. */
+/* `background-position` is TOP, not centre, and the height is capped. The full
+   40/21 ran 664px at 1280, which is the whole first screen for a title; capped
+   at 500 the box is shorter than the picture, so something has to be cropped,
+   and centring it would cut the logo off the top. Top-aligned crops the foot
+   of the photograph instead, which the CSS gradient then covers anyway. */
+/* `width:100%` is load-bearing. With `aspect-ratio` and `max-height` and no
+   explicit width, the box solves the ratio the other way round and derives its
+   WIDTH from the capped height: the banner came out 952px wide instead of full
+   bleed, and the headline sat 42px left of the article under it. Width first,
+   height from the ratio, max-height clamps it, background-size:cover absorbs
+   the difference. */
+.pbanner{position:relative;width:100%;
+  background-size:cover;background-position:50% 0%;
+  background-color:var(--navy-d);aspect-ratio:40/21;
+  min-height:340px;max-height:500px;
+  display:flex;align-items:flex-end}
+/* The gradient the picture no longer carries. In CSS it sits at the foot of
+   the BANNER rather than the foot of the image, so it is under the headline at
+   every height, and a raw photograph with no processing still gets one. */
+.pbanner::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(5,15,59,0) 26%, rgba(5,15,59,.42) 58%, rgba(5,15,59,.88) 100%)}
+/* A flex item does not take `margin:0 auto` from the base .wrap, so it sat at
+   952px and the headline started 42px left of the article below it. Explicit
+   basis and auto inline margins put the two on one edge. */
+.pbanner .wrap{flex:1 1 100%;max-width:1180px;margin-inline:auto;
+  position:relative;z-index:1}
+.pb-in{padding-bottom:44px;max-width:900px}
+.pbanner h1{font-size:clamp(27px,3.6vw,46px);line-height:1.16;
+  letter-spacing:-.032em;color:#fff;
+  /* The artwork's own gradient does the lifting; this is insurance for a
+     photograph swapped in without one, which is the whole point of the split. */
+  text-shadow:0 1px 24px rgba(5,15,59,.45)}
+/* Base. Lost once in the rewrite that introduced the banner, which ran the
+   byline into the date with no separator; restored and kept here so the rule
+   lives beside the thing that uses it. */
+.pmeta{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;
+  font-size:14.6px;line-height:1.5}
+.pmeta time::before{content:"\B7";margin-right:14px;color:var(--line-2)}
+.pmeta time:first-child::before{content:none}
 
-/* ---- cover image ------------------------------------------------------- */
-/* Wider than the text measure and narrower than the wrap: a cover that runs
-   the full column width dwarfs the article under it, and one set to 68ch
-   reads as an illustration rather than as the head of the piece. 2:1, which
-   is close enough to the 1200x630 social card that one file can serve both. */
-/* Full content width, not 880px: it stopped being an illustration inside the
-   article on 2026-08-25 and became the header of the page. */
-.pcover{max-width:none;margin:0 auto;aspect-ratio:40/21;
-  border-radius:16px;overflow:hidden;background:var(--t-navy);
-  border:1px solid var(--line);box-shadow:var(--sh-xs)}
-.pcover img{width:100%;height:100%;object-fit:cover;display:block}
-/* The placeholder holds the exact space the picture will take, so dropping the
-   file in later moves nothing. Dashed, and it says what it is: a placeholder
-   that looks like a design decision is one nobody remembers to replace. */
-.pcover-ph{display:grid;place-items:center;background:var(--bg-alt);
-  border:1px dashed var(--line-2);box-shadow:none}
-.pcover-ph span{font-size:13.4px;font-weight:600;letter-spacing:-.01em;
-  color:var(--mute)}
-@media(max-width:640px){
-  .pcover{border-radius:13px}
-  .post-head{padding-top:18px}
-  .pmeta-w{margin-top:16px;font-size:16.2px}
-  .pmeta{font-size:13.8px}
+.pbanner .pmeta{margin-top:14px;color:rgba(255,255,255,.82)}
+.pbanner .pmeta time{color:rgba(255,255,255,.82)}
+.pbanner .pmeta time::before{color:rgba(255,255,255,.45)}
+.pbanner-ph{background-image:linear-gradient(140deg,var(--navy) 0%,var(--navy-d) 100%)}
+
+/* Below 760px the headline goes UNDER the picture. Three lines of title over
+   a 197px-tall banner is a scrim fighting a photograph and losing; separating
+   them is legible at any length. */
+@media(max-width:760px){
+  .pbanner{display:block;aspect-ratio:auto;min-height:0;max-height:none;
+    background:none}
+  /* No overlay once the headline is under the picture rather than on it. */
+  .pbanner::after{content:none}
+  .pbanner::before{content:"";display:block;aspect-ratio:40/21;
+    background-image:inherit;background-size:cover;background-position:50% 50%;
+    background-color:var(--navy-d);border-radius:0}
+  .pb-in{padding:24px 0 0;max-width:none}
+  .pbanner h1{color:var(--ink);text-shadow:none}
+  .pbanner .pmeta,.pbanner .pmeta time{color:var(--mute)}
+  .pbanner .pmeta time::before{color:var(--line-2)}
 }
 
-/* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
+/* 68ch, not the 74ch the prose blocks use/* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
    under a heading, this is eleven hundred words and the measure has to hold
    up over the whole of it. */
 .post{max-width:68ch;margin:0 auto;font-size:17px;line-height:1.72;
@@ -1819,9 +1851,6 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
   .post-grid{grid-template-columns:minmax(0,1fr);gap:44px;max-width:776px;
     margin:0 auto}
   .pside{position:static;max-width:776px;margin:0 auto}
-  /* Centred here, because the stacked column is centred. Left and centre swap
-     together or the byline stops sitting over the text it belongs to. */
-  .pmeta-w{margin:20px auto 0}
 }
 @media(max-width:560px){
   .pn{grid-template-columns:minmax(0,1fr)}
