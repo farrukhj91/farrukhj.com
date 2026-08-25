@@ -754,7 +754,19 @@ img{max-width:100%;display:block}
   border-radius:14px;overflow:hidden;box-shadow:var(--sh-xs);
   transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
 .art:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:var(--line-2)}
-.art .thumb{aspect-ratio:4/3;overflow:hidden;background:var(--bg-alt);
+/* 2:1, not 4:3. Client 2026-08-25: the cover was being cropped down its sides,
+   because a 2:1 image filling a 4:3 box scales to the height and loses the
+   width. The covers are the standard for every post from here, and the three
+   older branded tiles lose nothing to the change: checked before making it,
+   the ~90px trimmed off their top and bottom is white space, and the logo,
+   title, illustration and strapline all survive intact.
+
+   40/21, NOT 2/1. The covers are 1200x630, which is 1.905:1, and a 2:1 box
+   was still shaving 5% off the top and bottom of them: enough to bite into
+   the headline, which sits near the foot of the artwork. The same number is
+   on .pcover, so the article header does not crop it either. Change both
+   together or one of them starts lying about the picture. */
+.art .thumb{aspect-ratio:40/21;overflow:hidden;background:var(--bg-alt);
   border-bottom:1px solid var(--line)}
 .art .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .art:hover .thumb img{transform:scale(1.04)}
@@ -1701,7 +1713,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    is close enough to the 1200x630 social card that one file can serve both. */
 /* Full content width, not 880px: it stopped being an illustration inside the
    article on 2026-08-25 and became the header of the page. */
-.pcover{max-width:none;margin:0 auto;aspect-ratio:2/1;
+.pcover{max-width:none;margin:0 auto;aspect-ratio:40/21;
   border-radius:16px;overflow:hidden;background:var(--t-navy);
   border:1px solid var(--line);box-shadow:var(--sh-xs)}
 .pcover img{width:100%;height:100%;object-fit:cover;display:block}
