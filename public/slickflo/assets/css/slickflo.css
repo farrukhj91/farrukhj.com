@@ -1720,8 +1720,22 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    the BANNER rather than the foot of the image, so it is under the headline at
    every height, and a raw photograph with no processing still gets one. */
 .pbanner::after{content:"";position:absolute;inset:0;pointer-events:none;
+  /* Stops MEASURED, not chosen by eye. The first pass was tuned against two
+     dark photographs and read fine; the WordPress cover he swapped in on
+     2026-08-25 is a white tablet screen, and the headline's worst backdrop
+     came out at luminance 115, a contrast ratio of 2.17 against the 3.0 large
+     text needs. The ramp now reaches .75 by 58%, which is where the top line
+     of a two-line headline sits in a 500px banner, so the worst case lands
+     around 77 and 3.2:1.
+
+     Steep at the bottom and gentle at the top on purpose: the photograph is
+     still a photograph for its top half, and only the strip the words sit on
+     is carried down to something they can be read against. Re-measure before
+     softening this; a brighter photograph than the tablet one would need
+     more, not less. */
   background:linear-gradient(to bottom,
-    rgba(5,15,59,0) 26%, rgba(5,15,59,.42) 58%, rgba(5,15,59,.88) 100%)}
+    rgba(5,15,59,0) 0%, rgba(5,15,59,.08) 20%, rgba(5,15,59,.40) 45%,
+    rgba(5,15,59,.75) 58%, rgba(5,15,59,.96) 100%)}
 /* A flex item does not take `margin:0 auto` from the base .wrap, so it sat at
    952px and the headline started 42px left of the article below it. Explicit
    basis and auto inline margins put the two on one edge. */
