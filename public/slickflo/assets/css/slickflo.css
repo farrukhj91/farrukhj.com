@@ -1700,7 +1700,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 
 /* Byline and date, aligned to the ARTICLE column rather than centred under
    the cover: it gives the text a single left edge running the whole page. */
-.pmeta-w{max-width:68ch;margin:20px auto 0;font-size:17px}
+.pmeta-w{max-width:776px;margin:20px 0 0;font-size:17px}
 .pmeta{font-size:14.6px;color:var(--mute);
   display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
 .pmeta time{color:var(--mute)}
@@ -1755,4 +1755,63 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
   .post{font-size:16.2px;line-height:1.68}
   .post h2{margin-top:38px}
   .post h3{margin-top:28px}
+}
+
+/* ==========================================================================
+   Article sidebar and prev/next, 2026-08-25
+   ========================================================================== */
+/* One grid, article and sidebar together. 776px is the article's own measure
+   (68ch at 17px) written as a number, because the sidebar column has to be
+   subtracted from the same total and `ch` here would resolve against the
+   grid's font size rather than the article's. 776 + 48 + 280 = 1104, inside
+   the 1120 wrap at 1280. */
+.post-grid{display:grid;grid-template-columns:minmax(0,776px) 280px;
+  gap:48px;justify-content:start;align-items:start}
+.post-grid .post{margin:0}
+
+/* Sticky, so it is still there four minutes into the article. `top` clears
+   the site header, which is itself sticky. */
+.pside{position:sticky;top:96px}
+.subc{background:var(--t-navy);border:1px solid var(--line);border-radius:14px;
+  padding:24px 22px}
+.subc h2{font-size:18.4px;letter-spacing:-.022em;color:var(--ink)}
+.subc p{margin-top:9px;font-size:14px;line-height:1.58;color:var(--body)}
+.subf{margin-top:16px;display:grid;gap:7px}
+.subf label{font-size:12.8px;font-weight:650;color:var(--mute)}
+.subf input{width:100%;padding:11px 13px;font:inherit;font-size:14.6px;
+  color:var(--ink);background:#fff;border:1px solid var(--line-2);
+  border-radius:9px}
+.subf input:focus-visible{outline:2px solid var(--or);outline-offset:1px;
+  border-color:transparent}
+.subf .btn{margin-top:5px;width:100%;justify-content:center}
+
+/* Previous / next. Spans the full wrap under both columns, so it reads as the
+   end of the page rather than the end of the text column. */
+.pn{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pn-l{display:grid;gap:5px;padding:18px 20px;background:#fff;
+  border:1px solid var(--line);border-radius:13px;box-shadow:var(--sh-xs);
+  transition:border-color .2s var(--ease),transform .2s var(--ease),
+             box-shadow .2s var(--ease)}
+.pn-l:hover{border-color:var(--line-2);transform:translateY(-2px);
+  box-shadow:var(--sh-sm)}
+.pn-k{font-size:12.4px;font-weight:700;letter-spacing:-.004em;color:var(--or-d)}
+.pn-t{font-size:15.4px;line-height:1.38;letter-spacing:-.02em;color:var(--ink)}
+/* Next sits right and reads right, so the pair mirrors the direction of
+   travel rather than being two identical cards side by side. */
+.pn-n{text-align:right}
+/* A lone Next must not sit in the left column pretending to be a Previous. */
+.pn-n:only-child{grid-column:2}
+
+@media(max-width:1000px){
+  .post-grid{grid-template-columns:minmax(0,1fr);gap:44px;max-width:776px;
+    margin:0 auto}
+  .pside{position:static;max-width:776px;margin:0 auto}
+  /* Centred here, because the stacked column is centred. Left and centre swap
+     together or the byline stops sitting over the text it belongs to. */
+  .pmeta-w{margin:20px auto 0}
+}
+@media(max-width:560px){
+  .pn{grid-template-columns:minmax(0,1fr)}
+  .pn-n{text-align:left}
+  .pn-n:only-child{grid-column:1}
 }
