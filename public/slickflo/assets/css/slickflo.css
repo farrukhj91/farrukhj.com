@@ -646,8 +646,11 @@ img{max-width:100%;display:block}
    layout, so what is announced matches what is on screen. With JS off none
    of that runs and all seven read as a plain list. */
 .tsplit-l .qm{color:var(--or);display:block;line-height:0;margin-bottom:16px}
-.tq-i{margin:0;font-size:21px;line-height:1.55;color:var(--ink);
+.tq-i blockquote{margin:0;font-size:21px;line-height:1.55;color:var(--ink);
   letter-spacing:-.014em;font-weight:450}
+/* "What we did" moved here from the card, client 2026-08-25, so the work
+   sits with the words about the work. */
+.tq-i .tdel{margin-top:16px}
 html.js .tq-i{animation:tqin .45s ease both}
 @keyframes tqin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){html.js .tq-i{animation:none}}
@@ -688,10 +691,13 @@ html.js .tsi.is-on .tcard{transform:scale(1);background:var(--navy-d);
 html.js .tsi.is-on .tn,html.js .tsi.is-on .tn b{color:#fff}
 html.js .tsi.is-on .torg{color:rgba(255,255,255,.72)}
 html.js .tsi.is-on blockquote{color:rgba(255,255,255,.92)}
-html.js .tsi.is-on .qm{color:var(--or-l)}
-html.js .tsi.is-on .tdel{background:rgba(255,255,255,.12);color:#fff;
-  border-color:rgba(255,255,255,.2)}
-html.js .tsi.is-on .tdel-k{color:var(--or-l)}
+/* THE SECTOR TAG ON THE ACTIVE CARD. Without this it keeps var(--body), a
+   dark grey, on a transparent tag over the navy card: dark on dark, which is
+   what the client reported. The "What we did" tag never had this problem
+   because it had its own is-on rule, and it has since moved off the card
+   entirely, so this is the only tag left that needs one. */
+html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.38);background:rgba(255,255,255,.08)}
 @media (prefers-reduced-motion:reduce){
   html.js .tslide-list,html.js .tsi,html.js .tsi .tcard{transition:none}
 }
