@@ -209,6 +209,8 @@
   if (slider) {
     var list = slider.querySelector(".tslide-list");
     var items = slice(slider.querySelectorAll(".tsi"));
+    var quoteBox = document.querySelector("[data-tq]");
+    var quotes = quoteBox ? slice(quoteBox.querySelectorAll(".tq-i")) : [];
     var wrapEl = slider.closest(".tsplit-r") || slider.parentNode;
     var prevBtn = document.querySelector("[data-t-prev]");
     var nextBtn = document.querySelector("[data-t-next]");
@@ -232,6 +234,23 @@
         if (h > max) max = h;
       });
       if (max) wrapEl.style.setProperty("--tsi-h", Math.ceil(max) + "px");
+
+      /* Same problem in the other column: the quotes are different lengths,
+         so without a floor the left half jumps every time one swaps and the
+         buttons move under the cursor. Reserve the tallest. Measured with
+         every quote shown, then put back the way it was. */
+      if (quoteBox && quotes.length) {
+        var was = quotes.map(function (q) { return q.hidden; });
+        quotes.forEach(function (q) { q.hidden = false; });
+        quoteBox.style.minHeight = "0px";
+        var qmax = 0;
+        quotes.forEach(function (q) {
+          var h = q.getBoundingClientRect().height;
+          if (h > qmax) qmax = h;
+        });
+        quotes.forEach(function (q, i) { q.hidden = was[i]; });
+        if (qmax) quoteBox.style.minHeight = Math.ceil(qmax) + "px";
+      }
     };
 
     var step = function () {
@@ -259,6 +278,23 @@
         el.classList.toggle("is-prev", i === at - 1);
         el.classList.toggle("is-next", i === at + 1);
       });
+      /* The quote lives in the other column and swaps with the card.
+         `hidden` rather than a class, so the six that are not showing leave
+         the accessibility tree as well as the layout: a screen reader should
+         hear the one quote that is on screen, not all seven. Re-adding the
+         node is what restarts the fade. */
+      quotes.forEach(function (q, i) {
+        if (i === at) {
+          q.hidden = false;
+          if (!reduced) {
+            q.style.animation = "none";
+            void q.offsetWidth;
+            q.style.animation = "";
+          }
+        } else {
+          q.hidden = true;
+        }
+      });
       /* Put the active card in the middle slot: offset by however many slots
          sit above it. One slot means no offset at all. */
       var lead = Math.floor((slots() - 1) / 2);
@@ -284,12 +320,16 @@
     if (prevBtn) prevBtn.addEventListener("click", function () { bump(-1); });
     if (nextBtn) nextBtn.addEventListener("click", function () { bump(1); });
 
-    /* Pause while someone is reading it or tabbing through it. */
+    /* Pause while someone is reading it or tabbing through it. Scoped to the
+       whole split, not just the slider: the quote someone is actually reading
+       is in the other column, and pausing only when the cursor is over the
+       names would move the text out from under them. */
+    var hoverEl = slider.closest(".tsplit") || wrapEl;
     ["mouseenter", "focusin"].forEach(function (ev) {
-      wrapEl.addEventListener(ev, stop);
+      hoverEl.addEventListener(ev, stop);
     });
     ["mouseleave", "focusout"].forEach(function (ev) {
-      wrapEl.addEventListener(ev, start);
+      hoverEl.addEventListener(ev, start);
     });
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) stop(); else start();

@@ -635,11 +635,22 @@ img{max-width:100%;display:block}
    landing in the middle. Quotes run 4 to 5 lines at this width; the height is
    set for the longest plus the three meta lines. If a longer quote is ever
    added, this grows: check with a sweep, do not guess. */
-.tsec-vars{}
-.tsplit{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+.tsplit{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
   gap:56px;align-items:center}
-.tsplit-l .shead{margin-bottom:0}
-.tsplit-r{--tsi-h:212px;--tsi-gap:14px;min-width:0}
+.tsplit-l{min-width:0}
+.tsplit-r{--tsi-h:132px;--tsi-gap:14px;min-width:0}
+
+/* The quote is the left-hand half now, and the biggest text in the section.
+   All seven are in the DOM; the JS puts `hidden` on the six that are not
+   active, which drops them from the accessibility tree as well as the
+   layout, so what is announced matches what is on screen. With JS off none
+   of that runs and all seven read as a plain list. */
+.tsplit-l .qm{color:var(--or);display:block;line-height:0;margin-bottom:16px}
+.tq-i{margin:0;font-size:21px;line-height:1.55;color:var(--ink);
+  letter-spacing:-.014em;font-weight:450}
+html.js .tq-i{animation:tqin .45s ease both}
+@keyframes tqin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){html.js .tq-i{animation:none}}
 
 /* No JS: the transform never runs, so show the whole list as a plain stack
    rather than a 3-card window onto a track that cannot move. */
@@ -675,20 +686,19 @@ html.js .tsi.is-on .tdel-k{color:var(--or-l)}
   html.js .tslide-list,html.js .tsi,html.js .tsi .tcard{transition:none}
 }
 
-.tcard .qm{color:var(--or);margin:14px 0 8px;display:block;line-height:0}
-.tcard blockquote{margin:0;font-size:15.6px;line-height:1.6;color:var(--body);
-  letter-spacing:-.008em}
 .tcap{display:block}
 .tcap .tn{font-size:15px;line-height:1.45;color:var(--body);
   letter-spacing:-.016em;display:block}
 .tcap .tn b{font-weight:600;color:var(--ink)}
 .tcap .torg{display:block;margin-top:2px;font-size:13.4px;color:var(--mute);
   letter-spacing:0}
-.tdel{display:inline-flex;align-items:baseline;gap:7px;margin-top:10px;
-  padding:4px 10px;border:1px solid var(--line);border-radius:999px;
+/* "What we did", sentence case. Was "Delivered" in small caps until the
+   client called it bland; all caps is a standing no on this site anyway. */
+.tdel{display:inline-flex;align-items:baseline;gap:6px;margin-top:10px;
+  padding:4px 11px;border:1px solid var(--line);border-radius:999px;
   background:var(--t-navy);font-size:12.8px;color:var(--ink);letter-spacing:0}
-.tdel-k{font-size:10.6px;font-weight:600;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--navy)}
+.tdel-k{font-size:12.8px;font-weight:600;color:var(--navy)}
+.tdel-k::after{content:":"}
 
 .tnav{display:flex;align-items:center;gap:10px;margin-top:26px}
 .tnav-b{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
