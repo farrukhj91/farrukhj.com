@@ -65,10 +65,22 @@ img{max-width:100%;display:block}
 .sec.alt{background:var(--bg-alt);border-top:1px solid var(--line);
   border-bottom:1px solid var(--line)}
 .sec.tight{padding:calc(var(--pad) * .62) 0}
-.shead{text-align:center;max-width:64ch;margin:0 auto 56px}
+/* 64ch was one measure doing two jobs. It is the right reading width for the
+   paragraph at 17.5px and far too narrow for the heading at 42px, which got
+   about 22 characters a line and ran to three rows on any heading of normal
+   length: "We work with all leading documentation and knowledgebase
+   platforms" is 66 characters and took three. Client 2026-09-02.
+
+   The block is wide enough for the heading now and the paragraph keeps its
+   own 64ch, so the reading measure is unchanged and only the display type
+   got the room it needed. 880px because the two longest headings on the site
+   need 760 and 800 to fall to two lines. */
+.shead{text-align:center;max-width:min(880px,100%);margin:0 auto 56px}
 .shead.left{text-align:left;margin-left:0}
 .shead h2{font-size:clamp(28px,3.7vw,42px);line-height:1.1;letter-spacing:-.032em}
-.shead p{font-size:17.5px;color:var(--body);margin-top:16px}
+.shead p{font-size:17.5px;color:var(--body);margin-top:16px;
+  max-width:64ch;margin-left:auto;margin-right:auto}
+.shead.left p{margin-left:0}
 .kicker{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:550;
   color:var(--or-d);margin-bottom:14px;letter-spacing:-.008em}
 .kicker::before{content:"";width:18px;height:2px;background:var(--or);border-radius:2px}
