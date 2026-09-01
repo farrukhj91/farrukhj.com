@@ -656,8 +656,18 @@ html.js .tq-i{animation:tqin .45s ease both}
    rather than a 3-card window onto a track that cannot move. */
 .tslide-list{list-style:none;margin:0;padding:0;display:flex;
   flex-direction:column;gap:var(--tsi-gap)}
+/* 22px, and written out rather than var(--r). THERE IS NO --r ON :root: it
+   was only ever set inline by build.py as a GRID ROW INDEX on .sg-l/.sg-r,
+   so `border-radius:var(--r)` here resolved to nothing and these cards had
+   been rendering perfectly square while every other card on the site is
+   14px. That is what the client saw when he asked for curvy edges. The value
+   is deliberately rounder than the site's 14px, which is what he asked for.
+
+   .svc-col still has the same var(--r) bug and is still square. Left alone
+   because rounding it is a change to a section nobody asked about: see
+   PLAN §8. */
 .tcard{margin:0;background:var(--card);border:1px solid var(--line);
-  border-radius:var(--r);padding:22px 26px;box-shadow:var(--sh-sm)}
+  border-radius:22px;padding:22px 26px;box-shadow:var(--sh-sm)}
 
 html.js .tslide{position:relative;overflow:hidden;
   height:calc(var(--tsi-h)*3 + var(--tsi-gap)*2);
@@ -692,11 +702,19 @@ html.js .tsi.is-on .tdel-k{color:var(--or-l)}
 .tcap .tn b{font-weight:600;color:var(--ink)}
 .tcap .torg{display:block;margin-top:2px;font-size:13.4px;color:var(--mute);
   letter-spacing:0}
+/* Sector and "What we did" share a row of their own, client 2026-08-25:
+   "I feel the industry should be in separate row or something." Both are
+   labels about the engagement, where the line above is who and where. Wraps
+   rather than overflows on a narrow card. */
+.ttags{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:11px}
+.tsec,.tdel{display:inline-flex;align-items:baseline;gap:6px;
+  padding:4px 11px;border-radius:999px;font-size:12.8px;letter-spacing:0}
+/* The sector is the quieter of the two: an outline tag, so it reads as a
+   category rather than competing with the work we actually did. */
+.tsec{border:1px solid var(--line-2);background:transparent;color:var(--body)}
 /* "What we did", sentence case. Was "Delivered" in small caps until the
    client called it bland; all caps is a standing no on this site anyway. */
-.tdel{display:inline-flex;align-items:baseline;gap:6px;margin-top:10px;
-  padding:4px 11px;border:1px solid var(--line);border-radius:999px;
-  background:var(--t-navy);font-size:12.8px;color:var(--ink);letter-spacing:0}
+.tdel{border:1px solid var(--line);background:var(--t-navy);color:var(--ink)}
 .tdel-k{font-size:12.8px;font-weight:600;color:var(--navy)}
 .tdel-k::after{content:":"}
 
