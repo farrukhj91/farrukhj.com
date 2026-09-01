@@ -635,9 +635,22 @@ img{max-width:100%;display:block}
    landing in the middle. Quotes run 4 to 5 lines at this width; the height is
    set for the longest plus the three meta lines. If a longer quote is ever
    added, this grows: check with a sweep, do not guess. */
-.tsplit{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:56px;align-items:center}
-.tsplit-l{min-width:0}
+.tsplit{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
+  gap:56px;align-items:stretch}
+
+/* THE QUOTE HAS TO LINE UP WITH ITS OWN CARD, client 2026-08-25.
+   Centring the left column as a whole does not do it: the column also holds
+   the quote mark above and the buttons below, and those are not symmetric,
+   so the quote text sat 35px above the active card's top and 54px above its
+   middle. Three rows of 1fr / auto / 1fr put the quote in the middle row,
+   which centres THE QUOTE rather than the column, and the active card is
+   always the middle slot of the slider, so the two centres coincide by
+   construction at any height. The mark hangs at the bottom of the row above
+   it, the buttons at the bottom of the row below. */
+.tsplit-l{min-width:0;display:grid;grid-template-rows:1fr auto 1fr}
+.tsplit-l .qm{grid-row:1;align-self:end}
+.tsplit-l .tq{grid-row:2}
+.tsplit-l .tnav{grid-row:3;align-self:end}
 .tsplit-r{--tsi-h:132px;--tsi-gap:14px;min-width:0}
 
 /* The quote is the left-hand half now, and the biggest text in the section.
@@ -645,9 +658,14 @@ img{max-width:100%;display:block}
    active, which drops them from the accessibility tree as well as the
    layout, so what is announced matches what is on screen. With JS off none
    of that runs and all seven read as a plain list. */
-.tsplit-l .qm{color:var(--or);display:block;line-height:0;margin-bottom:16px}
+.tsplit-l .qm{color:var(--or);display:block;line-height:0;padding-bottom:16px}
 .tq-i blockquote{margin:0;font-size:21px;line-height:1.55;color:var(--ink);
   letter-spacing:-.014em;font-weight:450}
+/* The box reserves the height of the LONGEST quote so the buttons below it
+   do not jump every five seconds. Without centring, a short quote then sits
+   at the top of that reserved space and drifts above its card by however
+   much shorter it is. Centre the visible one inside the reservation. */
+.tq{display:grid;align-content:center}
 /* "What we did" moved here from the card, client 2026-08-25, so the work
    sits with the words about the work. */
 .tq-i .tdel{margin-top:16px}
@@ -670,7 +688,7 @@ html.js .tq-i{animation:tqin .45s ease both}
    because rounding it is a change to a section nobody asked about: see
    PLAN §8. */
 .tcard{margin:0;background:var(--card);border:1px solid var(--line);
-  border-radius:22px;padding:22px 26px;box-shadow:var(--sh-sm)}
+  border-radius:22px;padding:18px 22px;box-shadow:var(--sh-sm)}
 
 html.js .tslide{position:relative;overflow:hidden;
   height:calc(var(--tsi-h)*3 + var(--tsi-gap)*2);
@@ -736,7 +754,12 @@ html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
   font-variant-numeric:tabular-nums}
 
 @media (max-width:900px){
-  .tsplit{grid-template-columns:1fr;gap:26px;align-items:stretch}
+  .tsplit{grid-template-columns:1fr;gap:26px}
+  /* Stacked, so there is no card to line up with and the three-row trick
+     would just add empty space above and below the quote. */
+  .tsplit-l{display:block}
+  .tsplit-l .qm{margin-bottom:14px}
+  .tsplit-l .tnav{margin-top:22px}
 }
 /* One card at a time on a phone. Three cards came to 979px at 375, most of
    two screens for a section where only the middle card is readable anyway.
