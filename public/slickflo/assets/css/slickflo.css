@@ -626,38 +626,95 @@ img{max-width:100%;display:block}
 .chk span{font-size:15.4px;line-height:1.55;color:var(--body)}
 
 /* -------------------------------------------------------- testimonial ---
-   Six testimonials at once, 3 + 3 at desktop. auto-fit handles the wrap
-   without leaving a hole in the grid.
+   Two columns: heading and controls left, a vertical slider right, one card
+   highlighted with its neighbours dimmed above and below. Client instruction
+   2026-08-25, from a reference GIF.
 
-   min(290px,100%) rather than a bare 290px: at a 320px viewport the .wrap
-   content box is 260px, so a hard 290px track rendered 290px wide and clipped
-   30px off the right of every card. body{overflow-x:hidden} hid that from a
-   page-level scroll check, which is why it survived several sweeps. */
-.tgrid{display:grid;gap:20px;
-  grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}
-.tst{display:flex;flex-direction:column;background:var(--card);
-  border:1px solid var(--line);border-radius:var(--r);padding:28px;margin:0;
-  box-shadow:var(--sh-sm);transition:border-color var(--t),transform var(--t),
-  box-shadow var(--t)}
-.tst:hover{border-color:var(--line-2);box-shadow:var(--sh-md);transform:translateY(-3px)}
-.tst .qm{color:var(--or);margin-bottom:16px;display:inline-block;line-height:0}
-.tst blockquote{margin:0;font-size:16.2px;line-height:1.62;color:var(--body);
-  letter-spacing:-.008em;flex:1}
-.tmeta{display:flex;align-items:center;gap:13px;margin-top:22px;padding-top:20px;
-  border-top:1px solid var(--line)}
-.tmeta .av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
-  font-size:14px;font-weight:600;letter-spacing:-.02em;flex:none}
-.tmeta .av.c1{background:var(--t-navy);color:var(--navy)}
-.tmeta .av.c2{background:var(--t-indigo);color:var(--indigo)}
-.tmeta .av.c3{background:var(--t-orl);color:var(--or-l)}
-.tmeta .av.c4{background:var(--t-or);color:var(--or-d)}
-/* Two lines under the quote: "Name; Designation", then
-   "Company, Country | Sector". The name is bold and INLINE, not block, so the
-   designation stays on its line with it. */
-.tmeta .tn{font-size:15px;line-height:1.5;color:var(--body);letter-spacing:-.016em}
-.tmeta .tn b{font-weight:600;color:var(--ink)}
-.tmeta .tn .torg{display:block;margin-top:3px;font-size:13.6px;
-  color:var(--mute);letter-spacing:0}
+   --tsi-h is THE load-bearing number. The track translates by whole steps of
+   (card + gap), so every card must be the same height or the active one stops
+   landing in the middle. Quotes run 4 to 5 lines at this width; the height is
+   set for the longest plus the three meta lines. If a longer quote is ever
+   added, this grows: check with a sweep, do not guess. */
+.tsec-vars{}
+.tsplit{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:56px;align-items:center}
+.tsplit-l .shead{margin-bottom:0}
+.tsplit-r{--tsi-h:212px;--tsi-gap:14px;min-width:0}
+
+/* No JS: the transform never runs, so show the whole list as a plain stack
+   rather than a 3-card window onto a track that cannot move. */
+.tslide-list{list-style:none;margin:0;padding:0;display:flex;
+  flex-direction:column;gap:var(--tsi-gap)}
+.tcard{margin:0;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:22px 26px;box-shadow:var(--sh-sm)}
+
+html.js .tslide{position:relative;overflow:hidden;
+  height:calc(var(--tsi-h)*3 + var(--tsi-gap)*2);
+  /* The dimmed neighbours fade out at the edges instead of being cut by a
+     hard line, which is what makes it read as a wheel rather than a list. */
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%)}
+html.js .tslide-list{transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+html.js .tsi{height:var(--tsi-h);flex:none;opacity:.42;
+  transition:opacity .45s var(--t-e,ease),transform .45s var(--t-e,ease)}
+html.js .tsi .tcard{height:100%;display:flex;flex-direction:column;
+  transform:scale(.94);transform-origin:center;
+  transition:transform .45s ease,background-color .45s ease,
+  border-color .45s ease,box-shadow .45s ease}
+html.js .tsi.is-on{opacity:1}
+html.js .tsi.is-on .tcard{transform:scale(1);background:var(--navy-d);
+  border-color:var(--navy-d);box-shadow:var(--sh-lg)}
+html.js .tsi.is-on .tn,html.js .tsi.is-on .tn b{color:#fff}
+html.js .tsi.is-on .torg{color:rgba(255,255,255,.72)}
+html.js .tsi.is-on blockquote{color:rgba(255,255,255,.92)}
+html.js .tsi.is-on .qm{color:var(--or-l)}
+html.js .tsi.is-on .tdel{background:rgba(255,255,255,.12);color:#fff;
+  border-color:rgba(255,255,255,.2)}
+html.js .tsi.is-on .tdel-k{color:var(--or-l)}
+@media (prefers-reduced-motion:reduce){
+  html.js .tslide-list,html.js .tsi,html.js .tsi .tcard{transition:none}
+}
+
+.tcard .qm{color:var(--or);margin:14px 0 8px;display:block;line-height:0}
+.tcard blockquote{margin:0;font-size:15.6px;line-height:1.6;color:var(--body);
+  letter-spacing:-.008em}
+.tcap{display:block}
+.tcap .tn{font-size:15px;line-height:1.45;color:var(--body);
+  letter-spacing:-.016em;display:block}
+.tcap .tn b{font-weight:600;color:var(--ink)}
+.tcap .torg{display:block;margin-top:2px;font-size:13.4px;color:var(--mute);
+  letter-spacing:0}
+.tdel{display:inline-flex;align-items:baseline;gap:7px;margin-top:10px;
+  padding:4px 10px;border:1px solid var(--line);border-radius:999px;
+  background:var(--t-navy);font-size:12.8px;color:var(--ink);letter-spacing:0}
+.tdel-k{font-size:10.6px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--navy)}
+
+.tnav{display:flex;align-items:center;gap:10px;margin-top:26px}
+.tnav-b{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);display:grid;place-items:center;
+  cursor:pointer;transition:border-color var(--t),background var(--t),
+  color var(--t)}
+.tnav-b:hover{border-color:var(--navy);background:var(--t-navy);color:var(--navy)}
+.tnav-b:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+.tnav-next svg{transform:rotate(180deg)}
+.tnav-c{font-size:13.4px;color:var(--mute);margin-left:4px;
+  font-variant-numeric:tabular-nums}
+
+@media (max-width:900px){
+  .tsplit{grid-template-columns:1fr;gap:26px;align-items:stretch}
+}
+/* One card at a time on a phone. Three cards came to 979px at 375, most of
+   two screens for a section where only the middle card is readable anyway.
+   The JS reads the slot count back off this height, so changing the number
+   here is the whole change. */
+@media (max-width:620px){
+  html.js .tslide{height:var(--tsi-h);
+    -webkit-mask-image:none;mask-image:none}
+  html.js .tsi{opacity:1}
+  html.js .tsi .tcard{transform:none}
+  .tcard{padding:20px}
+}
 
 /* ------------------------------------------- gradient band -------------- */
 /* A defined gradient plane, square edges. Crisp, no halo. One per page max. */

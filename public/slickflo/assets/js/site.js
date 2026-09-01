@@ -192,4 +192,125 @@
       }
     });
   }
+
+  /* ---- testimonial slider (client 2026-08-25) ----
+     A vertical wheel: one card highlighted, its neighbours dimmed above and
+     below. The track moves in whole steps of (card height + gap), which is
+     why --tsi-h in the CSS has to match the real card height. Both are read
+     back from the DOM here rather than duplicated as numbers in JS.
+
+     Every card stays in the DOM and in the accessibility tree. This is
+     decoration over a list, not a way of hiding six testimonials from a
+     screen reader or from Google.
+
+     WITH JS OFF none of this runs and the CSS shows the plain stack, which is
+     why the `html.js` scope exists on those rules. */
+  var slider = document.querySelector("[data-tslide]");
+  if (slider) {
+    var list = slider.querySelector(".tslide-list");
+    var items = slice(slider.querySelectorAll(".tsi"));
+    var wrapEl = slider.closest(".tsplit-r") || slider.parentNode;
+    var prevBtn = document.querySelector("[data-t-prev]");
+    var nextBtn = document.querySelector("[data-t-next]");
+    var countEl = document.querySelector("[data-t-count]");
+    var at = 0;
+    var timer = null;
+    var HOLD = 5200;
+
+    /* --tsi-h is SET HERE, not trusted from the stylesheet.
+       Every card has to be the same height or the track cannot move in whole
+       steps, but that height depends on the longest quote at the current
+       width, and the quotes get edited. Hard-coding it clipped four of seven
+       cards the first time this shipped. So: let them size naturally, measure
+       the tallest, and fix them all to that. The CSS value is only a starting
+       guess for the moment before this runs. */
+    var fit = function () {
+      wrapEl.style.setProperty("--tsi-h", "auto");
+      var max = 0;
+      items.forEach(function (el) {
+        var h = el.getBoundingClientRect().height;
+        if (h > max) max = h;
+      });
+      if (max) wrapEl.style.setProperty("--tsi-h", Math.ceil(max) + "px");
+    };
+
+    var step = function () {
+      if (items.length < 2) return 0;
+      /* Measured, not computed from the CSS variable: if the two ever
+         disagree the measurement is the one that matches what the user
+         sees. */
+      return items[1].getBoundingClientRect().top -
+             items[0].getBoundingClientRect().top;
+    };
+
+    /* How many cards the window shows, read back from the rendered height
+       rather than assumed. Three at desktop, one under 620px where three came
+       to most of two phone screens. Keeping it a measurement means the
+       breakpoint lives in the CSS alone. */
+    var slots = function () {
+      var s = step();
+      if (!s) return 1;
+      return Math.max(1, Math.round(slider.getBoundingClientRect().height / s));
+    };
+
+    var paint = function () {
+      items.forEach(function (el, i) {
+        el.classList.toggle("is-on", i === at);
+        el.classList.toggle("is-prev", i === at - 1);
+        el.classList.toggle("is-next", i === at + 1);
+      });
+      /* Put the active card in the middle slot: offset by however many slots
+         sit above it. One slot means no offset at all. */
+      var lead = Math.floor((slots() - 1) / 2);
+      list.style.transform = "translateY(" + (-(at - lead) * step()) + "px)";
+      if (countEl) countEl.textContent = (at + 1) + " / " + items.length;
+    };
+
+    var go = function (i) {
+      at = (i + items.length) % items.length;
+      paint();
+    };
+
+    var stop = function () { if (timer) { clearInterval(timer); timer = null; } };
+    var start = function () {
+      /* No auto-advance under prefers-reduced-motion. A carousel that moves
+         on its own is exactly what that setting is asking us not to do; the
+         buttons still work. */
+      if (reduced || timer || items.length < 2) return;
+      timer = setInterval(function () { go(at + 1); }, HOLD);
+    };
+    var bump = function (d) { stop(); go(at + d); start(); };
+
+    if (prevBtn) prevBtn.addEventListener("click", function () { bump(-1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { bump(1); });
+
+    /* Pause while someone is reading it or tabbing through it. */
+    ["mouseenter", "focusin"].forEach(function (ev) {
+      wrapEl.addEventListener(ev, stop);
+    });
+    ["mouseleave", "focusout"].forEach(function (ev) {
+      wrapEl.addEventListener(ev, start);
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    /* The step depends on the card height, which changes at the two
+       breakpoints, so recompute on resize. */
+    var rt = null;
+    var remeasure = function () { fit(); paint(); };
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(remeasure, 120);
+    });
+
+    fit();
+    paint();
+    /* A webfont swapping in after this point rewraps the quotes and changes
+       the tallest card, so measure again once the fonts are settled. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(remeasure);
+    }
+    start();
+  }
 })();
