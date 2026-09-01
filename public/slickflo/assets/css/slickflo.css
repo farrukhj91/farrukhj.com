@@ -761,8 +761,6 @@ html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
 .tnav-b:hover{border-color:var(--navy);background:var(--t-navy);color:var(--navy)}
 .tnav-b:focus-visible{outline:2px solid var(--or);outline-offset:2px}
 .tnav-next svg{transform:rotate(180deg)}
-.tnav-c{font-size:13.4px;color:var(--mute);margin-left:4px;
-  font-variant-numeric:tabular-nums}
 
 @media (max-width:900px){
   .tsplit{grid-template-columns:1fr;gap:26px}

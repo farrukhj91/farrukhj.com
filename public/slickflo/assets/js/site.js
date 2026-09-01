@@ -214,7 +214,6 @@
     var wrapEl = slider.closest(".tsplit-r") || slider.parentNode;
     var prevBtn = document.querySelector("[data-t-prev]");
     var nextBtn = document.querySelector("[data-t-next]");
-    var countEl = document.querySelector("[data-t-count]");
     var at = 0;
     var timer = null;
     var HOLD = 5200;
@@ -330,7 +329,6 @@
          sit above it. One slot means no offset at all. */
       var lead = Math.floor((slots() - 1) / 2);
       list.style.transform = "translateY(" + (-(at - lead) * step()) + "px)";
-      if (countEl) countEl.textContent = (at + 1) + " / " + items.length;
     };
 
     var go = function (i) {
