@@ -649,7 +649,9 @@ img{max-width:100%;display:block}
    it, the buttons at the bottom of the row below. */
 .tsplit-l{min-width:0;display:grid;grid-template-rows:1fr auto 1fr}
 .tsplit-l .tq{grid-row:2}
-.tsplit-l .tnav{grid-row:3;align-self:end}
+/* margin-bottom lifts them off the column's bottom edge, which they sat flush
+   against. Client 2026-08-25, "move the up and down button slightly upward". */
+.tsplit-l .tnav{grid-row:3;align-self:end;margin-bottom:26px}
 .tsplit-r{--tsi-h:132px;--tsi-gap:14px;min-width:0}
 
 /* The quote is the left-hand half now, and the biggest text in the section.
@@ -767,7 +769,8 @@ html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
   /* Stacked, so there is no card to line up with and the three-row trick
      would just add empty space above and below the quote. */
   .tsplit-l{display:block}
-  .tsplit-l .tnav{margin-top:22px}
+  /* No column bottom to lift off when it is stacked. */
+  .tsplit-l .tnav{margin-top:22px;margin-bottom:0}
 }
 /* One card at a time on a phone. Three cards came to 979px at 375, most of
    two screens for a section where only the middle card is readable anyway.
