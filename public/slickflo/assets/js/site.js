@@ -244,29 +244,31 @@
         quotes.forEach(function (q) { q.hidden = false; });
         quoteBox.style.minHeight = "0px";
 
-        /* Centring the block is not the same as centring the quote: the
-           block is the words plus the "What we did" pill under them, so a
-           centred block leaves the WORDS sitting high by half the pill,
-           which is what the reader actually looks at. Shift each quote down
-           by half its own pill so the words land on the card's centre line.
+        /* Centring the block is not the same as centring the quote. The block
+           is the mark, the words and the "What we did" pill, and the reader
+           looks only at the words, so a centred block still reads as
+           misaligned. Shift each one so its WORDS sit on the block's centre
+           line, which the CSS then centres on the card.
 
-           Per quote, not one shared value, because a pill that wraps to two
-           lines needs a bigger shift. It causes no jump: a taller pill means
-           a taller block AND a bigger shift, so the words land in the same
-           place either way. Off when the layout is stacked and there is no
-           card to line up with. */
+           MEASURED, not derived. This started as "half the pill", which was
+           right until the quote mark moved inside the block and made the
+           arithmetic wrong in the other direction. Taking the real distance
+           between the two centres cannot go stale when the contents change
+           again. Per quote, because pills wrap on some and not others; that
+           causes no jump, since a taller block and a bigger shift cancel. */
         var sideBySide = getComputedStyle(quoteBox.parentNode).display === "grid";
         var maxShift = 0;
+        quotes.forEach(function (q) { q.style.setProperty("--tq-shift", "0px"); });
         quotes.forEach(function (q) {
-          var pill = q.querySelector(".tdel");
+          var bq = q.querySelector("blockquote");
           var shift = 0;
-          if (sideBySide && pill) {
-            var mt = parseFloat(getComputedStyle(pill).marginTop) || 0;
-            shift = (pill.getBoundingClientRect().height + mt) / 2;
+          if (sideBySide && bq) {
+            var qb = q.getBoundingClientRect(), tb = bq.getBoundingClientRect();
+            shift = (qb.top + qb.height / 2) - (tb.top + tb.height / 2);
           }
           shift = Math.round(shift);
           q.style.setProperty("--tq-shift", shift + "px");
-          if (shift > maxShift) maxShift = shift;
+          if (Math.abs(shift) > maxShift) maxShift = Math.abs(shift);
         });
 
         var qmax = 0;
