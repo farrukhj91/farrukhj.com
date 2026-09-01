@@ -666,6 +666,16 @@ img{max-width:100%;display:block}
    at the top of that reserved space and drifts above its card by however
    much shorter it is. Centre the visible one inside the reservation. */
 .tq{display:grid;align-content:center}
+/* Nudged down by --tq-shift, which the JS sets to half the height of the
+   "What we did" pill plus its margin.
+
+   Centring the BLOCK is not the same as centring the QUOTE. The block is the
+   words plus the pill under them, so centring it puts the words 23px above
+   the card and the reader, who is looking at the words and not at an
+   invisible box, sees the quote sitting high. Shifting by half the pill puts
+   the WORDS on the card's centre line and lets the pill hang below. Zero
+   below 900px, where the layout stacks and there is no card to line up with. */
+.tq-i{position:relative;top:var(--tq-shift,0px)}
 /* "What we did" moved here from the card, client 2026-08-25, so the work
    sits with the words about the work. */
 .tq-i .tdel{margin-top:16px}

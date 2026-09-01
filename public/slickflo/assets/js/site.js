@@ -243,13 +243,42 @@
         var was = quotes.map(function (q) { return q.hidden; });
         quotes.forEach(function (q) { q.hidden = false; });
         quoteBox.style.minHeight = "0px";
+
+        /* Centring the block is not the same as centring the quote: the
+           block is the words plus the "What we did" pill under them, so a
+           centred block leaves the WORDS sitting high by half the pill,
+           which is what the reader actually looks at. Shift each quote down
+           by half its own pill so the words land on the card's centre line.
+
+           Per quote, not one shared value, because a pill that wraps to two
+           lines needs a bigger shift. It causes no jump: a taller pill means
+           a taller block AND a bigger shift, so the words land in the same
+           place either way. Off when the layout is stacked and there is no
+           card to line up with. */
+        var sideBySide = getComputedStyle(quoteBox.parentNode).display === "grid";
+        var maxShift = 0;
+        quotes.forEach(function (q) {
+          var pill = q.querySelector(".tdel");
+          var shift = 0;
+          if (sideBySide && pill) {
+            var mt = parseFloat(getComputedStyle(pill).marginTop) || 0;
+            shift = (pill.getBoundingClientRect().height + mt) / 2;
+          }
+          shift = Math.round(shift);
+          q.style.setProperty("--tq-shift", shift + "px");
+          if (shift > maxShift) maxShift = shift;
+        });
+
         var qmax = 0;
         quotes.forEach(function (q) {
           var h = q.getBoundingClientRect().height;
           if (h > qmax) qmax = h;
         });
         quotes.forEach(function (q, i) { q.hidden = was[i]; });
-        if (qmax) quoteBox.style.minHeight = Math.ceil(qmax) + "px";
+        /* Plus the shift: the nudge moves the pill down past the bottom of
+           the box it was measured in, and without the extra it can reach the
+           buttons underneath. */
+        if (qmax) quoteBox.style.minHeight = Math.ceil(qmax + maxShift) + "px";
       }
     };
 
