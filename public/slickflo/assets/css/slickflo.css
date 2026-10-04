@@ -265,13 +265,23 @@ img{max-width:100%;display:block}
 
    Scaled up about 20% on 2026-08-10 — the client wants it to carry the page
    without dominating the h1 above it. */
-.hflow{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin:28px 0 0}
-.hflow em{font-style:normal;font-size:18px;font-weight:550;color:var(--body);
+/* Sized to hold "Make operations: Leaner -> Intelligent -> Scalable" on ONE
+   line, client 2026-10-04. It used to have the full hero width and fitted
+   easily; adding the hero graphic on 2026-10-04 made this column 564px and
+   the row needed 582, so it broke to four lines. Smaller type and tighter
+   gaps and pills bring it to 528, which clears 564 with room for the webfont
+   to measure differently from the fallback.
+
+   Only this page uses .hflow, so these numbers are tuned to its one string.
+   A longer string would wrap again, and it SHOULD: flex-wrap stays on, so
+   the failure mode is two tidy lines rather than an overflow. */
+.hflow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.hflow em{font-style:normal;font-size:15px;font-weight:550;color:var(--body);
   letter-spacing:-.014em}
-.hflow i{font-style:normal;font-size:18px;font-weight:560;letter-spacing:-.016em;
-  padding:10px 19px;border-radius:999px;background:#fff;border:1px solid var(--line);
+.hflow i{font-style:normal;font-size:15px;font-weight:560;letter-spacing:-.016em;
+  padding:8px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);
   box-shadow:var(--sh-sm);color:var(--navy)}
-.hflow svg{color:var(--or);flex:none;width:20px;height:20px}
+.hflow svg{color:var(--or);flex:none;width:16px;height:16px}
 @media(max-width:560px){
   .hflow em,.hflow i{font-size:16px}
   .hflow i{padding:9px 16px}
@@ -297,8 +307,12 @@ img{max-width:100%;display:block}
 .shot-bar em{font-style:normal;font-size:13.5px;color:var(--mute)}
 .shot-bar .dt{width:8px;height:8px;border-radius:50%;background:var(--line-2);flex:none}
 .shot-body{padding:22px 24px 26px}
-.doc-tabs{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap}
-.doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 11px;border-radius:6px;
+/* Five tabs since 2026-10-04 ("API" became "API Docs" and Customer Proposals
+   joined them), and five needed 483px in a 470px mock, so they broke to two
+   rows. Tighter padding and gap bring them to 459. flex-wrap stays: a sixth
+   tab should wrap rather than overflow the browser frame. */
+.doc-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 9px;border-radius:6px;
   background:#F4F6FB;color:var(--mute);border:1px solid var(--line)}
 .doc-tabs em.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .doc-h{font-size:19px;font-weight:600;color:var(--ink);letter-spacing:-.022em;margin-bottom:5px}
