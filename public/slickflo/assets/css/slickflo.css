@@ -1560,8 +1560,18 @@ html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
 .pwv{display:grid;gap:66px;margin-top:42px}
 .pwv-row{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
   gap:52px;align-items:center}
-.pwv-ind{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--or-d);background:var(--t-or);
+/* A project whose captures have not been supplied yet. One column, so the
+   write-up uses the width instead of sitting beside an empty half that reads
+   as a failed image. PTRI Academy, 2026-10-04. */
+.pwv-solo{grid-template-columns:minmax(0,1fr)}
+.pwv-solo .pwv-stage{display:none}
+/* Sentence case since 2026-10-04, on his instruction and on the standing
+   "all caps is AI slop" rule that predates it. The letter-spacing and the
+   size were both set for capitals; lower case at 11px/.08em reads loose and
+   small, so both move with the transform. This class is also on the UI/UX
+   page, which had the same problem and is fixed by the same change. */
+.pwv-ind{display:inline-block;font-size:12px;font-weight:650;letter-spacing:0;
+  color:var(--or-d);background:var(--t-or);
   border-radius:5px;padding:4px 9px}
 .pwv-meta h3{margin-top:14px;font-size:clamp(21px,2.5vw,27px);letter-spacing:-.028em;
   line-height:1.16;color:var(--ink)}
