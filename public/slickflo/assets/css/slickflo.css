@@ -2182,38 +2182,58 @@ html.js .tg-face{animation:tg-breathe 4.8s ease-in-out infinite;
 }
 .hcta.mid{justify-content:center}
 
-/* ------------------------------------------- SEO: what search used to be ---
-   Client 2026-10-04 wanted a visual in "Search Has Changed. Your Strategy
-   Should Too." Three boxes for the three surfaces was the obvious answer and
-   the wrong one: the section two below already lists Search, Answer and
-   Generative Engine Optimization, and the reader would meet the same trio
-   twice in one scroll. This draws the CHANGE instead, which is what the
-   heading claims and what nothing else on the page shows.
+/* ------------------------------------- SEO: Google result vs AI answer ---
+   Rewritten 2026-10-04. The first version drew grey bars on both sides and
+   the client was right that it said nothing: abstract shapes cannot show
+   WHAT changed, only that something did. Both panels are literal now, a
+   result listing and an assistant answering, and the same query runs across
+   the top of both, which is the argument in one line.
 
-   Nothing animates. The contrast is the whole point and it should be legible
-   the moment it lands, not a second later. */
+   Mocked, not screenshotted. A real Google capture would be a claim about a
+   ranking nobody has verified, and it would go stale the week after. */
 .shift{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  gap:18px;align-items:center;margin-top:34px;text-align:left}
+  gap:18px;align-items:stretch;margin-top:34px;text-align:left}
 .shift-p{background:#fff;border:1px solid var(--line);border-radius:14px;
   padding:18px 20px;box-shadow:var(--sh-xs);min-width:0}
 .shift-k{display:block;font-size:12.4px;font-weight:600;color:var(--mute);
-  margin-bottom:14px}
+  margin-bottom:12px}
 .shift-now{border-color:var(--navy-l);box-shadow:var(--sh-sm)}
 .shift-now .shift-k{color:var(--navy)}
-/* Ranked links: a stack of equal bars, which is what ten blue links look
-   like from across the room. */
-.shift-links{display:flex;flex-direction:column;gap:9px}
-.shift-links i{display:block;height:8px;border-radius:4px;width:var(--w);
-  background:#E4E9F3}
-/* One answer, then its sources. The cited chips are what makes it read as an
-   AI answer rather than as a shorter list. */
-.shift-ans i{display:block;height:8px;border-radius:4px;width:var(--w);
-  background:var(--t-navy);margin-bottom:9px}
-.shift-cites{display:flex;gap:7px;margin-top:14px}
-.shift-cites b{display:block;width:34px;height:14px;border-radius:4px;
+/* The query, set as a search field on the left and as a typed question on
+   the right, so the two panels read as the same ask in two places. */
+.shift-q{font-size:12.8px;color:var(--body);background:var(--bg-alt);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px;
+  margin-bottom:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shift-q-ai{background:var(--t-navy);border-color:var(--t-indigo)}
+/* A result listing: url, blue title, two lines of snippet. The first one is
+   the brand and is the only one with any text in it. */
+.sr{margin-bottom:13px}
+.sr-u{display:block;font-size:10.8px;color:var(--mute);margin-bottom:2px}
+.sr-t{display:block;font-size:13.4px;font-weight:600;color:var(--indigo);
+  letter-spacing:-.012em;margin-bottom:5px}
+.sr:not(.sr-1) .sr-u,.sr:not(.sr-1) .sr-t{background:#E9EDF6;border-radius:4px;
+  height:9px;width:46%}
+.sr:not(.sr-1) .sr-t{width:72%;height:11px;margin-bottom:6px}
+.sr-s i{display:block;height:7px;border-radius:4px;width:var(--w);
+  background:#EDF1F8;margin-bottom:5px}
+/* The answer: prose naming the brand, then its sources. The named brand is
+   what the left panel cannot show and the whole point of the right one. */
+.shift-ans p{font-size:13px;line-height:1.55;color:var(--body);margin:0 0 9px}
+.shift-ans p b{color:var(--ink);font-weight:650}
+.shift-ans>i{display:block;height:7px;border-radius:4px;width:var(--w);
+  background:var(--t-navy);margin-bottom:6px}
+.shift-cites{display:flex;gap:6px;margin-top:12px;align-items:center}
+.shift-cites b{display:block;height:17px;border-radius:5px;padding:0 7px;
+  font-size:10.4px;font-weight:600;line-height:17px;color:var(--or-d);
   background:var(--t-or);border:1px solid var(--or-l)}
+.shift-cites b:empty{width:30px;padding:0}
 .shift-arrow{color:var(--or);display:grid;place-items:center;flex:none}
 @media(max-width:720px){
   .shift{grid-template-columns:minmax(0,1fr);gap:14px}
   .shift-arrow{transform:rotate(90deg);justify-self:center}
+  /* The query is what ties the two panels together, so on a narrow card it
+     wraps rather than truncating: "who writes technical docu..." in both
+     panels loses the one thing the pair is there to show. The pill keeps its
+     shape at two lines. */
+  .shift-q{white-space:normal;border-radius:12px;line-height:1.45}
 }
