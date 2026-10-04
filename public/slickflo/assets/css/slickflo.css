@@ -2181,3 +2181,39 @@ html.js .tg-face{animation:tg-breathe 4.8s ease-in-out infinite;
   .tg-faces{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 .hcta.mid{justify-content:center}
+
+/* ------------------------------------------- SEO: what search used to be ---
+   Client 2026-10-04 wanted a visual in "Search Has Changed. Your Strategy
+   Should Too." Three boxes for the three surfaces was the obvious answer and
+   the wrong one: the section two below already lists Search, Answer and
+   Generative Engine Optimization, and the reader would meet the same trio
+   twice in one scroll. This draws the CHANGE instead, which is what the
+   heading claims and what nothing else on the page shows.
+
+   Nothing animates. The contrast is the whole point and it should be legible
+   the moment it lands, not a second later. */
+.shift{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:18px;align-items:center;margin-top:34px;text-align:left}
+.shift-p{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--sh-xs);min-width:0}
+.shift-k{display:block;font-size:12.4px;font-weight:600;color:var(--mute);
+  margin-bottom:14px}
+.shift-now{border-color:var(--navy-l);box-shadow:var(--sh-sm)}
+.shift-now .shift-k{color:var(--navy)}
+/* Ranked links: a stack of equal bars, which is what ten blue links look
+   like from across the room. */
+.shift-links{display:flex;flex-direction:column;gap:9px}
+.shift-links i{display:block;height:8px;border-radius:4px;width:var(--w);
+  background:#E4E9F3}
+/* One answer, then its sources. The cited chips are what makes it read as an
+   AI answer rather than as a shorter list. */
+.shift-ans i{display:block;height:8px;border-radius:4px;width:var(--w);
+  background:var(--t-navy);margin-bottom:9px}
+.shift-cites{display:flex;gap:7px;margin-top:14px}
+.shift-cites b{display:block;width:34px;height:14px;border-radius:4px;
+  background:var(--t-or);border:1px solid var(--or-l)}
+.shift-arrow{color:var(--or);display:grid;place-items:center;flex:none}
+@media(max-width:720px){
+  .shift{grid-template-columns:minmax(0,1fr);gap:14px}
+  .shift-arrow{transform:rotate(90deg);justify-self:center}
+}
