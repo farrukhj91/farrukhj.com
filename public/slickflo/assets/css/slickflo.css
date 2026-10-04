@@ -2035,3 +2035,111 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
   .pn-n{text-align:left}
   .pn-n:only-child{grid-column:1}
 }
+
+/* ----------------------------------------- L&D hero: course assembling ---
+   Client 2026-10-04 asked for a hero graphic like the Technical Writing one.
+   Deliberately a different component: .tf is that page's argument and reusing
+   it would say the two pages do the same work.
+
+   Same motion contract as .tf throughout this file: every keyframe only moves
+   an element away from where it already sits, with `backwards` fill, so the
+   resting state is the finished state. Kill the animation and the course
+   renders complete. */
+.md{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:20px;box-shadow:var(--sh-sm)}
+.md-head{display:flex;align-items:center;gap:14px;padding-bottom:16px;
+  margin-bottom:6px;border-bottom:1px solid var(--line)}
+.md-head b{display:block;font-size:14.5px;color:var(--ink);letter-spacing:-.014em}
+.md-head span{font-size:12.8px;color:var(--mute)}
+/* conic-gradient ring. --p is animated from 0 to 1 through @property where it
+   is supported and simply lands at 1 where it is not, which is the whole
+   degradation story for this element. */
+.md-ring{width:40px;height:40px;border-radius:50%;flex:none;display:grid;
+  place-items:center;
+  background:conic-gradient(var(--or) calc(var(--p,1) * 360deg),
+    var(--t-navy) 0)}
+.md-ring b{width:30px;height:30px;border-radius:50%;background:#fff;display:block}
+.md-set{display:flex;flex-direction:column}
+.md-row{display:flex;align-items:center;gap:11px;padding:9px 0;
+  font-size:14.5px;color:var(--body);letter-spacing:-.008em}
+.md-row+.md-row{border-top:1px solid var(--line)}
+.md-tick{width:21px;height:21px;border-radius:50%;flex:none;display:grid;
+  place-items:center;background:var(--t-orl);color:var(--or-d)}
+@property --p{syntax:"<number>";inherits:false;initial-value:1}
+html.js .md-ring{animation:md-fill 4.6s var(--ease) infinite}
+html.js .md-row{animation:md-in 4.6s ease infinite backwards;
+  animation-delay:calc(var(--i) * .5s)}
+@keyframes md-fill{0%{--p:0}70%,100%{--p:1}}
+@keyframes md-in{0%,6%{opacity:.32}18%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  html.js .md-ring,html.js .md-row{animation:none}
+}
+
+/* ------------------------------- Workflow Automation hero: a run that loops */
+/* The one place on the site where a continuous animation carries the idea
+   rather than decorating it: the page argues repetition removed, so the
+   picture is a job that runs itself, repeatedly. Nodes render lit at rest, so
+   with motion off this is a labelled sequence and nothing is lost. The
+   travelling token is the only motion-only element and it is aria-hidden. */
+.af{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:22px 20px;box-shadow:var(--sh-sm);position:relative}
+/* overflow:hidden is load-bearing. The token is sized as a percentage of the
+   rail but travels as a percentage of ITSELF, so at the end of the loop it
+   runs about its own width past the rail and, with nothing clipping it, out
+   through the side of the card. Clipped, the same keyframe reads correctly:
+   the run leaves one end and re-enters at the other. */
+.af-rail{position:relative;height:3px;border-radius:2px;background:var(--t-navy);
+  margin:14px 10px 18px;overflow:hidden}
+.af-run{position:absolute;inset:0 auto 0 0;width:22%;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--or),transparent)}
+.af-set{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:10px}
+.af-node{display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;min-width:0}
+.af-node i{width:38px;height:38px;border-radius:11px;display:grid;
+  place-items:center;background:var(--t-navy);color:var(--navy);flex:none}
+.af-node b{font-size:12.4px;font-weight:550;color:var(--body);letter-spacing:-.006em}
+html.js .af-run{animation:af-travel 3.6s linear infinite}
+html.js .af-node i{animation:af-lit 3.6s ease infinite;
+  animation-delay:calc(var(--i) / var(--n) * 3.6s)}
+@keyframes af-travel{from{transform:translateX(-24%)}to{transform:translateX(455%)}}
+@keyframes af-lit{
+  0%,14%{background:var(--t-or);color:var(--or-d);transform:translateY(-2px)}
+  34%,100%{background:var(--t-navy);color:var(--navy);transform:none}}
+@media(prefers-reduced-motion:reduce){
+  html.js .af-run{display:none}
+  html.js .af-node i{animation:none}
+}
+
+/* --------------------------------------------- Careers hero: team and work */
+/* Initial tiles, not photographs. We have no pictures of the team and stock
+   models on a careers page are the oldest lie in recruitment advertising, so
+   the people are abstract and only the delivered work is concrete. */
+.tg{display:grid;gap:14px}
+.tg-faces{display:flex;flex-wrap:wrap;gap:10px}
+.tg-face{width:52px;height:52px;border-radius:50%;display:grid;
+  place-items:center;font-size:17px;font-weight:600;letter-spacing:-.02em}
+.tg-face.c1{background:var(--t-navy);color:var(--navy)}
+.tg-face.c2{background:var(--t-indigo);color:var(--indigo)}
+.tg-face.c3{background:var(--t-orl);color:var(--or-d)}
+.tg-face.c4{background:var(--t-or);color:var(--or-d)}
+.tg-ship{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:18px 20px;box-shadow:var(--sh-sm)}
+.tg-ship>b{display:block;font-size:12.6px;font-weight:600;color:var(--navy);
+  margin-bottom:10px}
+.tg-row{display:flex;align-items:center;gap:10px;padding:7px 0;
+  font-size:14.4px;color:var(--body);letter-spacing:-.008em}
+.tg-row+.tg-row{border-top:1px solid var(--line)}
+.tg-row i{width:20px;height:20px;border-radius:50%;flex:none;display:grid;
+  place-items:center;background:var(--t-orl);color:var(--or-d)}
+/* A long, offset breath so the block reads as alive rather than as a chart.
+   2% of scale: visible as life, never as movement competing with the copy. */
+html.js .tg-face{animation:tg-breathe 5.4s ease-in-out infinite;
+  animation-delay:calc(var(--i) * .42s)}
+html.js .tg-row{animation:tg-in 5.4s ease infinite backwards;
+  animation-delay:calc(var(--i) * .5s)}
+@keyframes tg-breathe{0%,100%{transform:none}50%{transform:scale(1.02)}}
+@keyframes tg-in{0%,6%{opacity:.4}20%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  html.js .tg-face,html.js .tg-row{animation:none}
+}
+.hcta.mid{justify-content:center}
