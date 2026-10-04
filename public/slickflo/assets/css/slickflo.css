@@ -1961,6 +1961,13 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 /* Pull quote. A rule down the left rather than quotation marks set large:
    the author's own quote marks are already in the text, and a decorative pair
    on top of them reads as a typo. */
+/* Figures the author put IN the article. First used by the 2026-10-04
+   lead-generation piece, whose two infographics the surrounding prose refers
+   to directly. Full measure, not inset: these are diagrams with small type
+   and every pixel of width helps them stay legible. */
+.pfig{margin:30px 0;}
+.pfig img{display:block;width:100%;height:auto;border:1px solid var(--line);
+  border-radius:12px;background:#fff}
 .post blockquote{margin:34px 0;padding:4px 0 4px 26px;
   border-left:3px solid var(--or);font-size:19.4px;line-height:1.6;
   letter-spacing:-.014em;color:var(--ink)}
@@ -2110,36 +2117,43 @@ html.js .af-node i{animation:af-lit 3.6s ease infinite;
   html.js .af-node i{animation:none}
 }
 
-/* --------------------------------------------- Careers hero: team and work */
-/* Initial tiles, not photographs. We have no pictures of the team and stock
-   models on a careers page are the oldest lie in recruitment advertising, so
-   the people are abstract and only the delivered work is concrete. */
-.tg{display:grid;gap:14px}
-.tg-faces{display:flex;flex-wrap:wrap;gap:10px}
-.tg-face{width:52px;height:52px;border-radius:50%;display:grid;
-  place-items:center;font-size:17px;font-weight:600;letter-spacing:-.02em}
+/* ------------------------------------------------- Careers hero: the team */
+/* Rewritten 2026-10-04. The first version put a "Shipped this quarter" list
+   beside the people and the client said the animation "is not related to
+   employees but related to our deliverables", which was right: the list was
+   the half that moved, so it read as the subject. People only now.
+
+   Initial tiles, not photographs. We have no pictures of the team and stock
+   models on a careers page are the oldest lie in recruitment advertising. */
+.tg{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:22px 20px;box-shadow:var(--sh-sm)}
+.tg-faces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px}
+.tg-p{display:flex;flex-direction:column;align-items:center;gap:9px;
+  text-align:center;min-width:0}
+.tg-p>b{font-size:12.2px;font-weight:550;color:var(--body);letter-spacing:-.006em}
+.tg-face{position:relative;width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;font-size:18px;font-weight:600;
+  letter-spacing:-.02em;flex:none}
 .tg-face.c1{background:var(--t-navy);color:var(--navy)}
 .tg-face.c2{background:var(--t-indigo);color:var(--indigo)}
 .tg-face.c3{background:var(--t-orl);color:var(--or-d)}
 .tg-face.c4{background:var(--t-or);color:var(--or-d)}
-.tg-ship{background:#fff;border:1px solid var(--line);border-radius:16px;
-  padding:18px 20px;box-shadow:var(--sh-sm)}
-.tg-ship>b{display:block;font-size:12.6px;font-weight:600;color:var(--navy);
-  margin-bottom:10px}
-.tg-row{display:flex;align-items:center;gap:10px;padding:7px 0;
-  font-size:14.4px;color:var(--body);letter-spacing:-.008em}
-.tg-row+.tg-row{border-top:1px solid var(--line)}
-.tg-row i{width:20px;height:20px;border-radius:50%;flex:none;display:grid;
-  place-items:center;background:var(--t-orl);color:var(--or-d)}
-/* A long, offset breath so the block reads as alive rather than as a chart.
-   2% of scale: visible as life, never as movement competing with the copy. */
-html.js .tg-face{animation:tg-breathe 5.4s ease-in-out infinite;
-  animation-delay:calc(var(--i) * .42s)}
-html.js .tg-row{animation:tg-in 5.4s ease infinite backwards;
+/* The presence dot is the only thing that moves, and it is the "high
+   potential, active team" half of his brief. Resting state is a solid dot,
+   so with motion off this is a labelled team grid and nothing is lost. */
+.tg-dot{position:absolute;right:1px;bottom:1px;width:12px;height:12px;
+  border-radius:50%;background:var(--or);border:2.5px solid #fff}
+html.js .tg-dot{animation:tg-pulse 4.8s ease-in-out infinite;
   animation-delay:calc(var(--i) * .5s)}
-@keyframes tg-breathe{0%,100%{transform:none}50%{transform:scale(1.02)}}
-@keyframes tg-in{0%,6%{opacity:.4}20%,100%{opacity:1}}
+html.js .tg-face{animation:tg-breathe 4.8s ease-in-out infinite;
+  animation-delay:calc(var(--i) * .5s)}
+@keyframes tg-pulse{0%,72%,100%{transform:none;opacity:1}
+  80%{transform:scale(1.42);opacity:.72}}
+@keyframes tg-breathe{0%,70%,100%{transform:none}82%{transform:translateY(-3px)}}
 @media(prefers-reduced-motion:reduce){
-  html.js .tg-face,html.js .tg-row{animation:none}
+  html.js .tg-dot,html.js .tg-face{animation:none}
+}
+@media(max-width:520px){
+  .tg-faces{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 .hcta.mid{justify-content:center}
