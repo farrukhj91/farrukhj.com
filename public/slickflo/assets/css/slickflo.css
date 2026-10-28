@@ -524,6 +524,26 @@ img{max-width:100%;display:block}
 .chip.ok{background:var(--t-navy);color:var(--navy)}
 .chip.go{background:var(--t-or);color:var(--or-d)}
 
+/* ------------------------------------------------------------ vacancy --- */
+/* `.loc` rather than reusing `.chip.go`, which exists but drags in the bare
+   `.go` "Explore ->" link rule: inline-flex, a 7px gap and a navy colour,
+   all of which then have to be beaten back. A chip is not a link. */
+.chip.loc{background:var(--t-or);color:var(--or-d)}
+.jchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+/* `.chip` is `flex:none` globally, which is right for a short status pill and
+   wrong here: "Rawalpindi / Islamabad (On-site)" is 207px and the card is
+   191px wide at 320, so it cannot shrink and it cannot wrap, and it ran out
+   of the card. Shrinkable and `min-width:0` lets the text wrap instead. */
+.jchips .chip{flex:0 1 auto;min-width:0}
+.jchips-lg{margin-bottom:28px}
+.jgrid{margin-bottom:34px}
+/* One vacancy: capped and centred, not half a two-column grid. */
+.jgrid-1{max-width:620px;margin-inline:auto}
+.jcard h3{margin-bottom:9px}
+/* The card is a flex column, so this pins the button to the bottom and the
+   two cards in a pair line their buttons up even with unequal blurbs. */
+.jcta{margin-top:auto}
+
 /* -------------------------------------------------------------- stats --- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}
