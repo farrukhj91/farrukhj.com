@@ -542,22 +542,13 @@ img{max-width:100%;display:block}
 .jskills .chip{flex:0 1 auto;min-width:0}
 .chip.sk{background:transparent;color:var(--body);
   border:1px solid var(--line-2);padding:4px 11px}
-/* Roles left, the open invitation right. Client 2026-10-28.
-   `align-items:start` rather than centre: with one role a centred aside
-   looks balanced, but the left column grows with every vacancy added and a
-   short block floating in the middle of a tall stack does not. Top aligned
-   is the one that survives the second and third job. */
-.oppgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
-  gap:38px;align-items:start}
-@media(max-width:860px){.oppgrid{grid-template-columns:minmax(0,1fr);gap:30px}}
-.oppaside{padding-top:4px}
-/* `.lede` is centred and auto-margined by default, which is right for the
-   full-width block it was written for and wrong in a side column: the text
-   centred itself against a left-aligned card and read as a mistake. */
-.oppaside .lede{text-align:left;margin:0 0 20px;max-width:none}
-/* Vacancies stack. They sit in a column now, so a grid inside it would give
-   two cramped cards where there is room for one readable one. */
-.jgrid{display:grid;gap:20px}
+/* Roles side by side across the full width, invitation centred below.
+   Client 2026-10-30. `.g2` supplies the two columns and its own 820px
+   breakdown; this only adds the gap to the invitation underneath. */
+.jgrid{display:grid;gap:20px;margin-bottom:34px}
+/* One role: capped and centred, because `.g2` would give it half the width
+   and an empty half beside it. */
+.jgrid-1{max-width:620px;margin-inline:auto}
 .jcard h3{margin-bottom:9px}
 /* The card is a flex column, so this pins the button to the bottom and the
    two cards in a pair line their buttons up even with unequal blurbs. */
