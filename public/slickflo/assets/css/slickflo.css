@@ -536,6 +536,12 @@ img{max-width:100%;display:block}
    of the card. Shrinkable and `min-width:0` lets the text wrap instead. */
 .jchips .chip{flex:0 1 auto;min-width:0}
 .jchips-lg{margin-bottom:28px}
+/* Technologies, inside .prose. Outlined rather than tinted: six solid pills
+   in a row compete with the headings around them. */
+.jskills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.jskills .chip{flex:0 1 auto;min-width:0}
+.chip.sk{background:transparent;color:var(--body);
+  border:1px solid var(--line-2);padding:4px 11px}
 /* Roles left, the open invitation right. Client 2026-10-28.
    `align-items:start` rather than centre: with one role a centred aside
    looks balanced, but the left column grows with every vacancy added and a
