@@ -370,6 +370,93 @@ img{max-width:100%;display:block}
   .ltrack img[aria-hidden="true"]{display:none}
 }
 
+
+/* ------------------------------------------------- course authoring viz ---
+   Client 2026-11-12. A laptop showing a course being written, with the
+   Articulate mark orbiting it. Everything is sized in % of the stage so it
+   scales to any width without a single breakpoint.
+
+   The orbit radius is deliberately a little larger than the laptop's half
+   width: the mark grazes the screen edges as it passes rather than clearing
+   them entirely, which reads as depth instead of as a diagram. */
+.cav{margin-top:40px;text-align:center}
+/* overflow:hidden because a ROTATED child contributes its rotated bounding
+   box to the parent's scrollable area, so the orbit widens the stage as it
+   turns and the measured overflow changes frame to frame. Nothing is
+   actually clipped: the mark's circle sits inside the stage on every axis,
+   verified at the top of its arc where it comes closest to the edge. Same
+   fix as the Workflow Automation rail. */
+.cav-stage{position:relative;width:min(440px,100%);aspect-ratio:11/8;
+  margin:0 auto;overflow:hidden}
+
+/* Rotates about the stage centre. The pin rides the top of the circle, so
+   the radius is half the orbit box height. */
+/* Behind the laptop on purpose. The orbit radius is smaller than the
+   laptop's half width, so the mark passes BEHIND the screen at the sides and
+   reappears: that is what makes it read as going round rather than across.
+   Clearing the laptop instead would need a stage half again as tall. */
+.cav-orbit{position:absolute;inset:7% 0;z-index:0;
+  animation:cav-spin 18s linear infinite}
+/* Centred with left:0;right:0;margin-inline:auto, NOT left:50% plus a
+   translate. The translate moves the paint but not the layout box, so the
+   box still starts at the halfway mark and runs its own width past the
+   parent's edge: invisible on screen, and a genuine overflow to every
+   measurement. Only the vertical half-step is a transform, and vertical
+   transforms do not widen anything. */
+.cav-pin{position:absolute;top:0;left:0;right:0;text-align:center;
+  transform:translateY(-50%)}
+.cav-chip{display:inline-block;background:var(--card);border:1px solid var(--line-2);
+  border-radius:999px;padding:7px 13px;box-shadow:var(--sh-md);
+  animation:cav-spin 18s linear infinite reverse}
+.cav-chip img{display:block;width:84px;height:auto}
+
+@keyframes cav-spin{to{transform:rotate(360deg)}}
+
+.cav-lap{position:absolute;left:0;right:0;margin-inline:auto;top:50%;
+  transform:translateY(-50%);width:68%;z-index:1}
+/* The screen is inset inside the lid so the lip below can be the full
+   width without a negative margin hanging outside its parent. */
+.cav-scr{width:86%;margin:0 auto;background:var(--navy);
+  border-radius:10px 10px 3px 3px;padding:8% 7% 9%;text-align:left;
+  box-shadow:var(--sh-md)}
+.cav-bar{display:flex;gap:4px;margin-bottom:9%}
+.cav-bar i{width:5px;height:5px;border-radius:50%;background:#ffffff38}
+
+.cav-les{color:#fff;font-size:clamp(10px,2.6vw,13px);font-weight:600;
+  letter-spacing:-.012em;line-height:1.35;margin:0 0 5%;
+  animation:cav-in .5s var(--ease) backwards;
+  animation-delay:calc(.35s + var(--i) * .7s)}
+.cav-les:nth-of-type(2){color:var(--or-l)}
+@keyframes cav-in{from{opacity:0;transform:translateY(5px)}}
+
+.cav-ln{display:block;height:3px;border-radius:2px;background:#ffffff26;
+  width:86%;margin-top:7%}
+.cav-ln2{width:58%;margin-top:4%}
+
+/* The lid's lip, wider than the screen, which is what reads as a laptop. */
+.cav-foot{display:block;width:100%;height:7px;
+  background:var(--line-2);border-radius:0 0 5px 5px}
+
+.cav-cap{display:block;font-size:12.8px;font-weight:700;letter-spacing:-.004em;
+  color:var(--ink);margin-top:18px}
+
+/* The stage scales with the page but the mark did not, so on a phone it
+   outgrew the circle and clipped against the top edge: measured at 7px cut
+   off at 320 and 4px at 375. The mark shrinks and the orbit tucks in. */
+@media(max-width:560px){
+  .cav-chip{padding:5px 10px}
+  .cav-chip img{width:62px}
+  .cav-orbit{inset:11% 0}
+  .cav-cap{margin-top:14px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* The mark parks at the top of the circle, where 0deg already puts it, and
+     both lesson lines render in place. Nothing is lost but the movement. */
+  .cav-orbit,.cav-chip{animation:none}
+  .cav-les{animation:none}
+}
+
 /* ------------------------------------------------------- tool logo grid ---
    The "Platforms and Tools We Work With" strips.
 
