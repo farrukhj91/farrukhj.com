@@ -399,9 +399,18 @@ img{max-width:100%;display:block}
 
 /* --gp is the gap, and the keyframe below moves each logo by whole cells
    plus whole gaps, so the same --dx/--dy work at any screen size. */
+/* EQUAL ROWS, via grid-auto-rows:1fr. Letting rows size to their contents
+   is what made the LMS screen look ragged: TalentLMS is 2.1:1 where the
+   others are about 4:1, so its row stood 46px tall against 25px and nothing
+   lined up. Equal rows with each logo centred in its own row fixes the
+   alignment for any set of shapes, not just this one.
+
+   No justify-items/align-items override: each cell must be the FULL cell
+   box, because the keyframe below translates by percentages of the element
+   and those have to mean one whole cell. */
 .cav-grid{--gp:8px;position:absolute;inset:0;display:grid;
-  grid-template-columns:repeat(var(--c),minmax(0,1fr));gap:var(--gp);
-  align-content:center;justify-items:center;padding:9% 7%}
+  grid-template-columns:repeat(var(--c),minmax(0,1fr));
+  grid-auto-rows:1fr;gap:var(--gp);padding:9% 7%}
 .cav-lg{display:flex;align-items:center;justify-content:center;min-width:0}
 .cav-lg img{max-width:100%;max-height:100%;width:auto;height:auto;
   object-fit:contain}
@@ -411,9 +420,12 @@ img{max-width:100%;display:block}
 /* Each logo waits its turn, appears at the centre of the screen a little
    oversized, then travels to its own cell. `backwards` holds it invisible
    through the delay rather than letting it flash in place first. */
+/* Slowed from .62s/.34s on his note that the movement was too fast. Six
+   logos now take about 4.5s to land rather than 2.4s, which is slow enough
+   to watch one arrive before the next starts. */
 html.js .cav.in .cav-lg{
-  animation:cav-place .62s var(--ease) backwards;
-  animation-delay:calc(var(--i) * .34s)}
+  animation:cav-place 1.05s var(--ease) backwards;
+  animation-delay:calc(var(--i) * .68s)}
 @keyframes cav-place{
   0%{opacity:0;
     transform:translate(calc(var(--dx) * (100% + var(--gp))),
