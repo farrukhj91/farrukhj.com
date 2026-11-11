@@ -372,11 +372,13 @@ img{max-width:100%;display:block}
 
 
 /* ------------------------------------------------ tech arsenal laptops ---
-   Client 2026-11-12. Four laptops, one per discipline, each screen cycling
-   its own logos. Pure CSS because the site has to work with JavaScript off.
+   Client 2026-11-12. Four laptops, one per discipline. Each screen fills
+   with its logos one at a time: each arrives from the centre of the screen
+   and settles into the grid, starting top left.
 
-   The screen holds a FIXED ASPECT RATIO. Without it the whole row jolts
-   every time a tall logo replaces a wide one mid-cycle. */
+   THE GRID IS THE BASE STATE and the animation is added only under
+   `html.js`. With JavaScript off, or with the keyframes unsupported, every
+   logo is simply in place. Nothing here depends on the motion. */
 .cav{margin-top:38px}
 .cav-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
 @media(max-width:900px){.cav-row{grid-template-columns:repeat(2,minmax(0,1fr));
@@ -385,10 +387,9 @@ img{max-width:100%;display:block}
 
 .cav-it{text-align:center}
 /* The lip has to be WIDER than the screen or the whole thing reads as a
-   card, which is what the first build looked like. The width difference is
-   made by insetting the screen inside a full-width laptop box, NOT by a
-   negative margin on the lip: a negative margin hangs the lip outside its
-   parent and shows up as a real overflow at every width. */
+   card. The difference comes from insetting the screen inside a full-width
+   laptop box, NOT from a negative margin on the lip: a negative margin
+   hangs outside its parent and measures as a real overflow at every width. */
 .cav-lap{width:100%}
 .cav-scr{position:relative;width:91%;margin:0 auto;aspect-ratio:16/10;
   background:#fff;border:1px solid var(--line-2);border-radius:9px 9px 2px 2px;
@@ -396,35 +397,40 @@ img{max-width:100%;display:block}
 .cav-foot{display:block;width:100%;height:7px;background:var(--line-2);
   border-radius:0 0 7px 7px}
 
-.cav-lg{position:absolute;inset:0;display:flex;align-items:center;
-  justify-content:center;padding:17%;opacity:0}
+/* --gp is the gap, and the keyframe below moves each logo by whole cells
+   plus whole gaps, so the same --dx/--dy work at any screen size. */
+.cav-grid{--gp:8px;position:absolute;inset:0;display:grid;
+  grid-template-columns:repeat(var(--c),minmax(0,1fr));gap:var(--gp);
+  align-content:center;justify-items:center;padding:9% 7%}
+.cav-lg{display:flex;align-items:center;justify-content:center;min-width:0}
 .cav-lg img{max-width:100%;max-height:100%;width:auto;height:auto;
   object-fit:contain}
-/* A product with no logo file yet, set in type rather than faked. */
-.cav-lg-t{font-size:clamp(13px,3.4vw,17px);font-weight:700;
-  letter-spacing:-.02em;color:var(--ink)}
+.cav-lg-t{font-size:clamp(11px,2.6vw,15px);font-weight:700;
+  letter-spacing:-.02em;color:var(--ink);line-height:1.2}
 
-/* One keyframe set per group size: a logo holds the screen for 1/n of the
-   cycle and the rest is handled by each logo's own delay. */
-.cav-scr.cyc-1 .cav-lg{opacity:1}
-.cav-scr.cyc-2 .cav-lg{animation:cav-cyc2 4.8s linear infinite backwards}
-.cav-scr.cyc-3 .cav-lg{animation:cav-cyc3 7.2s linear infinite backwards}
-.cav-scr.cyc-6 .cav-lg{animation:cav-cyc6 14.4s linear infinite backwards}
-.cav-scr.cyc-2 .cav-lg{animation-delay:calc(var(--i) * 2.4s)}
-.cav-scr.cyc-3 .cav-lg{animation-delay:calc(var(--i) * 2.4s)}
-.cav-scr.cyc-6 .cav-lg{animation-delay:calc(var(--i) * 2.4s)}
-@keyframes cav-cyc2{0%{opacity:0}2%{opacity:1}48%{opacity:1}50%{opacity:0}100%{opacity:0}}
-@keyframes cav-cyc3{0%{opacity:0}2%{opacity:1}31.33%{opacity:1}33.33%{opacity:0}100%{opacity:0}}
-@keyframes cav-cyc6{0%{opacity:0}2%{opacity:1}14.67%{opacity:1}16.67%{opacity:0}100%{opacity:0}}
+/* Each logo waits its turn, appears at the centre of the screen a little
+   oversized, then travels to its own cell. `backwards` holds it invisible
+   through the delay rather than letting it flash in place first. */
+html.js .cav.in .cav-lg{
+  animation:cav-place .62s var(--ease) backwards;
+  animation-delay:calc(var(--i) * .34s)}
+@keyframes cav-place{
+  0%{opacity:0;
+    transform:translate(calc(var(--dx) * (100% + var(--gp))),
+                        calc(var(--dy) * (100% + var(--gp)))) scale(1.22)}
+  26%{opacity:1;
+    transform:translate(calc(var(--dx) * (100% + var(--gp))),
+                        calc(var(--dy) * (100% + var(--gp)))) scale(1.22)}
+  100%{opacity:1;transform:translate(0,0) scale(1)}
+}
 
 .cav-cap{display:block;font-size:12.8px;font-weight:700;letter-spacing:-.004em;
   color:var(--ink);margin-top:14px;line-height:1.35}
 
 @media (prefers-reduced-motion:reduce){
-  /* Cycling stops and each screen shows its first logo. The caption names
-     the discipline either way, so nothing is lost but the movement. */
-  .cav-lg{animation:none;opacity:0}
-  .cav-lg:first-child{opacity:1}
+  /* The grid is already the base state, so removing the animation leaves
+     every logo exactly where it belongs. */
+  html.js .cav.in .cav-lg{animation:none}
 }
 
 /* ------------------------------------------------------- tool logo grid ---
