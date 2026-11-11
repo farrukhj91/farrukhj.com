@@ -408,12 +408,29 @@ img{max-width:100%;display:block}
    No justify-items/align-items override: each cell must be the FULL cell
    box, because the keyframe below translates by percentages of the element
    and those have to mean one whole cell. */
-.cav-grid{--gp:8px;position:absolute;inset:0;display:grid;
+.cav-grid{--gp:7px;position:absolute;inset:0;display:grid;
   grid-template-columns:repeat(var(--c),minmax(0,1fr));
-  grid-auto-rows:1fr;gap:var(--gp);padding:9% 7%}
+  /* minmax(0,1fr), NOT 1fr. Plain `1fr` means `minmax(auto,1fr)`, and that
+     auto floor is the row's min-content height: an image with an intrinsic
+     ratio pushes it up, so rows that were meant to be identical came out
+     102x26 and 125x59. The 0 floor is what actually makes them equal. */
+  grid-auto-rows:minmax(0,1fr);gap:var(--gp);padding:6% 4%}
 .cav-lg{display:flex;align-items:center;justify-content:center;min-width:0}
-.cav-lg img{max-width:100%;max-height:100%;width:auto;height:auto;
-  object-fit:contain}
+/* --s is the per-logo optical scale, 1 unless the data says otherwise.
+   A TRANSFORM, not a percentage on max-width/max-height. Those resolve
+   against the containing block, and `.cav-lg` is a flex box whose height is
+   not definite for that purpose, so `max-height:80%` was silently ignored
+   and TalentLMS still filled its row. A transform has no such dependency,
+   does not disturb the layout, and composes cleanly with the entrance
+   animation, which transforms the parent rather than the image. */
+/* The image BOX fills the cell and `object-fit:contain` letterboxes the
+   picture inside it. The obvious `max-width/max-height:100%` does NOT work
+   here: a percentage max-height resolves against the containing block, and
+   `.cav-lg` is a flex box with no definite height for that purpose, so the
+   limit was silently dropped and TalentLMS rendered 38px tall in a 26px row
+   from the day this was built. A filled box has no such dependency. */
+.cav-lg img{width:100%;height:100%;object-fit:contain;
+  transform:scale(var(--s,1))}
 .cav-lg-t{font-size:clamp(11px,2.6vw,15px);font-weight:700;
   letter-spacing:-.02em;color:var(--ink);line-height:1.2}
 
