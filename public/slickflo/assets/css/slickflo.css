@@ -772,12 +772,20 @@ html.js .cslide-nav{display:flex}
    fights the browser trying to settle on a snap point. */
 .cslide-track.dragging{scroll-snap-type:none;scroll-behavior:auto;
   cursor:grabbing;user-select:none}
-/* Same two off for an autoplay glide, and for the same reason: mandatory
-   snap fights a scrollLeft written every frame, and `scroll-behavior:smooth`
-   catches a plain scrollLeft assignment too, so each frame would otherwise
-   start its own animation. A glide lands on a card pitch, so snapping comes
-   back on at the end with nothing to correct. */
-.cslide-track.gliding{scroll-snap-type:none;scroll-behavior:auto}
+/* `.rolling` says the drift is live, and both of these have to be off for
+   it. `scroll-behavior:smooth` catches a plain scrollLeft assignment, so
+   each frame's write would start its own animation and the row would crawl;
+   mandatory snapping hauls the row back to the card edge the drift is
+   trying to leave. Both are left alone when the drift is not running, under
+   prefers-reduced-motion or with JavaScript off, where snapping is exactly
+   what a swipe or a trackpad wants.
+
+   The duplicate set only exists for the loop, so it stays out of the layout
+   until the loop is running: no repeated cards for anyone who is not seeing
+   the row move. */
+.cslide-track.rolling{scroll-snap-type:none;scroll-behavior:auto}
+.cslide-track>.card[aria-hidden="true"]{display:none}
+.cslide-track.rolling>.card[aria-hidden="true"]{display:flex}
 html.js .cslide-track{cursor:grab}
 .cslide-track.dragging a{pointer-events:none}
 

@@ -383,9 +383,8 @@
     start();
   }
 })();
-
 /* ---------------------------------------------- capabilities slider ---
-   Arrows and click-drag for the horizontal card row. Client 2026-11-12.
+   A drifting card row with arrows and click-drag. Client 2026-11-12.
 
    The track scrolls natively, so everything here is enhancement: without
    this file the row still moves by touch, trackpad, scrollbar and keyboard,
@@ -403,6 +402,17 @@
   var btns = slider.querySelectorAll(".cslide-btn");
   if (!track || !btns.length) return;
 
+  /* Trusted By runs at 39.9px/s, measured off its own keyframes, and the
+     client asked for this to move the same way. 40 it is: the two read as
+     one idea rather than as two different speeds on one page. */
+  var SPEED = 40;
+  var reduce = window.matchMedia
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : { matches: false };
+  var loop = false, raf = null, timer = null, last = 0;
+  var hovering = false, onscreen = false;
+  var down = false, startX = 0, startLeft = 0, moved = 0;
+
   /* One card plus one gap, measured rather than assumed: the card width
      changes at three breakpoints and the gap at one. */
   function step() {
@@ -412,38 +422,112 @@
     return card.getBoundingClientRect().width + gap;
   }
 
-  /* Where the row rests when it is fully home is 0, and that is worth a
-     word because it was not always. The leading gutter is a flex spacer
-     INSIDE the scroller rather than padding on it, so scrolling to 0 shows
-     the gutter and the first card sits exactly where snapping wants it.
-     While the gutter was padding, home was 2px and a `<= 1` test left the
-     back arrow enabled with the row already at its start. The padding is
-     still read here because the only thing holding home at 0 is that it is
-     zero on the sides, and that is a tuning value.
+  /* How far the row travels before it is back where it started: the width
+     of one set of cards, the duplicates not counted. */
+  function setWidth() {
+    return track.querySelectorAll(".card:not([aria-hidden])").length * step();
+  }
 
-     The far end does land on max exactly, so 1px of slack covers only the
-     fractional scrollLeft of a zoomed or scaled display. */
+  /* Looping, the row has no ends, so neither arrow is ever spent. Checked
+     first because the drift writes scrollLeft sixty times a second and
+     every write fires this: the branch below reads the stylesheet, which is
+     not something to do per frame. */
   function paint() {
+    if (loop) {
+      btns[0].disabled = false;
+      btns[1].disabled = false;
+      return;
+    }
+    /* Standing still, the ends are real. The leading gutter is a flex
+       spacer inside the scroller rather than padding on it, so home is a
+       plain 0; the padding is still read because that is a tuning value,
+       and the day it stops being zero this should still be right. */
     var max = track.scrollWidth - track.clientWidth;
     var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
     btns[0].disabled = track.scrollLeft <= pad + 1;
     btns[1].disabled = track.scrollLeft >= max - 1;
   }
 
+  /* --------------------------------------------------------- the drift ---
+     A marquee needs its content twice over, and the cards are duplicated in
+     the markup for it: aria-hidden, no id of their own, out of the tab
+     order. Once the row has travelled exactly one set's width it jumps back
+     by that width, and because the duplicate is pixel for pixel the
+     original there is nothing to see.
+
+     This moves by writing scrollLeft rather than by animating a transform
+     the way Trusted By does, because the row is still a real scroller that
+     can be dragged, swiped and nudged. The price is that this code then
+     owns every kind of motion the row has, and two CSS properties have to
+     come off while it runs (`.rolling`): `scroll-behavior:smooth` turns
+     each frame's write into an animation of its own, so the row crawls
+     instead of moving, and mandatory snapping hauls it back to the card
+     edge it is trying to leave. */
+  function canRun() {
+    return loop && onscreen && !document.hidden && !hovering && !down &&
+      !slider.contains(document.activeElement);
+  }
+
+  function stop() {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    if (timer) { clearTimeout(timer); timer = null; }
+    last = 0;
+  }
+
+  function run() {
+    stop();
+    if (!canRun()) return;
+    raf = requestAnimationFrame(function frame(now) {
+      if (!last) last = now;
+      /* Capped, so a tab that has been in the background for a minute
+         picks up where it left off instead of lurching. */
+      var dt = Math.min(now - last, 50) / 1000;
+      last = now;
+      var w = setWidth();
+      var x = track.scrollLeft + SPEED * dt;
+      track.scrollLeft = x >= w ? x - w : x;
+      if (canRun()) { raf = requestAnimationFrame(frame); return; }
+      raf = null;
+      last = 0;
+    });
+  }
+
+  function play(delay) {
+    stop();
+    if (canRun()) timer = setTimeout(run, delay);
+  }
+
+  /* An arrow nudge, eased in and out over half a second. Going left from
+     within one card of the start, the row is first shifted a whole set to
+     the right, which is invisible and leaves it somewhere to go. */
+  function nudge(d) {
+    stop();
+    var pitch = step(), from = track.scrollLeft, to = from + d * pitch;
+    if (to < 0) { var w = setWidth(); from += w; to += w; track.scrollLeft = from; }
+    var t0 = 0;
+    raf = requestAnimationFrame(function frame(now) {
+      if (!t0) t0 = now;
+      var p = Math.min(1, (now - t0) / 520);
+      var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      track.scrollLeft = from + (to - from) * e;
+      if (p < 1) { raf = requestAnimationFrame(frame); return; }
+      raf = null;
+      play(1200);
+    });
+  }
+
   for (var i = 0; i < btns.length; i++) {
     (function (btn) {
       btn.addEventListener("click", function () {
         var d = parseInt(btn.getAttribute("data-dir"), 10) || 1;
+        if (loop) { nudge(d); return; }
         track.scrollBy({ left: d * step(), behavior: "smooth" });
-        play(9000);
       });
     })(btns[i]);
   }
 
   track.addEventListener("scroll", paint, { passive: true });
   window.addEventListener("resize", paint);
-
-  var down = false, startX = 0, startLeft = 0, moved = 0;
 
   track.addEventListener("pointerdown", function (e) {
     if (e.pointerType === "touch") return;      /* let the browser do touch */
@@ -462,7 +546,16 @@
     /* Added once the drag is real, so a plain click never disables the
        links underneath it. */
     track.classList.add("dragging");
-    track.scrollLeft = startLeft - dx;
+    var want = startLeft - dx;
+    /* Dragged off either end of the set, the row comes round again rather
+       than hitting a wall. startLeft moves with it, so the card stays under
+       the cursor. */
+    if (loop) {
+      var w = setWidth();
+      while (want < 0) { want += w; startLeft += w; }
+      while (want >= w) { want -= w; startLeft -= w; }
+    }
+    track.scrollLeft = want;
   });
 
   function end(e) {
@@ -473,7 +566,7 @@
       track.releasePointerCapture(e.pointerId);
     }
     paint();
-    play(9000);
+    play(1200);
   }
   track.addEventListener("pointerup", end);
   track.addEventListener("pointercancel", end);
@@ -483,101 +576,38 @@
     if (moved) { e.preventDefault(); e.stopPropagation(); moved = 0; }
   }, true);
 
-  /* ----------------------------------------------------------- autoplay ---
-     Client 2026-11-12: "make it auto sliding slowly". One card every 4.5
-     seconds, 1100ms of travel, which is slow enough to finish reading a
-     card and far short of the twitch most carousels have.
-
-     It turns round at the end rather than wrapping. A wrap means rewinding
-     the better part of 1500px, which either jumps in a single frame or
-     crawls back for six seconds; turning round costs nothing and never
-     jumps.
-
-     Two CSS properties have to come off for the duration of a glide, both
-     for the same reason the drag takes them off. Mandatory snapping fights
-     a scrollLeft written every frame, and `scroll-behavior:smooth` applies
-     to a plain scrollLeft assignment too, so without it every frame would
-     start its own little animation and the row would barely move. */
-  var reduce = window.matchMedia
-    ? window.matchMedia("(prefers-reduced-motion: reduce)")
-    : { matches: false };
-  var dir = 1, timer = null, raf = null, hovering = false, onscreen = false;
-
-  function canPlay() {
-    return !reduce.matches && onscreen && !document.hidden && !hovering &&
-           !down && !slider.contains(document.activeElement) &&
-           track.scrollWidth - track.clientWidth > 1;
-  }
-
-  function stop() {
-    if (raf) { cancelAnimationFrame(raf); raf = null; }
-    track.classList.remove("gliding");
-    if (timer) { clearTimeout(timer); timer = null; }
-  }
-
-  function play(delay) {
-    stop();
-    if (canPlay()) timer = setTimeout(glide, delay);
-  }
-
-  function glide() {
-    var max = track.scrollWidth - track.clientWidth;
-    var pitch = step();
-    var from = track.scrollLeft;
-    /* Worked out from which card is standing in the gutter right now, not
-       from a running total, so the stops stay on the pitch however many
-       times it has turned round. The far end is the one stop that is not a
-       multiple of the pitch, because the row can go no further and the last
-       card lands against the opposite gutter there. */
-    var to = (Math.round(from / pitch) + dir) * pitch;
-    if (to >= max) { to = max; dir = -1; }
-    else if (to <= 0) { to = 0; dir = 1; }
-    var t0 = 0;
-    track.classList.add("gliding");
-    raf = requestAnimationFrame(function frame(now) {
-      if (!t0) t0 = now;
-      var p = Math.min(1, (now - t0) / 1100);
-      /* ease in and out, so it leaves and arrives without a jolt */
-      var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      track.scrollLeft = from + (to - from) * e;
-      if (p < 1) { raf = requestAnimationFrame(frame); return; }
-      raf = null;
-      track.classList.remove("gliding");
-      paint();
-      play(4500);
-    });
-  }
-
-  /* Anything the reader does with the row wins. Hover and keyboard focus
-     hold it still for as long as they last; a deliberate move with the
-     arrows, a drag, a wheel or a swipe buys nine seconds before it picks up
-     again, which is long enough not to feel like it is wrestling back. */
-  slider.addEventListener("mouseenter", function () {
-    hovering = true; stop();
-  });
-  slider.addEventListener("mouseleave", function () {
-    hovering = false; play(4500);
-  });
+  /* Anything the reader does wins. Hover and keyboard focus hold the row
+     still for as long as they last, the same way Trusted By stops under the
+     cursor; a wheel or a swipe, which leave no hover behind them, buy a
+     beat of stillness instead. */
+  slider.addEventListener("mouseenter", function () { hovering = true; stop(); });
+  slider.addEventListener("mouseleave", function () { hovering = false; play(900); });
   slider.addEventListener("focusin", stop);
-  slider.addEventListener("focusout", function () { play(4500); });
-  track.addEventListener("wheel", function () { play(9000); }, { passive: true });
-  track.addEventListener("touchstart", function () { play(9000); }, { passive: true });
+  slider.addEventListener("focusout", function () { play(900); });
+  track.addEventListener("wheel", function () { play(1500); }, { passive: true });
+  track.addEventListener("touchstart", function () { stop(); }, { passive: true });
+  track.addEventListener("touchend", function () { play(1500); }, { passive: true });
+
+  function setLoop() {
+    loop = !reduce.matches && !!track.querySelector(".card[aria-hidden]");
+    if (loop) track.classList.add("rolling");
+    else track.classList.remove("rolling");
+    paint();
+    /* A longer first delay lets the cards finish revealing before the row
+       starts moving under them. */
+    play(2000);
+  }
 
   if (window.IntersectionObserver) {
     new IntersectionObserver(function (entries) {
       onscreen = entries[0].isIntersecting;
-      /* A longer first delay lets the cards finish revealing before the row
-         starts moving under them. */
-      play(2400);
-    }, { threshold: .3 }).observe(slider);
+      play(onscreen ? 2000 : 0);
+    }, { threshold: .2 }).observe(slider);
   } else {
     onscreen = true;
-    play(2400);
   }
-  document.addEventListener("visibilitychange", function () { play(2400); });
-  if (reduce.addEventListener) {
-    reduce.addEventListener("change", function () { play(2400); });
-  }
+  document.addEventListener("visibilitychange", function () { play(1200); });
+  if (reduce.addEventListener) reduce.addEventListener("change", setLoop);
 
-  paint();
+  setLoop();
 })();
