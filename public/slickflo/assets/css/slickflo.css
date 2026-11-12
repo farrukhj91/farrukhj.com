@@ -923,11 +923,28 @@ html.js .cslide-track{cursor:grab}
    the first one can move a little bit up". Optical centre rather than
    geometric: a block of text with more below it than above reads as sitting
    low when it is actually centred. */
+/* ONE SWITCH FOR THE VIEWPORT UNIT, and it has to be an @supports block.
+   This section was written with `100svh` (the small viewport height, the one
+   that does not jump when a phone's address bar slides away) and a `100vh`
+   line above each use as a fallback. That trick works for a normal property
+   and NOT for a custom property, which is the bug he reported as "jumbling
+   up images and text on each other" on mobile.
+
+   A custom property holds whatever tokens it is given without checking them,
+   so a browser that has never heard of `svh` still accepts `--cardh:30svh`
+   and quietly discards the `100vh` line above it. The value only turns out
+   to be nonsense when it is substituted, and at that point `height` falls
+   back to `auto`, not to the earlier declaration. Measured: the picture
+   frame collapsed from 228px to 0 and 127px of photograph sat on the words.
+
+   @supports is skipped wholesale when the unit is unknown, so the `vh`
+   values below survive. Everything vertical reads `--vh`, nothing names a
+   viewport unit twice. */
 html.js .bo{--step:80vh;--itemh:110px;--vgap:96px;--gut:112px;
   --row:calc(var(--itemh) + var(--vgap));
   --line:46%;
-  --frameh:calc(100vh - 136px);
-  --frameh:calc(100svh - 136px);
+  --vh:100vh;
+  --frameh:calc(var(--vh) - 136px);
   /* The daylight between two photographs, seen only while one is handing
      over to the next: the frame is one card tall, so at rest there is
      nothing of the next one on screen. */
@@ -939,11 +956,10 @@ html.js .bo{--step:80vh;--itemh:110px;--vgap:96px;--gut:112px;
      card is 4:5 wherever there is room and only ever crops when the window
      is too short for it. */
   --wrapw:min(1120px, calc(100vw - 60px));
-  --cardh:min(calc(var(--wrapw) * .42 * 1.25), 616px, calc(100vh - 210px));
-  --cardh:min(calc(var(--wrapw) * .42 * 1.25), 616px, calc(100svh - 210px));
+  --cardh:min(calc(var(--wrapw) * .42 * 1.25), 616px, calc(var(--vh) - 210px));
   position:relative;
-  height:calc(100vh + (var(--n) - 1) * var(--step));
-  height:calc(100svh + (var(--n) - 1) * var(--step))}
+  height:calc(var(--vh) + (var(--n) - 1) * var(--step))}
+@supports(height:1svh){html.js .bo{--vh:100svh}}
 /* The clipping happens HERE and nowhere else. Client: "when I scroll up, the
    one going up disappears under a ribbon. it should fade away just like the
    one from the bottom comes in." It was disappearing under the top edge of a
@@ -1013,17 +1029,24 @@ html.js .bo-item p{max-width:38ch}
      picture takes a band across the top and the outcomes run underneath.
      No rule: a vertical line between things that are stacked separates
      nothing. */
-  html.js .bo{--vgap:54px;--artgap:30px;--cardh:30svh}
+  html.js .bo{--vgap:54px;--artgap:30px;--cardh:calc(var(--vh) * .3)}
   /* The same frame, a band across the top. It clipped here before it
      clipped anywhere else, because on a phone the words sit directly under
      the picture rather than beside it, so a card waiting its turn below the
      band landed on top of them: at 375px the whole of the next photograph
      was sitting over the outcome. */
-  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none}
+  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none;z-index:2}
   html.js .bo-fig{margin-bottom:0}
   html.js .bo-rule{display:none}
-  html.js .bo-list{left:0;right:0;width:auto;top:calc(30svh + 30px);
-    margin-top:0}
+  /* The picture sits OVER the words here, which it never has to do on a
+     desktop where they are side by side. On a phone they are stacked, so an
+     outcome on its way up crosses the 30px of background and then the
+     photograph itself: measured, a text block still 84% opaque was sitting
+     on the picture. It passes behind it now. Fading it out sooner was the
+     other option and a worse one, since the whole point of the fade is that
+     it finishes only once the outcome has been fully read. */
+  html.js .bo-list{left:0;right:0;width:auto;z-index:1;
+    top:calc(var(--vh) * .3 + 30px);margin-top:0}
   html.js .bo-item{margin-bottom:0}
   html.js .bo-item p{max-width:none}
 }
