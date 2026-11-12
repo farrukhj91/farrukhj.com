@@ -692,6 +692,56 @@ html.js .cav.in .cav-lg{
    two cards in a pair line their buttons up even with unequal blurbs. */
 .jcta{margin-top:auto}
 
+/* ------------------------------------------------- capabilities slider ---
+   Client 2026-11-12: bigger boxes, three or four in view, arrows under the
+   right, and drag to move. Seven cards in a four-wide grid left a ragged
+   last row of three; a slider has no last row.
+
+   A NATIVE overflow scroller with snap points, so with JavaScript off it
+   still works by touch, trackpad, scrollbar and keyboard. The arrows and
+   the click-drag are enhancement, hidden until html.js says they run. */
+.cslide{position:relative;margin-top:34px}
+.cslide-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;scrollbar-width:none;
+  /* Room for the cards' hover lift and shadow, which a clipped scroller
+     would otherwise shave off the top and bottom. */
+  padding:6px 2px 10px}
+.cslide-track::-webkit-scrollbar{display:none}
+.cslide-track>.card{flex:0 0 calc((100% - 2 * 22px) / 3);scroll-snap-align:start}
+/* A sliver of the next card is the only honest hint that the row moves;
+   the arrows say it too, but they are not there without JavaScript. */
+@media(min-width:1100px){
+  .cslide-track>.card{flex-basis:calc((100% - 3 * 22px) / 3.25)}
+}
+@media(max-width:900px){
+  .cslide-track>.card{flex-basis:calc((100% - 22px) / 2.15)}
+}
+@media(max-width:620px){
+  .cslide-track{gap:16px}
+  .cslide-track>.card{flex-basis:84%}
+}
+
+.cslide-nav{display:none;justify-content:flex-end;gap:10px;margin-top:20px}
+html.js .cslide-nav{display:flex}
+.cslide-btn{width:42px;height:42px;border-radius:50%;display:grid;
+  place-items:center;background:var(--card);border:1px solid var(--line-2);
+  color:var(--ink);cursor:pointer;
+  transition:border-color .2s,box-shadow .2s,opacity .2s,transform .2s var(--ease)}
+.cslide-btn:hover:not(:disabled){border-color:var(--navy);box-shadow:var(--sh-md);
+  transform:translateY(-1px)}
+.cslide-btn:disabled{opacity:.35;cursor:default}
+
+/* While a drag is in progress the snap has to be off, or every pointer move
+   fights the browser trying to settle on a snap point. */
+.cslide-track.dragging{scroll-snap-type:none;scroll-behavior:auto;
+  cursor:grabbing;user-select:none}
+html.js .cslide-track{cursor:grab}
+.cslide-track.dragging a{pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){
+  .cslide-track{scroll-behavior:auto}
+}
+
 /* -------------------------------------------------------------- stats --- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}

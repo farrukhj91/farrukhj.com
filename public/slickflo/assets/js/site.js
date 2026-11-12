@@ -383,3 +383,99 @@
     start();
   }
 })();
+
+/* ---------------------------------------------- capabilities slider ---
+   Arrows and click-drag for the horizontal card row. Client 2026-11-12.
+
+   The track scrolls natively, so everything here is enhancement: without
+   this file the row still moves by touch, trackpad, scrollbar and keyboard,
+   and the arrows stay hidden because the stylesheet only shows them under
+   html.js.
+
+   Pointer Events, not mouse plus touch: one code path covers mouse, pen and
+   touch, and setPointerCapture keeps a drag alive when the cursor leaves the
+   track mid-swipe. Touch scrolling is left to the browser, which does it
+   better than any script, so only mouse and pen are dragged by hand. */
+(function () {
+  var slider = document.querySelector(".cslide");
+  if (!slider) return;
+  var track = slider.querySelector(".cslide-track");
+  var btns = slider.querySelectorAll(".cslide-btn");
+  if (!track || !btns.length) return;
+
+  /* One card plus one gap, measured rather than assumed: the card width
+     changes at three breakpoints and the gap at one. */
+  function step() {
+    var card = track.querySelector(".card");
+    if (!card) return track.clientWidth;
+    var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    return card.getBoundingClientRect().width + gap;
+  }
+
+  /* The resting position at the far left is NOT 0. Snapping settles on the
+     first card's edge, which sits one padding-left in, so a `<= 1` test left
+     the back arrow enabled while the row was already at its start. Measured
+     here rather than guessed at, because the padding exists to stop the
+     cards' shadows being shaved off and may well be retuned.
+
+     The far end does land on max exactly, so 1px of slack covers only the
+     fractional scrollLeft of a zoomed or scaled display. */
+  function paint() {
+    var max = track.scrollWidth - track.clientWidth;
+    var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    btns[0].disabled = track.scrollLeft <= pad + 1;
+    btns[1].disabled = track.scrollLeft >= max - 1;
+  }
+
+  for (var i = 0; i < btns.length; i++) {
+    (function (btn) {
+      btn.addEventListener("click", function () {
+        var dir = parseInt(btn.getAttribute("data-dir"), 10) || 1;
+        track.scrollBy({ left: dir * step(), behavior: "smooth" });
+      });
+    })(btns[i]);
+  }
+
+  track.addEventListener("scroll", paint, { passive: true });
+  window.addEventListener("resize", paint);
+
+  var down = false, startX = 0, startLeft = 0, moved = 0;
+
+  track.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "touch") return;      /* let the browser do touch */
+    down = true; moved = 0;
+    startX = e.clientX;
+    startLeft = track.scrollLeft;
+    track.setPointerCapture(e.pointerId);
+  });
+
+  track.addEventListener("pointermove", function (e) {
+    if (!down) return;
+    var dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < 4) return;     /* a click is not a drag */
+    moved = 1;
+    /* Added once the drag is real, so a plain click never disables the
+       links underneath it. */
+    track.classList.add("dragging");
+    track.scrollLeft = startLeft - dx;
+  });
+
+  function end(e) {
+    if (!down) return;
+    down = false;
+    track.classList.remove("dragging");
+    if (track.hasPointerCapture && track.hasPointerCapture(e.pointerId)) {
+      track.releasePointerCapture(e.pointerId);
+    }
+    paint();
+  }
+  track.addEventListener("pointerup", end);
+  track.addEventListener("pointercancel", end);
+
+  /* A drag that ends on top of a card must not also follow its link. */
+  track.addEventListener("click", function (e) {
+    if (moved) { e.preventDefault(); e.stopPropagation(); moved = 0; }
+  }, true);
+
+  paint();
+})();
