@@ -666,41 +666,101 @@
 
 
 /* ------------------------------------------------- business outcomes ---
-   Four outcomes taking turns in one pinned frame. The stylesheet does the
-   pinning and the stacking; all this decides is which one is showing.
+   Four outcomes in one pinned frame, dragged upward by the scroll. The
+   stylesheet does all the positioning; this works out one number.
 
-   It watches four invisible blocks rather than the rows themselves, because
-   the rows are all in the same place and all of them are always on screen.
-   The blocks are a column the height of the section, one per outcome, and
-   the one crossing the middle of the window names the outcome to show.
+   `--f` is where the scroll has got to, counted in outcomes: 0 at the top
+   of the section, 3 at the bottom, every fraction in between. Everything
+   else follows from it, which is the point: one write moves both strips and
+   nothing here knows where anything is on the page.
 
-   Additive, like everything else here: without this file nothing has `on`
-   except the first, and the stylesheet without `html.js` leaves the section
-   as four ordinary rows, so the content reads either way. */
+   It is read off the stage's own position rather than from page offsets.
+   `top` on the sticky stage is the line it parks at, so the distance the
+   section has travelled past that line is the scroll position, and it
+   needs no measuring of document offsets that go stale when an image
+   settles or a font swaps.
+
+   Additive, like the rest: without this file nothing writes `--f`, and the
+   stylesheet without `html.js` leaves the section as four photographs each
+   beside its own outcome. Under prefers-reduced-motion this does not run at
+   all and the stylesheet falls back to the same thing. */
 (function () {
   var bo = document.querySelector(".bo");
-  if (!bo || !window.IntersectionObserver) return;
-  var rows = bo.querySelectorAll(".bo-row");
-  var steps = bo.querySelectorAll(".bo-step");
-  if (rows.length < 2 || steps.length !== rows.length) return;
+  if (!bo) return;
+  var stage = bo.querySelector(".bo-stage");
+  var items = bo.querySelectorAll(".bo-item");
+  var n = items.length;
+  if (!stage || n < 2) return;
 
-  var at = 0;
-  function show(i) {
-    if (i === at) return;
-    at = i;
-    for (var k = 0; k < rows.length; k++) {
-      if (k === i) rows[k].classList.add("on");
-      else rows[k].classList.remove("on");
+  var reduce = window.matchMedia
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : { matches: false };
+
+  var park = 0, travel = 1, at = -1, ticking = false;
+
+  /* One outcome's worth of height in the right-hand column, taken from the
+     tallest of them. Guessing is not an option: too small and two outcomes
+     overlap, too large and the next one is off the bottom of the window. */
+  function measure() {
+    if (reduce.matches) return;
+    park = parseFloat(getComputedStyle(stage).top) || 0;
+    travel = Math.max(1, bo.offsetHeight - stage.offsetHeight);
+    var tall = 0;
+    for (var i = 0; i < n; i++) {
+      var h = items[i].offsetHeight;
+      if (h > tall) tall = h;
+    }
+    /* The gap below each outcome, so the next one is clearly a separate
+       thing and not the end of this one's paragraph. */
+    if (tall) bo.style.setProperty("--row", (tall + 38) + "px");
+  }
+
+  function paint() {
+    ticking = false;
+    if (reduce.matches) return;
+    var p = (park - bo.getBoundingClientRect().top) / travel;
+    if (p < 0) p = 0;
+    else if (p > 1) p = 1;
+    var f = p * (n - 1);
+    if (Math.abs(f - at) < 0.001) return;
+    at = f;
+    bo.style.setProperty("--f", f);
+    /* The one being read is at full strength and its neighbours fade with
+       distance, so the outcome below is legibly there without competing. */
+    for (var i = 0; i < n; i++) {
+      var d = Math.abs(i - f);
+      items[i].style.opacity = d >= 1 ? 0.3 : (1 - d * 0.7);
     }
   }
 
-  var io = new IntersectionObserver(function (entries) {
-    for (var i = 0; i < entries.length; i++) {
-      if (!entries[i].isIntersecting) continue;
-      var idx = [].indexOf.call(steps, entries[i].target);
-      if (idx > -1) show(idx);
-    }
-  }, { rootMargin: "-45% 0px -45% 0px" });
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(paint);
+  }
 
-  for (var i = 0; i < steps.length; i++) io.observe(steps[i]);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", function () { measure(); at = -1; paint(); });
+  if (reduce.addEventListener) {
+    reduce.addEventListener("change", function () {
+      if (reduce.matches) {
+        bo.style.removeProperty("--f");
+        bo.style.removeProperty("--row");
+        for (var i = 0; i < n; i++) items[i].style.opacity = "";
+      } else { measure(); at = -1; paint(); }
+    });
+  }
+  /* A picture that arrives late changes nothing about the column, but a
+     font that swaps changes how tall every outcome is, and the measurement
+     taken at parse time is of the fallback face. Measured again when the
+     font is ready and again at load, because the two do not always settle
+     in that order and a column measured 7px short is a column whose gap is
+     7px wrong for as long as the page is open. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { measure(); at = -1; paint(); });
+  }
+  window.addEventListener("load", function () { measure(); at = -1; paint(); });
+
+  measure();
+  paint();
 })();

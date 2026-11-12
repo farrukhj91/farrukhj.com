@@ -795,107 +795,130 @@ html.js .cslide-track{cursor:grab}
 
 /* --------------------------------------------------- business outcomes ---
    A photograph on the left, the outcome on the right behind a vertical rule.
-   Client 2026-11-12, with a reference shot, then corrected: the four are not
-   four rows down the page, they take turns in ONE frame while the section
-   holds still under the scroll.
+   Client 2026-11-12 over three passes: the four do not sit one under another
+   down the page, they take turns in ONE frame while the section holds still,
+   and they do not cut from one to the next either. The pictures run as a
+   strip behind a window and the outcomes as a column behind another, and the
+   scroll drags both upward. The outcome below the one being read stays on
+   screen, dimmed.
 
-   WHAT FOLLOWS IS THE BASE STATE, and it is deliberately the dull one: four
-   rows, one under another, nothing on top of anything. That is what a reader
-   gets with JavaScript off, and it carries the whole content of the section.
-   The pinning is added underneath, under `html.js`.
-
-   The column is 44%, so the picture lands near 490px on a full-width page
-   and the 960px file covers it twice over on a retina screen. */
+   WHAT FOLLOWS IS THE BASE STATE, and it is deliberately the dull one. The
+   two wrappers are `display:contents`, so the figures and the outcomes fall
+   into one shared grid and pair up by the row number each carries: four
+   photographs, each beside its own outcome, nothing pinned and nothing on
+   top of anything. That is what a reader with no JavaScript gets, and it
+   carries the whole content of the section. */
 .bo{margin-top:46px}
-.bo-stage{display:grid;gap:94px}
-.bo-steps{display:none}
-.bo-row{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);
-  gap:0 54px;align-items:center}
-.bo-fig{margin:0}
+.bo-stage{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);
+  gap:94px 54px;align-items:center}
+.bo-art,.bo-list{display:contents}
+.bo-fig{margin:0;grid-column:1}
 .bo-fig img{display:block;width:100%;height:auto;aspect-ratio:4/5;
   object-fit:cover;border-radius:16px;box-shadow:var(--sh-md)}
-/* The rule his reference draws between the picture and the words. It is the
-   text block's own left edge, so it is exactly as tall as the text and does
-   not need a height of its own. */
-.bo-txt{border-left:1px solid var(--line-2);padding-left:46px}
-.bo-txt h3{font-size:clamp(25px,2.7vw,34px);line-height:1.14;
+/* The rule his reference draws between the picture and the words. */
+.bo-item{grid-column:2;border-left:1px solid var(--line-2);padding-left:46px}
+.bo-item h3{font-size:clamp(25px,2.7vw,34px);line-height:1.14;
   letter-spacing:-.03em;margin-bottom:16px}
-.bo-txt p{font-size:17px;line-height:1.62;color:var(--body);max-width:42ch}
+.bo-item p{font-size:17px;line-height:1.62;color:var(--body);max-width:42ch}
 
 /* ---- pinned, which is what everybody with JavaScript actually sees ----
-   The section is given a height of several screens and its stage is stuck to
-   the top of the window, so scrolling moves THROUGH the section without
-   moving the frame. The four rows sit on top of each other in that frame and
-   cross-fade.
+   The section is given several screens of height and its stage is stuck to
+   the window, so scrolling moves THROUGH the section without moving the
+   frame. `--step` is how much scrolling one outcome is worth; the section is
+   one screen for the frame plus a step for every handover after the first,
+   so it lets go of the window the moment the last outcome has arrived.
 
-   `--step` is how much scrolling one outcome is worth. The section is one
-   screen for the frame itself plus one step for each handover after the
-   first, so four outcomes cost three steps of travel and the section lets go
-   of the window the moment the last one has been read.
+   `--f` is the live scroll position expressed in outcomes: 0 at the top of
+   the section, 3 at the bottom, and every fraction in between. Script writes
+   it and nothing else, which is why there is one declaration here for all
+   four figures and one for all four outcomes. `--i` minus `--f` is how many
+   places from the window a thing is, so 0 means in it, 1 means a frame
+   below, -0.5 means halfway out of the top.
 
-   `svh` is the small viewport height, the one that does not change when a
-   phone's address bar slides away. `vh` first for anything that does not
-   know the unit: a stage that is briefly too tall is better than one that is
-   zero. */
-html.js .bo{--step:80vh;position:relative;
+   `--row` is the height of one outcome in that column, measured by script
+   from the tallest of them rather than guessed, because a guess that is too
+   small overlaps two outcomes and a guess that is too large leaves the next
+   one off the bottom of the window. The value here is only what holds until
+   that measurement lands. */
+html.js .bo{--step:80vh;--row:172px;position:relative;
   height:calc(100vh + (var(--n) - 1) * var(--step));
   height:calc(100svh + (var(--n) - 1) * var(--step))}
 html.js .bo-stage{position:sticky;top:96px;display:block;
   height:calc(100vh - 136px);height:calc(100svh - 136px)}
-html.js .bo-row{position:absolute;left:0;right:0;top:50%;
-  transform:translateY(-50%);opacity:0;transition:opacity .5s var(--ease)}
-html.js .bo-row.on{opacity:1}
-/* The text arrives from just below where it ends up. The figure does not
-   move at all: two things sliding at once in a frame this size reads as the
-   whole page lurching. */
-html.js .bo-txt{transform:translateY(16px);transition:transform .55s var(--ease)}
-html.js .bo-row.on .bo-txt{transform:none}
-/* Capped to the frame. width:100% with aspect-ratio works out the height,
-   max-height then clamps it, and object-fit does the cropping, so a short
-   laptop window gets a shorter picture rather than one that overflows. */
-html.js .bo-fig img{max-height:calc(100vh - 210px);
-  max-height:calc(100svh - 210px)}
-/* The sentinels. Four blocks the height of the section between them, with no
-   width, no paint and nothing to click: they exist to be observed. */
-html.js .bo-steps{display:block;position:absolute;inset:0;
-  pointer-events:none;visibility:hidden}
-html.js .bo-step{height:calc(100% / var(--n))}
 
-/* The two columns are worth keeping well below a desktop, but not at the
-   same spacing: the rule and its gutter were taking 100px out of a 693px
-   measure, which is the text column going hungry so the whitespace can eat. */
+/* The window the pictures run behind. The rounding and the shadow belong to
+   it rather than to the pictures: four shadowed boxes stacked in one place
+   would pile four translucent shadows on top of each other and read as a
+   dark smear round the frame. */
+html.js .bo-art{display:block;position:absolute;left:0;width:44%;
+  top:50%;transform:translateY(-50%);
+  height:min(616px, calc(100vh - 210px));
+  height:min(616px, calc(100svh - 210px));
+  overflow:hidden;border-radius:16px;box-shadow:var(--sh-md);
+  background:var(--card)}
+html.js .bo-fig{position:absolute;inset:0;
+  transform:translateY(calc((var(--i) - var(--f)) * 100%))}
+html.js .bo-fig img{width:100%;height:100%;aspect-ratio:auto;
+  border-radius:0;box-shadow:none}
+
+/* The window the outcomes run behind: exactly two rows, so at rest the next
+   outcome shows under the one being read and the one after it is cut off at
+   the bottom edge. 2.15 rows left a 21px sliver of a third heading showing,
+   which reads as a mistake rather than as a hint. The rule moves onto the
+   window, where it is as tall as the pair rather than as tall as one. */
+html.js .bo-list{display:block;position:absolute;right:0;
+  width:calc(56% - 54px);top:50%;margin-top:calc(var(--row) * -.5);
+  height:calc(var(--row) * 2);overflow:hidden;
+  border-left:1px solid var(--line-2);padding-left:46px}
+html.js .bo-item{position:absolute;left:0;right:0;top:0;
+  border-left:0;padding-left:0;
+  transform:translateY(calc((var(--i) - var(--f)) * var(--row)))}
+html.js .bo-item p{max-width:38ch}
+
 @media(max-width:1000px){
-  .bo-stage{gap:74px}
-  .bo-row{gap:0 34px}
-  .bo-txt{padding-left:30px}
+  .bo-stage{gap:74px 34px}
+  .bo-item{padding-left:30px}
+  html.js .bo-list{width:calc(56% - 34px);padding-left:30px}
 }
 @media(max-width:760px){
-  .bo-stage{gap:54px}
-  .bo-row{grid-template-columns:minmax(0,1fr);gap:24px}
-  /* Stacked, the picture is as wide as the page, and a 4:5 one that wide is
-     a screenful of photograph before a word of the outcome. Square it, then
-     cap the height: narrow phones keep the square, and by the time the page
-     is wide enough for that square to be 600px tall it has become a band
-     instead. object-fit does the cropping either way. */
+  .bo-stage{grid-template-columns:minmax(0,1fr);gap:0}
+  /* Stacked, every figure and its outcome need their own two rows, so the
+     row number each carries is doubled and the outcome takes the one after
+     its picture. */
+  .bo-fig{grid-column:1;grid-row:calc(var(--i) * 2 + 1);margin-bottom:24px}
+  .bo-item{grid-column:1;grid-row:calc(var(--i) * 2 + 2);margin-bottom:54px;
+    border-left:0;padding-left:0}
+  .bo-item p{max-width:none}
   .bo-fig img{aspect-ratio:1/1;max-height:62vh}
-  .bo-txt{border-left:0;padding-left:0}
-  .bo-txt p{max-width:none}
-  /* Pinned on a phone the picture and the words have to share one screen,
-     so the picture takes a band and gives the heading room underneath. */
-  html.js .bo-fig img{aspect-ratio:3/2;max-height:38svh}
-  html.js .bo-txt{padding-left:0}
+  /* Pinned on a phone, the picture and the words share one screen, so the
+     picture takes a band across the top and the outcomes run underneath.
+
+     The window gets WHATEVER IS LEFT of the frame rather than two rows of
+     it. Two rows is a desktop luxury: at 320px the words wrap to five lines
+     and a row is half as tall again, so two of them hung 49px out of the
+     bottom of the frame and over the next section. Measured off the frame
+     it always fits, and shows the next outcome by however much there is
+     room for. */
+  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none;
+    height:30svh;margin-bottom:0}
+  html.js .bo-fig{margin-bottom:0}
+  html.js .bo-list{left:0;right:0;width:auto;top:calc(30svh + 22px);
+    height:min(calc(var(--row) * 2), calc(100% - 30svh - 22px));
+    margin-top:0;border-left:0;padding-left:0}
+  html.js .bo-item{margin-bottom:0}
 }
 
-/* No motion: no pinning either, because holding a section still while its
-   contents change IS motion, whatever is being faded. Back to four rows one
-   under another, which is the base state above and loses nothing. */
+/* No motion: no pinning and no sliding either, because holding a section
+   still while its contents move IS motion. Back to the base state above,
+   which loses nothing. */
 @media(prefers-reduced-motion:reduce){
   html.js .bo{height:auto;position:static}
-  html.js .bo-stage{position:static;height:auto}
-  html.js .bo-row{position:static;transform:none;opacity:1;transition:none}
-  html.js .bo-txt{transform:none;transition:none}
-  html.js .bo-fig img{max-height:none}
-  html.js .bo-steps{display:none}
+  html.js .bo-stage{position:static;height:auto;display:grid}
+  html.js .bo-art,html.js .bo-list{display:contents;border-left:0;padding:0}
+  html.js .bo-fig,html.js .bo-item{position:static;transform:none;opacity:1}
+  html.js .bo-fig img{width:100%;height:auto;aspect-ratio:4/5;
+    border-radius:16px;box-shadow:var(--sh-md)}
+  html.js .bo-item{border-left:1px solid var(--line-2);padding-left:46px}
 }
 
 /* -------------------------------------------------------------- stats --- */
