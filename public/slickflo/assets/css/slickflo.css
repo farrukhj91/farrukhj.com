@@ -1067,6 +1067,31 @@ html.js .bo-item p{max-width:38ch}
   html.js .bo-item{border-left:1px solid var(--line-2);padding-left:46px}
 }
 
+/* ------------------------------------------ technical writing, SEO batch ---
+   Three pieces from his 2026-11-13 brief. Each reuses something the site
+   already has rather than introducing a pattern: the bullets are `.cs-pts`,
+   the steps are `process(vert=True)`, the three ways are `minicards`. */
+
+/* The old h1, now the line under the new one. Between a heading and body
+   copy in size, because that is what it is. */
+.ph-tag{font-size:clamp(19px,2vw,22.5px);line-height:1.38;color:var(--ink);
+  letter-spacing:-.018em;font-weight:520;max-width:30ch;margin-top:18px}
+@media(max-width:960px){.ph-tag{max-width:none}}
+
+/* "When does it make sense to outsource": a lead line and five points,
+   centred as a block under a centred heading but left-aligned inside it,
+   because a ragged-both-ends bullet list is unreadable. */
+.oput{max-width:720px;margin:0 auto}
+.oput-lead{font-size:17.4px;line-height:1.6;color:var(--body);margin-bottom:18px}
+.oput .cs-pts li{font-size:16.2px;color:var(--body)}
+
+/* Pricing, under the three ways of working. A plain block rather than a
+   fourth card: it is not one of the ways, it is what they all cost. */
+.ways-p{max-width:680px;margin:44px auto 0;text-align:center}
+.ways-p h3{font-size:21px;letter-spacing:-.024em;margin-bottom:10px}
+.ways-p p{font-size:16.6px;line-height:1.62;color:var(--body)}
+.ways-p .hcta{justify-content:center;margin-top:24px}
+
 /* -------------------------------------------------------------- stats --- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}
