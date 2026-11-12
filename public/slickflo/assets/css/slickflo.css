@@ -793,6 +793,67 @@ html.js .cslide-track{cursor:grab}
   .cslide-track{scroll-behavior:auto}
 }
 
+/* --------------------------------------------------- business outcomes ---
+   A photograph on the left, the outcome on the right behind a vertical rule.
+   Client 2026-11-12, with a reference shot.
+
+   There is no pinning and no scroll maths here. A row is as tall as a 4:5
+   photograph, which at any ordinary window puts one outcome in front of the
+   reader with the next heading showing underneath, which is what the
+   reference actually does. Sticky was tried and dropped: for a picture that
+   nearly fills its own row there is nothing left for it to travel, so it
+   would have been a line of CSS that did nothing and had to be maintained.
+
+   The column is 44%, so the picture lands near 490px on a full-width page
+   and the 960px file covers it twice over on a retina screen. */
+.bo{margin-top:46px;display:grid;gap:94px}
+.bo-row{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);
+  gap:0 54px;align-items:center}
+.bo-fig{margin:0}
+.bo-fig img{display:block;width:100%;height:auto;aspect-ratio:4/5;
+  object-fit:cover;border-radius:16px;box-shadow:var(--sh-md)}
+/* The rule his reference draws between the picture and the words. It is the
+   text block's own left edge, so it is exactly as tall as the text and does
+   not need a height of its own. */
+.bo-txt{border-left:1px solid var(--line-2);padding-left:46px}
+.bo-txt h3{font-size:clamp(25px,2.7vw,34px);line-height:1.14;
+  letter-spacing:-.03em;margin-bottom:16px}
+.bo-txt p{font-size:17px;line-height:1.62;color:var(--body);max-width:42ch}
+
+/* The row being read is the one at full strength. `lit` is added by script,
+   so the base state is four rows at full strength: with JavaScript off there
+   is nothing dimmed and nothing lost. Applied to the picture and the text
+   rather than to the row, because the row carries `rv` and the two would
+   fight over opacity. */
+.bo.lit .bo-fig,.bo.lit .bo-txt{transition:opacity .5s var(--ease)}
+.bo.lit .bo-row:not(.on) .bo-fig{opacity:.5}
+.bo.lit .bo-row:not(.on) .bo-txt{opacity:.38}
+@media(prefers-reduced-motion:reduce){
+  .bo.lit .bo-row:not(.on) .bo-fig,
+  .bo.lit .bo-row:not(.on) .bo-txt{opacity:1;transition:none}
+}
+
+/* The two columns are worth keeping well below a desktop, but not at the
+   same spacing: the rule and its gutter were taking 100px out of a 693px
+   measure, which is the text column going hungry so the whitespace can eat. */
+@media(max-width:1000px){
+  .bo{gap:74px}
+  .bo-row{gap:0 34px}
+  .bo-txt{padding-left:30px}
+}
+@media(max-width:760px){
+  .bo{gap:54px}
+  .bo-row{grid-template-columns:minmax(0,1fr);gap:24px}
+  /* Stacked, the picture is as wide as the page, and a 4:5 one that wide
+     is a screenful of photograph before a word of the outcome. Square it,
+     then cap the height: narrow phones keep the square, and by the time
+     the page is wide enough for that square to be 600px tall it has become
+     a band instead. object-fit does the cropping either way. */
+  .bo-fig img{aspect-ratio:1/1;max-height:62vh}
+  .bo-txt{border-left:0;padding-left:0}
+  .bo-txt p{max-width:none}
+}
+
 /* -------------------------------------------------------------- stats --- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}

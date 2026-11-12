@@ -620,10 +620,16 @@
      A wheel over the row is almost always aimed at the page, not at this.
      Only a sideways wheel, from a trackpad swipe or a tilt wheel, is
      addressed to a horizontal scroller, so only that counts. */
-  slider.addEventListener("mousemove", function () {
+  /* On the TRACK, not on the whole slider. The slider also contains the
+     band under the cards that holds the arrows, the full width of the page,
+     and a cursor crossing that band was stopping the row: "people hover
+     cursors fast normally and it should not disrupt movement unless the
+     cursor is on top of a card or that moving area". The track is exactly
+     that moving area. */
+  track.addEventListener("mousemove", function () {
     if (!hovering) { hovering = true; stop(); }
   });
-  slider.addEventListener("mouseleave", function () { hovering = false; play(400); });
+  track.addEventListener("mouseleave", function () { hovering = false; play(400); });
   /* Both go through play(), which asks canRun() rather than assuming: a
      keyboard focus stops it, a click's focus does not. */
   slider.addEventListener("focusin", function () { play(400); });
@@ -656,4 +662,35 @@
   if (reduce.addEventListener) reduce.addEventListener("change", setLoop);
 
   setLoop();
+})();
+
+
+/* ------------------------------------------------- business outcomes ---
+   Light the row the reader is on and dim the rest, which is what his
+   reference shot does with the next outcome below.
+
+   Entirely additive: `lit` is what turns the dimming on at all, so with
+   this file absent every row stays at full strength and the section reads
+   as four photographs each beside its own outcome. The band is the middle
+   tenth of the window, and when nothing is crossing it, at the very top
+   and bottom of the section, the last row to be lit stays lit rather than
+   the whole thing going grey. */
+(function () {
+  var bo = document.querySelector(".bo");
+  if (!bo || !window.IntersectionObserver) return;
+  var rows = bo.querySelectorAll(".bo-row");
+  if (rows.length < 2) return;
+
+  rows[0].classList.add("on");
+  bo.classList.add("lit");
+
+  var io = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (!entries[i].isIntersecting) continue;
+      for (var k = 0; k < rows.length; k++) rows[k].classList.remove("on");
+      entries[i].target.classList.add("on");
+    }
+  }, { rootMargin: "-45% 0px -45% 0px" });
+
+  for (var i = 0; i < rows.length; i++) io.observe(rows[i]);
 })();
