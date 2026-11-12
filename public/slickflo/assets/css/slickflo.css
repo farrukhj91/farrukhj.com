@@ -840,13 +840,10 @@ html.js .bo{--step:80vh;--itemh:110px;--vgap:96px;--gut:112px;
   --line:46%;
   --frameh:calc(100vh - 136px);
   --frameh:calc(100svh - 136px);
-  /* The daylight between two photographs is whatever it takes to keep the
-     next one off the screen, bar a hint of it. A fixed 80px was right at
-     1280x900 and wrong everywhere else: on a 768px tablet, where the card
-     is capped by its narrow column and leaves 226px of empty frame beneath
-     it, 80px put 163px of the NEXT photograph on screen at rest. This is
-     the room below the card, less the 24px that is the hint. */
-  --artgap:max(56px, calc(var(--frameh) * .54 - var(--cardh) / 2 - 24px));
+  /* The daylight between two photographs, seen only while one is handing
+     over to the next: the frame is one card tall, so at rest there is
+     nothing of the next one on screen. */
+  --artgap:56px;
   /* The card is capped by the COLUMN as well as by the window. Capped only
      by the window, a 768px tablet got a 291x616 card: a 4:5 photograph in a
      1:2.1 hole, which object-fit solves by throwing away half the picture.
@@ -867,18 +864,24 @@ html.js .bo{--step:80vh;--itemh:110px;--vgap:96px;--gut:112px;
 html.js .bo-stage{position:sticky;top:96px;display:block;overflow:hidden;
   height:var(--frameh)}
 
-/* The photographs are separate cards on the section's own background, not a
-   strip stitched together. Client: "put the images on the left on top of a
-   static background and do not attach them together." So each one keeps its
-   own rounding and its own shadow, and there is daylight between them as
-   they pass.
+/* ONE FRAME, one card tall, and the photographs are swapped inside it.
+   Client 2026-11-13: "the images should be swapped in same frame instead of
+   being loaded on the page one after the other." They were sliding through
+   the whole pinned stage, so a card waiting its turn stood on the page
+   under the one being read; now anything that is not in the frame is not on
+   the page at all.
 
-   How much daylight is worked out rather than picked: see --artgap above. */
+   They are still not stitched together, which was the correction before
+   this one: each card keeps its own rounding, and there is 56px of the
+   section's own background between them, which you see crossing the frame
+   as one hands over to the next. The shadow belongs to the frame rather
+   than to the cards, because a frame that clips at the card's own edge
+   clips the card's shadow away with it. */
 html.js .bo-art{display:block;position:absolute;left:0;width:42%;
-  top:var(--line);transform:translateY(-50%);height:var(--cardh)}
+  top:var(--line);transform:translateY(-50%);height:var(--cardh);
+  overflow:hidden;border-radius:16px;box-shadow:var(--sh-md)}
 html.js .bo-fig{position:absolute;left:0;right:0;top:0;height:var(--cardh);
-  border-radius:16px;overflow:hidden;box-shadow:var(--sh-md);
-  background:var(--card);
+  border-radius:16px;overflow:hidden;background:var(--card);
   transform:translateY(calc((var(--i) - var(--f))
             * (var(--cardh) + var(--artgap))))}
 html.js .bo-fig img{width:100%;height:100%;aspect-ratio:auto;
@@ -923,14 +926,12 @@ html.js .bo-item p{max-width:38ch}
      No rule: a vertical line between things that are stacked separates
      nothing. */
   html.js .bo{--vgap:54px;--artgap:30px;--cardh:30svh}
-  /* Clipped to the band here, and only here. On a phone the words sit
-     directly under the picture rather than beside it, so a card waiting its
-     turn below the band lands on top of them: at 375px the whole of the
-     next photograph was sitting over the outcome. The band is the window on
-     a phone; the daylight between the cards still shows as they pass
-     through it. */
-  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none;
-    height:var(--cardh);overflow:hidden}
+  /* The same frame, a band across the top. It clipped here before it
+     clipped anywhere else, because on a phone the words sit directly under
+     the picture rather than beside it, so a card waiting its turn below the
+     band landed on top of them: at 375px the whole of the next photograph
+     was sitting over the outcome. */
+  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none}
   html.js .bo-fig{margin-bottom:0}
   html.js .bo-rule{display:none}
   html.js .bo-list{left:0;right:0;width:auto;top:calc(30svh + 30px);

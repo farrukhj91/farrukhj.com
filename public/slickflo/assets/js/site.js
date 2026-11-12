@@ -715,30 +715,53 @@
     if (tall) bo.style.setProperty("--itemh", tall + "px");
   }
 
+  /* The photographs after the first are deferred, which is right for four
+     pictures below the fold and wrong the moment the section is nearly in
+     view: a deferred picture only starts loading as it comes near the
+     window, and these come near it by sliding into a frame the reader is
+     already looking at, so the second one would arrive as a white card and
+     fill in afterwards. Two screens out is early enough to have them.
+
+     Once only, and it undoes nothing: a picture already loaded ignores it. */
+  var fetched = false;
+  function fetchAll() {
+    fetched = true;
+    var imgs = bo.querySelectorAll(".bo-fig img");
+    for (var i = 0; i < imgs.length; i++) imgs[i].loading = "eager";
+  }
+
   function paint() {
     ticking = false;
     if (reduce.matches) return;
-    var p = (park - bo.getBoundingClientRect().top) / travel;
+    var box = bo.getBoundingClientRect();
+    if (!fetched && box.top < window.innerHeight * 2) fetchAll();
+    var p = (park - box.top) / travel;
     if (p < 0) p = 0;
     else if (p > 1) p = 1;
     var f = p * (n - 1);
     if (Math.abs(f - at) < 0.001) return;
     at = f;
     bo.style.setProperty("--f", f);
-    /* Exactly ONE outcome is ever at full strength: the nearest to the
-       reading line, which is the one whose photograph is most of the way
-       into the frame. Fading both of them through the middle of a handover
-       left no outcome reading as the current one for a third of every step,
-       which is the "sync between text and image" he was looking at.
+    /* The fade is NOT symmetrical, and that is the whole of it. Client
+       2026-11-13: "when 2nd image comes in frame fully with 2nd point, the
+       point above it should disappear fully." So an outcome that has been
+       read is gone by the time the next one is in place, while the one
+       still to come sits under it, legible, waiting.
 
-       The rest fade with distance and reach nothing by two places out, so
-       the one leaving upward fades away instead of being cut off, and the
-       one arriving fades in the same way. */
-    var near = Math.round(f);
+       `u` is how far past an outcome the reading line has got. Reading the
+       curve by its corners: at 0 the outcome is being read and is at full
+       strength; at +1 it has been read and is at nothing; at -1 it is the
+       one underneath, at 0.42; at -2 and beyond it is out of sight. Every
+       step between is a straight line, so nothing jumps. An earlier version
+       picked a winner with Math.round and snapped it to full strength,
+       which flashed at the halfway point of every handover. */
     for (var i = 0; i < n; i++) {
-      if (i === near) { items[i].style.opacity = 1; continue; }
-      var d = Math.abs(i - f);
-      items[i].style.opacity = d >= 2 ? 0 : Math.min(0.42, 0.42 * (2 - d));
+      var u = f - i;
+      var o;
+      if (u >= 0) o = u >= 1 ? 0 : 1 - u;
+      else if (u >= -1) o = 1 + 0.58 * u;
+      else o = u <= -2 ? 0 : 0.42 * (u + 2);
+      items[i].style.opacity = o;
     }
   }
 
