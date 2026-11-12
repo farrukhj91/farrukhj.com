@@ -402,10 +402,15 @@
   var btns = slider.querySelectorAll(".cslide-btn");
   if (!track || !btns.length) return;
 
-  /* Trusted By runs at 39.9px/s, measured off its own keyframes, and the
-     client asked for this to move the same way. 40 it is: the two read as
-     one idea rather than as two different speeds on one page. */
-  var SPEED = 40;
+  /* Trusted By runs at 39.9px/s, measured off its own keyframes, and 40 was
+     the first answer to "move it like the logos do". He read it as too slow,
+     and he is right: a marquee is judged by how often something NEW arrives,
+     not by pixels. A logo and its gap are 128px, so one goes by every 3.2s;
+     a card and its gap are 374px, so at the same 40px/s a card takes 9.4s.
+     Matching the logos' rate exactly would mean 117px/s, which for objects
+     this size is a conveyor belt. 90 is the compromise: a card every 4.2s,
+     a bit over twice what it was. */
+  var SPEED = 90;
   var reduce = window.matchMedia
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
     : { matches: false };
@@ -512,7 +517,7 @@
       track.scrollLeft = from + (to - from) * e;
       if (p < 1) { raf = requestAnimationFrame(frame); return; }
       raf = null;
-      play(1200);
+      play(900);
     });
   }
 
@@ -566,7 +571,7 @@
       track.releasePointerCapture(e.pointerId);
     }
     paint();
-    play(1200);
+    play(900);
   }
   track.addEventListener("pointerup", end);
   track.addEventListener("pointercancel", end);
@@ -576,15 +581,28 @@
     if (moved) { e.preventDefault(); e.stopPropagation(); moved = 0; }
   }, true);
 
-  /* Anything the reader does wins. Hover and keyboard focus hold the row
-     still for as long as they last, the same way Trusted By stops under the
-     cursor; a wheel or a swipe, which leave no hover behind them, buy a
-     beat of stillness instead. */
-  slider.addEventListener("mouseenter", function () { hovering = true; stop(); });
-  slider.addEventListener("mouseleave", function () { hovering = false; play(900); });
+  /* Anything the reader does wins, but only what the reader actually DID.
+     Both of these were too quick to take offence, which is what he saw as
+     the row being over-sensitive:
+
+     `mouseenter` fires when the row arrives under a cursor that has not
+     moved, which is exactly what happens every time somebody scrolls down
+     the page: the section slides up under the pointer and freezes on
+     arrival, so it looks broken before it has moved at all. A hover now
+     has to involve the pointer MOVING inside the row.
+
+     A wheel over the row is almost always aimed at the page, not at this.
+     Only a sideways wheel, from a trackpad swipe or a tilt wheel, is
+     addressed to a horizontal scroller, so only that counts. */
+  slider.addEventListener("mousemove", function () {
+    if (!hovering) { hovering = true; stop(); }
+  });
+  slider.addEventListener("mouseleave", function () { hovering = false; play(400); });
   slider.addEventListener("focusin", stop);
-  slider.addEventListener("focusout", function () { play(900); });
-  track.addEventListener("wheel", function () { play(1500); }, { passive: true });
+  slider.addEventListener("focusout", function () { play(400); });
+  track.addEventListener("wheel", function (e) {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) play(1500);
+  }, { passive: true });
   track.addEventListener("touchstart", function () { stop(); }, { passive: true });
   track.addEventListener("touchend", function () { play(1500); }, { passive: true });
 
@@ -593,15 +611,15 @@
     if (loop) track.classList.add("rolling");
     else track.classList.remove("rolling");
     paint();
-    /* A longer first delay lets the cards finish revealing before the row
+    /* Just long enough for the cards to finish revealing before the row
        starts moving under them. */
-    play(2000);
+    play(700);
   }
 
   if (window.IntersectionObserver) {
     new IntersectionObserver(function (entries) {
       onscreen = entries[0].isIntersecting;
-      play(onscreen ? 2000 : 0);
+      play(onscreen ? 700 : 0);
     }, { threshold: .2 }).observe(slider);
   } else {
     onscreen = true;
