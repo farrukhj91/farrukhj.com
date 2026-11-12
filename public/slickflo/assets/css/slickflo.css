@@ -315,6 +315,50 @@ img{max-width:100%;display:block}
 .doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 9px;border-radius:6px;
   background:#F4F6FB;color:var(--mute);border:1px solid var(--line)}
 .doc-tabs em.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* The hero mock cycles through five document types. Client 2026-11-12: it
+   used to sit on Guides with one fixed sample.
+
+   THE PANELS STACK IN ONE GRID CELL rather than being positioned
+   absolutely, so the mock is as tall as its tallest panel and the hero does
+   not change height mid-cycle.
+
+   Base state is the first tab and the first panel. The cycling is added
+   only under `html.js`, so with JavaScript off the mock is exactly what it
+   was before it became an animation. */
+.doc-stack{display:grid}
+.doc-stack>.doc-pane{grid-area:1/1;opacity:0}
+.doc-stack>.doc-pane:first-child{opacity:1}
+.doc-tabs em:first-child{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+html.js .doc-stack>.doc-pane,
+html.js .doc-tabs em{animation-duration:17.5s;animation-timing-function:linear;
+  animation-iteration-count:infinite;animation-delay:calc(var(--i) * 3.5s)}
+html.js .doc-stack>.doc-pane{animation-name:doc-pane}
+html.js .doc-tabs em{animation-name:doc-tab}
+/* The first tab's resting highlight has to come off once the cycle owns it,
+   or tab one stays dark through all five slots. */
+html.js .doc-tabs em:first-child{background:#F4F6FB;color:var(--mute);
+  border-color:var(--line)}
+html.js .doc-stack>.doc-pane:first-child{opacity:0}
+
+@keyframes doc-pane{
+  0%{opacity:0}3%{opacity:1}17%{opacity:1}20%{opacity:0}100%{opacity:0}}
+@keyframes doc-tab{
+  0%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}
+  3%{background:var(--navy);color:#fff;border-color:var(--navy)}
+  17%{background:var(--navy);color:#fff;border-color:var(--navy)}
+  20%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}
+  100%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}}
+
+@media (prefers-reduced-motion:reduce){
+  /* Back to a still mock of the Guides panel. The five types are still all
+     listed as tabs, so nothing is said by the motion alone. */
+  html.js .doc-stack>.doc-pane,html.js .doc-tabs em{animation:none}
+  html.js .doc-stack>.doc-pane:first-child{opacity:1}
+  html.js .doc-tabs em:first-child{background:var(--navy);color:#fff;
+    border-color:var(--navy)}
+}
 .doc-h{font-size:19px;font-weight:600;color:var(--ink);letter-spacing:-.022em;margin-bottom:5px}
 .doc-s{font-size:13.5px;color:var(--mute);margin-bottom:20px}
 .lines{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
@@ -431,7 +475,9 @@ img{max-width:100%;display:block}
    from the day this was built. A filled box has no such dependency. */
 .cav-lg img{width:100%;height:100%;object-fit:contain;
   transform:scale(var(--s,1))}
-.cav-lg-t{font-size:clamp(11px,2.6vw,15px);font-weight:700;
+/* Sized to sit level with the LOGOS around it, which land at about 22px of
+   lettering. At 15px a type-set name read as the small one in its screen. */
+.cav-lg-t{font-size:clamp(12px,2.8vw,19px);font-weight:700;
   letter-spacing:-.02em;color:var(--ink);line-height:1.2}
 
 /* Each logo waits its turn, appears at the centre of the screen a little
@@ -2022,6 +2068,7 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    height from the ratio, max-height clamps it, background-size:cover absorbs
    the difference. */
 .pbanner{position:relative;width:100%;
+  background-image:var(--cover);
   background-size:cover;background-position:50% 0%;
   background-color:var(--navy-d);aspect-ratio:3/1;
   min-height:300px;
@@ -2075,11 +2122,14 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    a 197px-tall banner is a scrim fighting a photograph and losing; separating
    them is legible at any length. */
 @media(max-width:760px){
-  .pbanner{display:block;aspect-ratio:auto;min-height:0;background:none}
+  /* `background-image:none` now actually works: the photograph arrives as
+     --cover, so there is no inline background-image to outrank this. */
+  .pbanner{display:block;aspect-ratio:auto;min-height:0;
+    background-image:none;background-color:transparent}
   /* No overlay once the headline is under the picture rather than on it. */
   .pbanner::after{content:none}
   .pbanner::before{content:"";display:block;aspect-ratio:3/1;
-    background-image:inherit;background-size:cover;background-position:50% 50%;
+    background-image:var(--cover);background-size:cover;background-position:50% 50%;
     background-color:var(--navy-d);border-radius:0}
   .pb-in{padding:24px 0 0;max-width:none}
   .pbanner h1{color:var(--ink);text-shadow:none}
