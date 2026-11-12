@@ -309,10 +309,17 @@ img{max-width:100%;display:block}
 .shot-body{padding:22px 24px 26px}
 /* Five tabs since 2026-10-04 ("API" became "API Docs" and Customer Proposals
    joined them), and five needed 483px in a 470px mock, so they broke to two
-   rows. Tighter padding and gap bring them to 459. flex-wrap stays: a sixth
-   tab should wrap rather than overflow the browser frame. */
-.doc-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
-.doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 9px;border-radius:6px;
+   rows. Tighter padding and gap brought them to 459.
+
+   Tightened again 2026-11-13, when the mock went onto the Technical Writing
+   hero as well: that column is 9px narrower than the homepage's, the row
+   needed 462px and had 460, and the tabs broke to two rows on one page and
+   not the other. TWO PIXELS. At 8px of padding and a 5px gap the row needs
+   448 and the narrower of the two mocks gives it 460, so there are 12px of
+   slack rather than none, which is what the next rename will eat into.
+   flex-wrap stays: a sixth tab should wrap rather than overflow. */
+.doc-tabs{display:flex;gap:5px;margin-bottom:20px;flex-wrap:wrap}
+.doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 8px;border-radius:6px;
   background:#F4F6FB;color:var(--mute);border:1px solid var(--line)}
 .doc-tabs em.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 
