@@ -666,31 +666,41 @@
 
 
 /* ------------------------------------------------- business outcomes ---
-   Light the row the reader is on and dim the rest, which is what his
-   reference shot does with the next outcome below.
+   Four outcomes taking turns in one pinned frame. The stylesheet does the
+   pinning and the stacking; all this decides is which one is showing.
 
-   Entirely additive: `lit` is what turns the dimming on at all, so with
-   this file absent every row stays at full strength and the section reads
-   as four photographs each beside its own outcome. The band is the middle
-   tenth of the window, and when nothing is crossing it, at the very top
-   and bottom of the section, the last row to be lit stays lit rather than
-   the whole thing going grey. */
+   It watches four invisible blocks rather than the rows themselves, because
+   the rows are all in the same place and all of them are always on screen.
+   The blocks are a column the height of the section, one per outcome, and
+   the one crossing the middle of the window names the outcome to show.
+
+   Additive, like everything else here: without this file nothing has `on`
+   except the first, and the stylesheet without `html.js` leaves the section
+   as four ordinary rows, so the content reads either way. */
 (function () {
   var bo = document.querySelector(".bo");
   if (!bo || !window.IntersectionObserver) return;
   var rows = bo.querySelectorAll(".bo-row");
-  if (rows.length < 2) return;
+  var steps = bo.querySelectorAll(".bo-step");
+  if (rows.length < 2 || steps.length !== rows.length) return;
 
-  rows[0].classList.add("on");
-  bo.classList.add("lit");
+  var at = 0;
+  function show(i) {
+    if (i === at) return;
+    at = i;
+    for (var k = 0; k < rows.length; k++) {
+      if (k === i) rows[k].classList.add("on");
+      else rows[k].classList.remove("on");
+    }
+  }
 
   var io = new IntersectionObserver(function (entries) {
     for (var i = 0; i < entries.length; i++) {
       if (!entries[i].isIntersecting) continue;
-      for (var k = 0; k < rows.length; k++) rows[k].classList.remove("on");
-      entries[i].target.classList.add("on");
+      var idx = [].indexOf.call(steps, entries[i].target);
+      if (idx > -1) show(idx);
     }
   }, { rootMargin: "-45% 0px -45% 0px" });
 
-  for (var i = 0; i < rows.length; i++) io.observe(rows[i]);
+  for (var i = 0; i < steps.length; i++) io.observe(steps[i]);
 })();
