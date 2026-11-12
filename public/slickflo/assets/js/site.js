@@ -468,9 +468,35 @@
      each frame's write into an animation of its own, so the row crawls
      instead of moving, and mandatory snapping hauls it back to the card
      edge it is trying to leave. */
+  /* Keyboard focus inside the row holds it still, so that somebody tabbing
+     through the cards is not reading a moving target. CLICKING a button
+     also focuses it, though, and that is what froze the row for good after
+     an arrow press: the button kept the focus, the guard below kept saying
+     no, and nothing short of a reload ever gave it back. Moving the mouse
+     away did not help, because focus does not follow the mouse.
+
+     `:focus-visible` is the distinction the browser already draws: it is
+     set when focus arrives by keyboard and not when it arrives by click,
+     which is exactly the line this wants.
+
+     The fallback cannot be the old test, because the old test IS the bug:
+     a browser too old for the selector would go on freezing. So it watches
+     what happened immediately before focus moved instead, which is the
+     same question asked by hand. Capture phase, so a handler that stops
+     propagation cannot hide it. */
+  var viaKey = false;
+  document.addEventListener("keydown", function () { viaKey = true; }, true);
+  document.addEventListener("pointerdown", function () { viaKey = false; }, true);
+  document.addEventListener("mousedown", function () { viaKey = false; }, true);
+
+  function keyboardInside() {
+    try { return !!slider.querySelector(":focus-visible"); }
+    catch (e) { return viaKey && slider.contains(document.activeElement); }
+  }
+
   function canRun() {
     return loop && onscreen && !document.hidden && !hovering && !down &&
-      !slider.contains(document.activeElement);
+      !keyboardInside();
   }
 
   function stop() {
@@ -598,7 +624,9 @@
     if (!hovering) { hovering = true; stop(); }
   });
   slider.addEventListener("mouseleave", function () { hovering = false; play(400); });
-  slider.addEventListener("focusin", stop);
+  /* Both go through play(), which asks canRun() rather than assuming: a
+     keyboard focus stops it, a click's focus does not. */
+  slider.addEventListener("focusin", function () { play(400); });
   slider.addEventListener("focusout", function () { play(400); });
   track.addEventListener("wheel", function (e) {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) play(1500);
