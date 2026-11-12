@@ -299,6 +299,87 @@ img{max-width:100%;display:block}
   .crumb a{padding:6px 2px}
 }
 
+/* ------------------------------------------------------- hero orbit --- */
+/* Seven services circling the SlickFlo mark. Client 2026-11-13, from a
+   reference shot of product logos round a brand, and his own grouping:
+   three on the inner ring, two on the middle, two on the outer.
+
+   THE GEOMETRY IS ALL PERCENTAGES, so the whole diagram is one square that
+   scales with its column and keeps its proportions from 500px down to a
+   320px phone. Every number below was arrived at by measuring, because the
+   three things that can collide here collide quietly:
+
+     the badges and the centre mark   THE WORST CASE IS THE DIAGONAL, not
+                                      the axis: a badge at 45 degrees has
+                                      its corner pointing at the mark's
+                                      corner, so the clearance is the one
+                                      measured along that line. At 30% the
+                                      inner ring overlapped the mark there
+                                      while looking clear on the axes. 38%
+                                      and a 14% mark leave 10px.
+     the badges and each other        rings 24 percentage points apart, for
+                                      60px between ring radii against a 44px
+                                      badge
+     the badges and the frame         the outer ring at 86% puts the badge
+                                      edge 13px inside the square
+
+   A rotated child hands its ROTATED bounding box to its parent, which is
+   how a spinning thing quietly widens a page. The stage is a square with
+   nothing sticking out of it, which is why the numbers above have to hold
+   rather than merely look right. */
+/* overflow:hidden is NOT decoration. A rotated child hands its ROTATED
+   bounding box to its parent, so each ring reports a box up to 1.41x its own
+   width and the hero, the wrap and the grid all inherited it: at 768px the
+   hero measured 383px wide inside a 375px window. Nothing visible is lost by
+   clipping, because every badge stays at least 13px inside the square; what
+   is lost is a page that grows and shrinks as the rings turn.  itself
+   still reports the rotated box, so it is on the sweep exclusion list in
+   CLAUDE.md, the same as . */
+.orb{--tile:44px;position:relative;width:100%;max-width:500px;aspect-ratio:1;
+  margin:0 auto;overflow:hidden}
+.orb-core{position:absolute;left:50%;top:50%;width:14%;
+  transform:translate(-50%,-50%);display:block}
+.orb-core img{display:block;width:100%;height:auto}
+.orb-ring{position:absolute;left:50%;top:50%;width:var(--d);height:var(--d);
+  margin-left:calc(var(--d) / -2);margin-top:calc(var(--d) / -2);
+  border:1px solid var(--line);border-radius:50%;
+  animation:orb-spin var(--dur) linear infinite}
+/* The rings turn opposite ways, so the diagram reads as several things
+   moving rather than as one wheel. */
+.orb-ring.ccw{animation-direction:reverse}
+
+/* Three elements, one job each. `.orb-it` fills the ring and is rotated by
+   the service's own angle, so its top-centre point is where that service
+   belongs. `.orb-up` is that point, counter-spinning at the ring's speed so
+   the badge does not tumble. `.orb-chip` is the badge, centred on the point
+   and rotated back by the same angle so it sits upright. In one element it
+   cannot work: all three want `transform` and the last one wins. */
+.orb-it{position:absolute;inset:0;transform:rotate(var(--a))}
+.orb-up{position:absolute;left:50%;top:0;width:0;height:0;
+  animation:orb-spin var(--dur) linear infinite reverse}
+.orb-ring.ccw .orb-up{animation-direction:normal}
+.orb-chip{position:absolute;left:0;top:0;
+  width:var(--tile);height:var(--tile);display:grid;place-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:13px;
+  box-shadow:var(--sh-sm);color:var(--navy);
+  transform:translate(-50%,-50%) rotate(calc(-1 * var(--a)))}
+
+@keyframes orb-spin{to{transform:rotate(360deg)}}
+
+@media(max-width:1100px){.orb{--tile:40px}}
+@media(max-width:900px){.orb{--tile:38px;max-width:420px}}
+@media(max-width:420px){.orb{--tile:32px}}
+/* A small phone gives the stage only 260px, and the badges do not shrink
+   with it on their own: at 320px a badge was touching the centre mark with
+   nothing to spare. The badge and the mark both come down a step. */
+@media(max-width:360px){.orb{--tile:26px}.orb-core{width:11%}}
+
+/* No motion: the rings stop where the markup put them, which is still seven
+   services spaced around a centre. Nothing here is said by the movement. */
+@media(prefers-reduced-motion:reduce){
+  .orb-ring,.orb-up{animation:none}
+}
+
 /* --------------------------------------------------------- doc mockup --- */
 .shot{border-radius:15px;border:1px solid var(--line);background:#fff;
   box-shadow:var(--sh-md);overflow:hidden}
