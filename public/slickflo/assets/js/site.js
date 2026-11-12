@@ -412,11 +412,14 @@
     return card.getBoundingClientRect().width + gap;
   }
 
-  /* The resting position at the far left is NOT 0. Snapping settles on the
-     first card's edge, which sits one padding-left in, so a `<= 1` test left
-     the back arrow enabled while the row was already at its start. Measured
-     here rather than guessed at, because the padding exists to stop the
-     cards' shadows being shaved off and may well be retuned.
+  /* Where the row rests when it is fully home is 0, and that is worth a
+     word because it was not always. The leading gutter is a flex spacer
+     INSIDE the scroller rather than padding on it, so scrolling to 0 shows
+     the gutter and the first card sits exactly where snapping wants it.
+     While the gutter was padding, home was 2px and a `<= 1` test left the
+     back arrow enabled with the row already at its start. The padding is
+     still read here because the only thing holding home at 0 is that it is
+     zero on the sides, and that is a tuning value.
 
      The far end does land on max exactly, so 1px of slack covers only the
      fractional scrollLeft of a zoomed or scaled display. */
