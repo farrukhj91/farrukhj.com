@@ -772,6 +772,12 @@ html.js .cslide-nav{display:flex}
    fights the browser trying to settle on a snap point. */
 .cslide-track.dragging{scroll-snap-type:none;scroll-behavior:auto;
   cursor:grabbing;user-select:none}
+/* Same two off for an autoplay glide, and for the same reason: mandatory
+   snap fights a scrollLeft written every frame, and `scroll-behavior:smooth`
+   catches a plain scrollLeft assignment too, so each frame would otherwise
+   start its own animation. A glide lands on a card pitch, so snapping comes
+   back on at the end with nothing to correct. */
+.cslide-track.gliding{scroll-snap-type:none;scroll-behavior:auto}
 html.js .cslide-track{cursor:grab}
 .cslide-track.dragging a{pointer-events:none}
 

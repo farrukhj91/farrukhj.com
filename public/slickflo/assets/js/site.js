@@ -433,8 +433,9 @@
   for (var i = 0; i < btns.length; i++) {
     (function (btn) {
       btn.addEventListener("click", function () {
-        var dir = parseInt(btn.getAttribute("data-dir"), 10) || 1;
-        track.scrollBy({ left: dir * step(), behavior: "smooth" });
+        var d = parseInt(btn.getAttribute("data-dir"), 10) || 1;
+        track.scrollBy({ left: d * step(), behavior: "smooth" });
+        play(9000);
       });
     })(btns[i]);
   }
@@ -447,6 +448,7 @@
   track.addEventListener("pointerdown", function (e) {
     if (e.pointerType === "touch") return;      /* let the browser do touch */
     down = true; moved = 0;
+    stop();
     startX = e.clientX;
     startLeft = track.scrollLeft;
     track.setPointerCapture(e.pointerId);
@@ -471,6 +473,7 @@
       track.releasePointerCapture(e.pointerId);
     }
     paint();
+    play(9000);
   }
   track.addEventListener("pointerup", end);
   track.addEventListener("pointercancel", end);
@@ -479,6 +482,102 @@
   track.addEventListener("click", function (e) {
     if (moved) { e.preventDefault(); e.stopPropagation(); moved = 0; }
   }, true);
+
+  /* ----------------------------------------------------------- autoplay ---
+     Client 2026-11-12: "make it auto sliding slowly". One card every 4.5
+     seconds, 1100ms of travel, which is slow enough to finish reading a
+     card and far short of the twitch most carousels have.
+
+     It turns round at the end rather than wrapping. A wrap means rewinding
+     the better part of 1500px, which either jumps in a single frame or
+     crawls back for six seconds; turning round costs nothing and never
+     jumps.
+
+     Two CSS properties have to come off for the duration of a glide, both
+     for the same reason the drag takes them off. Mandatory snapping fights
+     a scrollLeft written every frame, and `scroll-behavior:smooth` applies
+     to a plain scrollLeft assignment too, so without it every frame would
+     start its own little animation and the row would barely move. */
+  var reduce = window.matchMedia
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : { matches: false };
+  var dir = 1, timer = null, raf = null, hovering = false, onscreen = false;
+
+  function canPlay() {
+    return !reduce.matches && onscreen && !document.hidden && !hovering &&
+           !down && !slider.contains(document.activeElement) &&
+           track.scrollWidth - track.clientWidth > 1;
+  }
+
+  function stop() {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    track.classList.remove("gliding");
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function play(delay) {
+    stop();
+    if (canPlay()) timer = setTimeout(glide, delay);
+  }
+
+  function glide() {
+    var max = track.scrollWidth - track.clientWidth;
+    var pitch = step();
+    var from = track.scrollLeft;
+    /* Worked out from which card is standing in the gutter right now, not
+       from a running total, so the stops stay on the pitch however many
+       times it has turned round. The far end is the one stop that is not a
+       multiple of the pitch, because the row can go no further and the last
+       card lands against the opposite gutter there. */
+    var to = (Math.round(from / pitch) + dir) * pitch;
+    if (to >= max) { to = max; dir = -1; }
+    else if (to <= 0) { to = 0; dir = 1; }
+    var t0 = 0;
+    track.classList.add("gliding");
+    raf = requestAnimationFrame(function frame(now) {
+      if (!t0) t0 = now;
+      var p = Math.min(1, (now - t0) / 1100);
+      /* ease in and out, so it leaves and arrives without a jolt */
+      var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      track.scrollLeft = from + (to - from) * e;
+      if (p < 1) { raf = requestAnimationFrame(frame); return; }
+      raf = null;
+      track.classList.remove("gliding");
+      paint();
+      play(4500);
+    });
+  }
+
+  /* Anything the reader does with the row wins. Hover and keyboard focus
+     hold it still for as long as they last; a deliberate move with the
+     arrows, a drag, a wheel or a swipe buys nine seconds before it picks up
+     again, which is long enough not to feel like it is wrestling back. */
+  slider.addEventListener("mouseenter", function () {
+    hovering = true; stop();
+  });
+  slider.addEventListener("mouseleave", function () {
+    hovering = false; play(4500);
+  });
+  slider.addEventListener("focusin", stop);
+  slider.addEventListener("focusout", function () { play(4500); });
+  track.addEventListener("wheel", function () { play(9000); }, { passive: true });
+  track.addEventListener("touchstart", function () { play(9000); }, { passive: true });
+
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      onscreen = entries[0].isIntersecting;
+      /* A longer first delay lets the cards finish revealing before the row
+         starts moving under them. */
+      play(2400);
+    }, { threshold: .3 }).observe(slider);
+  } else {
+    onscreen = true;
+    play(2400);
+  }
+  document.addEventListener("visibilitychange", function () { play(2400); });
+  if (reduce.addEventListener) {
+    reduce.addEventListener("change", function () { play(2400); });
+  }
 
   paint();
 })();
