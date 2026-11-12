@@ -698,9 +698,11 @@
 
   var park = 0, travel = 1, at = -1, ticking = false;
 
-  /* One outcome's worth of height in the right-hand column, taken from the
-     tallest of them. Guessing is not an option: too small and two outcomes
-     overlap, too large and the next one is off the bottom of the window. */
+  /* The tallest outcome. Everything vertical in the stylesheet is built off
+     it: the gap between outcomes, the height of the rule, and where the
+     column hangs so the outcome being read sits on the reading line. The
+     gap itself stays in CSS, where it can differ by breakpoint; all this
+     has to know is how tall an outcome is, which CSS cannot work out. */
   function measure() {
     if (reduce.matches) return;
     park = parseFloat(getComputedStyle(stage).top) || 0;
@@ -710,9 +712,7 @@
       var h = items[i].offsetHeight;
       if (h > tall) tall = h;
     }
-    /* The gap below each outcome, so the next one is clearly a separate
-       thing and not the end of this one's paragraph. */
-    if (tall) bo.style.setProperty("--row", (tall + 38) + "px");
+    if (tall) bo.style.setProperty("--itemh", tall + "px");
   }
 
   function paint() {
@@ -725,11 +725,20 @@
     if (Math.abs(f - at) < 0.001) return;
     at = f;
     bo.style.setProperty("--f", f);
-    /* The one being read is at full strength and its neighbours fade with
-       distance, so the outcome below is legibly there without competing. */
+    /* Exactly ONE outcome is ever at full strength: the nearest to the
+       reading line, which is the one whose photograph is most of the way
+       into the frame. Fading both of them through the middle of a handover
+       left no outcome reading as the current one for a third of every step,
+       which is the "sync between text and image" he was looking at.
+
+       The rest fade with distance and reach nothing by two places out, so
+       the one leaving upward fades away instead of being cut off, and the
+       one arriving fades in the same way. */
+    var near = Math.round(f);
     for (var i = 0; i < n; i++) {
+      if (i === near) { items[i].style.opacity = 1; continue; }
       var d = Math.abs(i - f);
-      items[i].style.opacity = d >= 1 ? 0.3 : (1 - d * 0.7);
+      items[i].style.opacity = d >= 2 ? 0 : Math.min(0.42, 0.42 * (2 - d));
     }
   }
 
@@ -745,7 +754,7 @@
     reduce.addEventListener("change", function () {
       if (reduce.matches) {
         bo.style.removeProperty("--f");
-        bo.style.removeProperty("--row");
+        bo.style.removeProperty("--itemh");
         for (var i = 0; i < n; i++) items[i].style.opacity = "";
       } else { measure(); at = -1; paint(); }
     });
