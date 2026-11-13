@@ -1078,12 +1078,29 @@ html.js .bo-item p{max-width:38ch}
   letter-spacing:-.018em;font-weight:520;max-width:30ch;margin-top:18px}
 @media(max-width:960px){.ph-tag{max-width:none}}
 
-/* "When does it make sense to outsource": a lead line and five points,
-   centred as a block under a centred heading but left-aligned inside it,
-   because a ragged-both-ends bullet list is unreadable. */
-.oput{max-width:720px;margin:0 auto}
-.oput-lead{font-size:17.4px;line-height:1.6;color:var(--body);margin-bottom:18px}
-.oput .cs-pts li{font-size:16.2px;color:var(--body)}
+/* "When does it make sense to outsource": a white panel on the tinted
+   section, holding its lead line and the five points as a ticked list.
+
+   A panel because the five points are a SELF-TEST rather than prose: the
+   reader is meant to look down them and recognise one, which is a thing you
+   do to a card, not to a paragraph. It also gives the section a shape of its
+   own between a two-column definition above it and a grid of service cards
+   below, where a centred stack of bullets read as more of the same.
+
+   The ticks are `checks()`, the list Workflow Automation already uses, so
+   nothing new is introduced to maintain. */
+.oput{max-width:880px;margin:0 auto;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;
+  padding:34px 38px 36px;box-shadow:var(--sh-xs)}
+.oput-lead{font-size:17.4px;line-height:1.6;color:var(--ink);font-weight:520;
+  letter-spacing:-.012em;margin-bottom:22px;padding-bottom:20px;
+  border-bottom:1px solid var(--line)}
+.oput .checks{max-width:none;margin:0;gap:17px 44px}
+.oput .chk span{font-size:15.8px;color:var(--body)}
+@media(max-width:760px){
+  .oput{padding:26px 24px 28px;border-radius:16px}
+  .oput-lead{margin-bottom:18px;padding-bottom:16px}
+}
 
 /* Pricing, under the three ways of working. A plain block rather than a
    fourth card: it is not one of the ways, it is what they all cost. */
