@@ -1120,12 +1120,22 @@ html.js .bo-item p{max-width:38ch}
 /* Tightened throughout 2026-11-17 so the whole section clears one screen at
    100% zoom, which is what he asked for: "entire section should be visible to
    me/visitor." Nothing is removed, every measurement is smaller. */
-.cw{max-width:940px;margin:0 auto;background:var(--card);
+/* 1120px from 2026-11-17, which is the full content width: "increase the
+   width of Featured work section box so Deliverables and tools can come in
+   parallel." The panel had horizontal room it was not using. */
+.cw{max-width:1120px;margin:0 auto;background:var(--card);
   border:1px solid var(--line);border-radius:18px;
   padding:18px 28px 16px;box-shadow:var(--sh-xs)}
-.cw-t{font-size:clamp(19px,2vw,22px);line-height:1.22;letter-spacing:-.026em;
-  color:var(--navy);margin-bottom:14px;padding-bottom:12px;
+/* The rule moved off the title onto the row, so the industry chip sits on the
+   same line as the title and above the same line. */
+.cw-head{display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;
   border-bottom:1px solid var(--line)}
+.cw-t{font-size:clamp(19px,2vw,22px);line-height:1.22;letter-spacing:-.026em;
+  color:var(--navy);margin:0}
+.cw-ind{flex:none;font-size:12.4px;font-weight:600;letter-spacing:.005em;
+  color:var(--or-d);background:var(--t-or);border-radius:999px;
+  padding:5px 13px}
 .cw-blk+.cw-blk{margin-top:16px}
 /* Sentence case, 2026-11-17: "Why are heading full caps? Make them normal."
    Without the uppercase these need to be bigger to hold the same weight in
@@ -1190,11 +1200,16 @@ html.js .bo-item p{max-width:38ch}
 /* The left column is wider than the 1.45fr it used to take: the problem
    paragraph is the tallest thing in the panel and every line it stops
    wrapping onto is a line off the section's height. */
-.cw-top{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);
+.cw-top{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);
   gap:28px}
 .cw-top>.cw-blk{margin-top:0}
-.cw-side{padding-left:28px;border-left:1px solid var(--line)}
-.cw-side .cw-blk+.cw-blk{margin-top:16px}
+/* Deliverables and tools beside each other rather than stacked. Tools takes
+   `auto`: it is a logo strip and sizes to what it holds, which leaves the
+   rest to the deliverable labels, and those are the ones that wrap. */
+.cw-side{padding-left:28px;border-left:1px solid var(--line);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  column-gap:26px;align-content:start}
+.cw-side .cw-blk+.cw-blk{margin-top:0}
 .cw-top+.cw-blk{margin-top:18px}
 .cw-dels{display:flex;flex-wrap:wrap;gap:10px 26px}
 .cw-del{display:flex;align-items:center;gap:11px}
@@ -1208,8 +1223,13 @@ html.js .bo-item p{max-width:38ch}
   .cw{padding:26px 22px 24px;border-radius:16px}
   .cw-top{grid-template-columns:minmax(0,1fr);gap:26px}
   .cw-side{padding-left:0;border-left:0;padding-top:24px;
-    border-top:1px solid var(--line)}
+    border-top:1px solid var(--line);column-gap:20px}
   .cw .pstep{flex:1 1 150px}
+}
+/* Narrower than this the two of them stop being worth a row of their own. */
+@media(max-width:420px){
+  .cw-side{grid-template-columns:minmax(0,1fr)}
+  .cw-side .cw-blk+.cw-blk{margin-top:18px}
 }
 
 /* --------------------------------------------------- the constraint ---
