@@ -1117,20 +1117,23 @@ html.js .bo-item p{max-width:38ch}
    Replaces the two-quote proof block of 2026-11-16, which he removed: a
    single worked example says more than two quotes with nothing behind
    them, and this one has the quote inside it anyway. */
+/* Tightened throughout 2026-11-17 so the whole section clears one screen at
+   100% zoom, which is what he asked for: "entire section should be visible to
+   me/visitor." Nothing is removed, every measurement is smaller. */
 .cw{max-width:940px;margin:0 auto;background:var(--card);
   border:1px solid var(--line);border-radius:18px;
-  padding:34px 38px 32px;box-shadow:var(--sh-xs)}
-.cw-t{font-size:clamp(20px,2.2vw,25px);line-height:1.22;letter-spacing:-.026em;
-  color:var(--navy);margin-bottom:26px;padding-bottom:20px;
+  padding:18px 28px 16px;box-shadow:var(--sh-xs)}
+.cw-t{font-size:clamp(19px,2vw,22px);line-height:1.22;letter-spacing:-.026em;
+  color:var(--navy);margin-bottom:14px;padding-bottom:12px;
   border-bottom:1px solid var(--line)}
-.cw-blk+.cw-blk{margin-top:26px}
+.cw-blk+.cw-blk{margin-top:16px}
 /* Sentence case, 2026-11-17: "Why are heading full caps? Make them normal."
    Without the uppercase these need to be bigger to hold the same weight in
    the block, and the wide tracking that made the caps readable now works
    against them. */
 .cw-blk h4{font-size:15px;font-weight:600;letter-spacing:-.012em;
   color:var(--or-d);margin-bottom:12px}
-.cw-blk>p{font-size:16.2px;line-height:1.62;color:var(--body);margin:0}
+.cw-blk>p{font-size:15.4px;line-height:1.56;color:var(--body);margin:0}
 
 /* The steps are the site's own stepped component, so the page shows one way
    of drawing a sequence and not two. Inside a white panel they lose the card
@@ -1138,34 +1141,63 @@ html.js .bo-item p{max-width:38ch}
    instead. The narrower basis is what keeps five of them on one line here
    where the full-width section has room for 190px each. */
 .cw .proc{gap:8px}
-.cw .pstep{flex:1 1 128px;padding:18px 14px;background:var(--bg-alt);
+.cw .pstep{flex:1 1 128px;padding:13px 13px 14px;background:var(--bg-alt);
   box-shadow:none;border-color:var(--line)}
 .cw .pstep:hover{transform:none;box-shadow:none;border-color:var(--line-2)}
-.cw .pstep h3{font-size:15.5px}
-.cw .pstep p{font-size:13.4px;line-height:1.46}
-.pic{display:block;color:var(--or);margin-bottom:10px}
-.cw .pstep .pn{width:27px;height:27px;font-size:12.5px;margin-bottom:11px}
+
+/* THE ICON AND THE NUMBER SHARE A ROW, 2026-11-17. Stacked, they cost 78px
+   of a 202px card before a word of it was read, and the client's note was
+   about exactly that: "remove the SlickFlo Approach box size/height."
+   Done in CSS rather than by wrapping them in build.py, because `process()`
+   emits the mark and the badge as plain siblings for six other callers and
+   none of them wants this layout. A two-column grid puts the pair on row one
+   and lets the title and the line below span both columns, which needs no
+   new element and leaves the markup those callers share alone. */
+.cw .pstep{display:grid;grid-template-columns:auto auto;
+  align-items:center;justify-content:start;column-gap:9px;
+  /* `.proc` stretches every step to the tallest one, and a grid's default
+     align-content behaves as stretch, so the two-line cards were spreading
+     their rows out to fill the extra height and their titles sat above the
+     three-line cards'. The rows stay their own size and the slack goes to
+     the bottom. */
+  align-content:start}
+.cw .pstep .pic{grid-column:1;margin:0}
+.cw .pstep .pn{grid-column:2;width:25px;height:25px;font-size:12px;margin:0}
+.cw .pstep h3{grid-column:1/-1;font-size:14.8px;margin:7px 0 4px}
+.cw .pstep p{grid-column:1/-1;font-size:12.9px;line-height:1.42}
+.pic{display:block;color:var(--or)}
 
 /* Italic, as he asked. The rule rather than a quotation mark, because the
    site already marks a pulled quote that way in the outsourcing panel. */
-.cw-q{margin:0;font-style:italic;font-size:16.6px;line-height:1.6;
-  color:var(--ink);border-left:2px solid var(--or);padding-left:20px}
-.cw-q cite{display:block;margin-top:12px;font-style:normal;font-size:13.8px;
+.cw-q{margin:0;font-style:italic;font-size:15px;line-height:1.48;
+  color:var(--ink);border-left:2px solid var(--or);padding-left:18px}
+.cw-q cite{display:block;margin-top:8px;font-style:normal;font-size:13.4px;
   color:var(--mute)}
+
+/* The heading sits closer to the panel than a section heading normally does,
+   for the same one-screen reason as everything else in this block. */
+/* `tight` takes the band to 64px top and bottom and the case study needs
+   another 20 of that, so `work` sets its own. This is the only section on
+   the site with a height target rather than a rhythm. */
+.sec.work{padding:34px 0}
+.sec.work .shead{margin-bottom:18px}
 
 /* The problem on the left, what was delivered and what it was built in
    stacked on the right, 2026-11-17, which is how his reference sheet reads.
    The right column takes a rule rather than a box: it is the same case
    study, not a sidebar about something else. */
-.cw-top{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
-  gap:34px}
+/* The left column is wider than the 1.45fr it used to take: the problem
+   paragraph is the tallest thing in the panel and every line it stops
+   wrapping onto is a line off the section's height. */
+.cw-top{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);
+  gap:28px}
 .cw-top>.cw-blk{margin-top:0}
-.cw-side{padding-left:34px;border-left:1px solid var(--line)}
-.cw-side .cw-blk+.cw-blk{margin-top:24px}
-.cw-top+.cw-blk{margin-top:30px}
-.cw-dels{display:flex;flex-wrap:wrap;gap:12px 26px}
+.cw-side{padding-left:28px;border-left:1px solid var(--line)}
+.cw-side .cw-blk+.cw-blk{margin-top:16px}
+.cw-top+.cw-blk{margin-top:18px}
+.cw-dels{display:flex;flex-wrap:wrap;gap:10px 26px}
 .cw-del{display:flex;align-items:center;gap:11px}
-.cw-del img{width:34px;height:34px;flex:none}
+.cw-del img{width:30px;height:30px;flex:none}
 .cw-del span{font-size:14.6px;font-weight:550;color:var(--ink);
   letter-spacing:-.01em}
 .cw-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
