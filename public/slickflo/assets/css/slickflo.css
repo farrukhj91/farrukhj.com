@@ -1109,6 +1109,49 @@ html.js .bo-item p{max-width:38ch}
 .ways-p p{font-size:16.6px;line-height:1.62;color:var(--body)}
 .ways-p .hcta{justify-content:center;margin-top:24px}
 
+/* --------------------------------------------- proof on a service hub ---
+   Two quotes and two links to case studies, 2026-11-16. The hub had no proof
+   at all and every competitor ranking for these terms leads with some.
+
+   Quotes as figure/blockquote/figcaption rather than as the site's testimonial
+   slider: the slider is a homepage component that moves, and two quotes sitting
+   still above a closing CTA is a different job. The slider also carries eight,
+   and a reader who has reached the bottom of a long service page does not want
+   to operate anything. */
+.proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;
+  max-width:920px;margin:0 auto}
+.pq{margin:0;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:28px 28px 24px;box-shadow:var(--sh-xs);
+  display:flex;flex-direction:column}
+.pq blockquote{margin:0 0 20px;font-size:16.4px;line-height:1.62;
+  color:var(--ink);flex:1}
+/* The quotation mark is decoration, so it is a pseudo-element and never
+   reaches the accessibility tree or a copy-paste of the quote. */
+.pq blockquote::before{content:"";display:block;width:26px;height:3px;
+  border-radius:2px;background:var(--or);margin-bottom:16px}
+.pq figcaption{display:flex;flex-direction:column;gap:2px}
+.pq figcaption b{font-size:15px;font-weight:600;color:var(--ink);
+  letter-spacing:-.012em}
+.pq figcaption span{font-size:13.8px;color:var(--mute)}
+
+.pcases{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 18px;
+  max-width:920px;margin:26px auto 0}
+.pcase{display:inline-flex;align-items:center;gap:8px;font-size:14.8px;
+  font-weight:550;color:var(--navy);background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:10px 18px;
+  transition:border-color .2s,box-shadow .2s,transform .2s var(--ease)}
+.pcase:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);
+  transform:translateY(-1px)}
+.pcase svg{transition:transform .22s var(--ease)}
+.pcase:hover svg{transform:translateX(3px)}
+
+@media(max-width:760px){
+  .proof{grid-template-columns:minmax(0,1fr);gap:18px}
+  .pq{padding:24px 22px 22px}
+  .pcases{flex-direction:column;align-items:stretch}
+  .pcase{justify-content:space-between}
+}
+
 /* -------------------------------------------------------------- stats --- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}
