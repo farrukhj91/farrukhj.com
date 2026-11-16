@@ -1149,10 +1149,16 @@ html.js .bo-item p{max-width:38ch}
 .cw-q cite{display:block;margin-top:12px;font-style:normal;font-size:13.8px;
   color:var(--mute)}
 
-.cw-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
-  gap:26px 34px;margin-top:28px;padding-top:26px;
-  border-top:1px solid var(--line)}
-.cw-foot .cw-blk+.cw-blk{margin-top:0}
+/* The problem on the left, what was delivered and what it was built in
+   stacked on the right, 2026-11-17, which is how his reference sheet reads.
+   The right column takes a rule rather than a box: it is the same case
+   study, not a sidebar about something else. */
+.cw-top{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+  gap:34px}
+.cw-top>.cw-blk{margin-top:0}
+.cw-side{padding-left:34px;border-left:1px solid var(--line)}
+.cw-side .cw-blk+.cw-blk{margin-top:24px}
+.cw-top+.cw-blk{margin-top:30px}
 .cw-dels{display:flex;flex-wrap:wrap;gap:12px 26px}
 .cw-del{display:flex;align-items:center;gap:11px}
 .cw-del img{width:34px;height:34px;flex:none}
@@ -1161,16 +1167,73 @@ html.js .bo-item p{max-width:38ch}
 .cw-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
 .cw-tool img{height:24px;width:auto;display:block}
 
-/* The two reasons under the problem diagram. Narrower than the diagram so it
-   reads as the explanation of it rather than as the next section. */
-.pwhy{max-width:720px;margin:34px auto 0}
-.pwhy p{font-size:16.6px;line-height:1.62;color:var(--body)}
-.pwhy p+p{margin-top:14px}
-
 @media(max-width:860px){
   .cw{padding:26px 22px 24px;border-radius:16px}
-  .cw-foot{grid-template-columns:minmax(0,1fr);gap:24px}
+  .cw-top{grid-template-columns:minmax(0,1fr);gap:26px}
+  .cw-side{padding-left:0;border-left:0;padding-top:24px;
+    border-top:1px solid var(--line)}
   .cw .pstep{flex:1 1 150px}
+}
+
+/* --------------------------------------------------- the constraint ---
+   Three reasons the documentation does not get written, drawn rather than
+   written. Client 2026-11-17: "Convey them in a visual not as text."
+
+   Divs and tokens, not images. These have to be legible at 320px and they
+   have to follow the palette, and a picture of a chart does neither. */
+.cst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;
+  max-width:1060px;margin:0 auto}
+.cst-c{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:26px 24px 24px;box-shadow:var(--sh-xs);display:flex;
+  flex-direction:column}
+.cst-c h3{font-size:18px;letter-spacing:-.022em;margin:16px 0 18px}
+.cst-c>p{font-size:14.6px;line-height:1.56;color:var(--mute);margin:18px 0 0}
+/* The diagram sits in a fixed band so three cards of different drawings
+   still line their headings and their captions up with each other. */
+.cst-v{min-height:124px;display:flex;flex-direction:column;justify-content:center}
+
+/* Capacity: a week that is already full, and the thing that does not fit.
+   No numbers on the blocks. A percentage would be a claim about somebody's
+   calendar that nobody measured. */
+.cap-bar{display:flex;gap:3px;border-radius:7px;overflow:hidden}
+.cap-bar span{flex:1;background:var(--t-navy);color:var(--navy);
+  font-size:10.5px;font-weight:600;letter-spacing:-.004em;text-align:center;
+  padding:11px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cap-out{margin-top:14px;display:flex}
+.cap-out span{flex:1;border:1.5px dashed var(--or);border-radius:7px;
+  color:var(--or-d);font-size:11.5px;font-weight:600;text-align:center;
+  padding:10px 4px;background:var(--t-or)}
+
+/* Ownership: three teams who could, an empty box that stays empty. */
+.own-who{display:flex;gap:6px}
+.own-who span{flex:1;background:var(--t-navy);color:var(--navy);
+  border-radius:7px;font-size:10.5px;font-weight:600;text-align:center;
+  padding:9px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.own-arr{display:flex;gap:6px;margin:7px 0}
+.own-arr i{flex:1;height:14px;position:relative}
+.own-arr i::before{content:"";position:absolute;left:50%;top:0;width:1.5px;
+  height:9px;background:var(--line-2)}
+.own-arr i::after{content:"";position:absolute;left:50%;top:7px;
+  width:5px;height:5px;border-right:1.5px solid var(--line-2);
+  border-bottom:1.5px solid var(--line-2);transform:translateX(-50%) rotate(45deg)}
+.own-box{border:1.5px dashed var(--line-2);border-radius:8px;
+  text-align:center;padding:12px 0;color:var(--mute);font-size:17px;
+  font-weight:600}
+
+/* The hire: a need that ends against a cost that does not. The second bar
+   runs out of its own box, which is the argument in one shape. */
+.hire-row+.hire-row{margin-top:12px}
+.hire-row b{display:block;font-size:10.8px;font-weight:600;color:var(--mute);
+  letter-spacing:.03em;text-transform:uppercase;margin-bottom:6px}
+.hire-bar{border-radius:7px;padding:10px 12px;font-size:11.5px;
+  font-weight:600;white-space:nowrap;overflow:hidden}
+.hire-bar.need{width:62%;background:var(--t-or);color:var(--or-d)}
+.hire-bar.perm{background:linear-gradient(90deg,var(--t-navy) 72%,transparent);
+  color:var(--navy);text-overflow:clip}
+
+@media(max-width:900px){
+  .cst{grid-template-columns:minmax(0,1fr);gap:18px;max-width:560px}
+  .cst-v{min-height:0}
 }
 
 /* -------------------------------------------------------------- stats --- */
