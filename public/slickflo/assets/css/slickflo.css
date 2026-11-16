@@ -1109,6 +1109,18 @@ html.js .bo-item p{max-width:38ch}
 .price p{font-size:16.8px;line-height:1.62;color:var(--body)}
 .price .hcta{justify-content:center;margin-top:26px}
 
+/* A centred button under a section's grid, 2026-11-17: "add a button under
+   this section that takes visitor to main blogs page." Its own class rather
+   than another `.price .hcta`-style one-off, because that is now the second
+   place wanting exactly this and there will be a third.
+
+   NO PHONE RULE HERE, deliberately, and it is only safe while the label is
+   short: `.btn` is nowrap with a fixed height, and the full-width stacking
+   that saves the hero from that lives on `.hcta` and does not reach this
+   class. "See All Articles" measures 188px inside a 320px box. A longer
+   label in this slot needs `.hcta`'s treatment copied down here. */
+.sec-cta{display:flex;justify-content:center;margin-top:34px}
+
 /* ------------------------------------------------ featured work ---
    One case study laid out the way his reference sheet lays one out:
    title, the problem, the approach as steps, the customer's words, then
