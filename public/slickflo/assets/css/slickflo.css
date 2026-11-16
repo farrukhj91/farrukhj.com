@@ -1176,9 +1176,10 @@ html.js .bo-item p{max-width:38ch}
 
 /* The heading sits closer to the panel than a section heading normally does,
    for the same one-screen reason as everything else in this block. */
-/* `tight` takes the band to 64px top and bottom and the case study needs
-   another 20 of that, so `work` sets its own. This is the only section on
-   the site with a height target rather than a rhythm. */
+/* The only section on the site with a height target rather than a rhythm,
+   so it sets its own band padding outright rather than stacking `tight`:
+   two class rules setting the same property at the same specificity are
+   decided by source order, which is not a thing to depend on. */
 .sec.work{padding:34px 0}
 .sec.work .shead{margin-bottom:18px}
 
