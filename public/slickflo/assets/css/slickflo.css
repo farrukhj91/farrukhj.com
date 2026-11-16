@@ -1102,12 +1102,12 @@ html.js .bo-item p{max-width:38ch}
   .oput-lead{margin-bottom:18px;padding-bottom:16px}
 }
 
-/* Pricing, under the three ways of working. A plain block rather than a
-   fourth card: it is not one of the ways, it is what they all cost. */
-.ways-p{max-width:680px;margin:44px auto 0;text-align:center}
-.ways-p h3{font-size:21px;letter-spacing:-.024em;margin-bottom:10px}
-.ways-p p{font-size:16.6px;line-height:1.62;color:var(--body)}
-.ways-p .hcta{justify-content:center;margin-top:24px}
+/* Pricing was a block under the ways of working and is a section of its own
+   from 2026-11-17, on his instruction. It had outgrown the slot: it is not a
+   fourth way of working, it is what all four of them cost. */
+.price{max-width:680px;margin:0 auto;text-align:center}
+.price p{font-size:16.8px;line-height:1.62;color:var(--body)}
+.price .hcta{justify-content:center;margin-top:26px}
 
 /* ------------------------------------------------ featured work ---
    One case study laid out the way his reference sheet lays one out:
@@ -1124,8 +1124,12 @@ html.js .bo-item p{max-width:38ch}
   color:var(--navy);margin-bottom:26px;padding-bottom:20px;
   border-bottom:1px solid var(--line)}
 .cw-blk+.cw-blk{margin-top:26px}
-.cw-blk h4{font-size:12.6px;font-weight:600;letter-spacing:.04em;
-  text-transform:uppercase;color:var(--or-d);margin-bottom:12px}
+/* Sentence case, 2026-11-17: "Why are heading full caps? Make them normal."
+   Without the uppercase these need to be bigger to hold the same weight in
+   the block, and the wide tracking that made the caps readable now works
+   against them. */
+.cw-blk h4{font-size:15px;font-weight:600;letter-spacing:-.012em;
+  color:var(--or-d);margin-bottom:12px}
 .cw-blk>p{font-size:16.2px;line-height:1.62;color:var(--body);margin:0}
 
 /* The steps are the site's own stepped component, so the page shows one way
