@@ -1109,47 +1109,68 @@ html.js .bo-item p{max-width:38ch}
 .ways-p p{font-size:16.6px;line-height:1.62;color:var(--body)}
 .ways-p .hcta{justify-content:center;margin-top:24px}
 
-/* --------------------------------------------- proof on a service hub ---
-   Two quotes and two links to case studies, 2026-11-16. The hub had no proof
-   at all and every competitor ranking for these terms leads with some.
+/* ------------------------------------------------ featured work ---
+   One case study laid out the way his reference sheet lays one out:
+   title, the problem, the approach as steps, the customer's words, then
+   what was delivered and what it was built in. 2026-11-17.
 
-   Quotes as figure/blockquote/figcaption rather than as the site's testimonial
-   slider: the slider is a homepage component that moves, and two quotes sitting
-   still above a closing CTA is a different job. The slider also carries eight,
-   and a reader who has reached the bottom of a long service page does not want
-   to operate anything. */
-.proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;
-  max-width:920px;margin:0 auto}
-.pq{margin:0;background:var(--card);border:1px solid var(--line);
-  border-radius:16px;padding:28px 28px 24px;box-shadow:var(--sh-xs);
-  display:flex;flex-direction:column}
-.pq blockquote{margin:0 0 20px;font-size:16.4px;line-height:1.62;
-  color:var(--ink);flex:1}
-/* The quotation mark is decoration, so it is a pseudo-element and never
-   reaches the accessibility tree or a copy-paste of the quote. */
-.pq blockquote::before{content:"";display:block;width:26px;height:3px;
-  border-radius:2px;background:var(--or);margin-bottom:16px}
-.pq figcaption{display:flex;flex-direction:column;gap:2px}
-.pq figcaption b{font-size:15px;font-weight:600;color:var(--ink);
-  letter-spacing:-.012em}
-.pq figcaption span{font-size:13.8px;color:var(--mute)}
+   Replaces the two-quote proof block of 2026-11-16, which he removed: a
+   single worked example says more than two quotes with nothing behind
+   them, and this one has the quote inside it anyway. */
+.cw{max-width:940px;margin:0 auto;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;
+  padding:34px 38px 32px;box-shadow:var(--sh-xs)}
+.cw-t{font-size:clamp(20px,2.2vw,25px);line-height:1.22;letter-spacing:-.026em;
+  color:var(--navy);margin-bottom:26px;padding-bottom:20px;
+  border-bottom:1px solid var(--line)}
+.cw-blk+.cw-blk{margin-top:26px}
+.cw-blk h4{font-size:12.6px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--or-d);margin-bottom:12px}
+.cw-blk>p{font-size:16.2px;line-height:1.62;color:var(--body);margin:0}
 
-.pcases{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 18px;
-  max-width:920px;margin:26px auto 0}
-.pcase{display:inline-flex;align-items:center;gap:8px;font-size:14.8px;
-  font-weight:550;color:var(--navy);background:var(--card);
-  border:1px solid var(--line);border-radius:999px;padding:10px 18px;
-  transition:border-color .2s,box-shadow .2s,transform .2s var(--ease)}
-.pcase:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);
-  transform:translateY(-1px)}
-.pcase svg{transition:transform .22s var(--ease)}
-.pcase:hover svg{transform:translateX(3px)}
+/* The steps are the site's own stepped component, so the page shows one way
+   of drawing a sequence and not two. Inside a white panel they lose the card
+   chrome, which would be a white box on a white box, and take a tinted fill
+   instead. The narrower basis is what keeps five of them on one line here
+   where the full-width section has room for 190px each. */
+.cw .proc{gap:8px}
+.cw .pstep{flex:1 1 128px;padding:18px 14px;background:var(--bg-alt);
+  box-shadow:none;border-color:var(--line)}
+.cw .pstep:hover{transform:none;box-shadow:none;border-color:var(--line-2)}
+.cw .pstep h3{font-size:15.5px}
+.cw .pstep p{font-size:13.4px;line-height:1.46}
+.pic{display:block;color:var(--or);margin-bottom:10px}
+.cw .pstep .pn{width:27px;height:27px;font-size:12.5px;margin-bottom:11px}
 
-@media(max-width:760px){
-  .proof{grid-template-columns:minmax(0,1fr);gap:18px}
-  .pq{padding:24px 22px 22px}
-  .pcases{flex-direction:column;align-items:stretch}
-  .pcase{justify-content:space-between}
+/* Italic, as he asked. The rule rather than a quotation mark, because the
+   site already marks a pulled quote that way in the outsourcing panel. */
+.cw-q{margin:0;font-style:italic;font-size:16.6px;line-height:1.6;
+  color:var(--ink);border-left:2px solid var(--or);padding-left:20px}
+.cw-q cite{display:block;margin-top:12px;font-style:normal;font-size:13.8px;
+  color:var(--mute)}
+
+.cw-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+  gap:26px 34px;margin-top:28px;padding-top:26px;
+  border-top:1px solid var(--line)}
+.cw-foot .cw-blk+.cw-blk{margin-top:0}
+.cw-dels{display:flex;flex-wrap:wrap;gap:12px 26px}
+.cw-del{display:flex;align-items:center;gap:11px}
+.cw-del img{width:34px;height:34px;flex:none}
+.cw-del span{font-size:14.6px;font-weight:550;color:var(--ink);
+  letter-spacing:-.01em}
+.cw-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.cw-tool img{height:24px;width:auto;display:block}
+
+/* The two reasons under the problem diagram. Narrower than the diagram so it
+   reads as the explanation of it rather than as the next section. */
+.pwhy{max-width:720px;margin:34px auto 0}
+.pwhy p{font-size:16.6px;line-height:1.62;color:var(--body)}
+.pwhy p+p{margin-top:14px}
+
+@media(max-width:860px){
+  .cw{padding:26px 22px 24px;border-radius:16px}
+  .cw-foot{grid-template-columns:minmax(0,1fr);gap:24px}
+  .cw .pstep{flex:1 1 150px}
 }
 
 /* -------------------------------------------------------------- stats --- */
