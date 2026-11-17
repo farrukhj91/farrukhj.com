@@ -1077,6 +1077,13 @@ html.js .bo-item p{max-width:38ch}
 .ph-tag{font-size:clamp(19px,2vw,22.5px);line-height:1.38;color:var(--ink);
   letter-spacing:-.018em;font-weight:520;max-width:30ch;margin-top:18px}
 @media(max-width:960px){.ph-tag{max-width:none}}
+/* A short tagline the client wants kept on one line, 2026-11-17. Opt-in, not
+   a wider .ph-tag for everyone: the hub's tagline is 77 characters, always
+   wraps, and currently breaks at its sentence boundary, which a wider box
+   would spoil. Only above 960px, where the line below already removes the
+   cap; a 45-character sentence at 19px cannot fit a 320px phone and nothing
+   here pretends otherwise. */
+@media(min-width:961px){.ph-tag.one{max-width:none;white-space:nowrap}}
 
 /* "When does it make sense to outsource": a white panel on the tinted
    section, holding its lead line and the five points as a ticked list.
@@ -1303,6 +1310,38 @@ html.js .bo-item p{max-width:38ch}
 @media(max-width:900px){
   .cst{grid-template-columns:minmax(0,1fr);gap:18px;max-width:560px}
   .cst-v{min-height:0}
+}
+
+/* ------------------------------------------- the split process ---
+   Heading in a left column, steps as rows on the right. Client 2026-11-17
+   with a reference image, and opt-in per page: every other process section
+   on the site is a centred heading over a row of tiles.
+
+   The heading column is sticky on a tall viewport, so it stays beside the
+   steps it names rather than scrolling away from them. */
+.psplit{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.6fr);
+  gap:30px 56px;align-items:start}
+.psplit-h{position:sticky;top:110px}
+.psplit .shead{margin:0;max-width:none}
+.psplit .shead h2{font-size:clamp(28px,3.3vw,40px)}
+
+/* Rows, not tiles: a variant OF .proc.vert, so the badge-beside-text markup
+   is unchanged and only the frame goes. */
+.proc.vert.rows{grid-template-columns:minmax(0,1fr);gap:0}
+.proc.vert.rows .pstep{background:none;border:0;border-radius:0;
+  box-shadow:none;padding:24px 0;
+  border-top:1px solid var(--line);gap:20px;align-items:flex-start}
+.proc.vert.rows .pstep:first-child{border-top:0;padding-top:0}
+.proc.vert.rows .pstep:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.proc.vert.rows .pstep:first-child:hover{border-top-color:transparent}
+.proc.vert.rows .pn{margin-top:2px}
+.proc.vert.rows .pv-t h3{font-size:19px;letter-spacing:-.022em}
+.proc.vert.rows .pv-t p{margin-top:7px;font-size:15.4px;line-height:1.6}
+
+@media(max-width:900px){
+  .psplit{grid-template-columns:minmax(0,1fr);gap:26px}
+  .psplit-h{position:static}
+  .psplit .shead{text-align:left}
 }
 
 /* -------------------------------------------------------------- stats --- */
