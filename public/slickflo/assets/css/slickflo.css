@@ -239,6 +239,27 @@ img{max-width:100%;display:block}
    list. They used to be nth-child rules here covering children 2-4 only, so a
    fifth item ran with no delay and faded in on top of the first. Each item is
    fully out at 20% — one fifth of the cycle — before the next begins. */
+/* The rotating service names left the <h1> on 2026-11-18, his approval of
+   the SEO brief's A3-b. The h1 read as one run-on string, "Elevating Your
+   Digital Presence with ExcellenceTechnical WritingContent Marketing...",
+   because the cycling span was a child of it.
+
+   `.rotw` EXISTS ONLY TO REPRODUCE THE OLD BOX. Inside the h1 the span was
+   constrained by `max-width:14ch` at the h1's 57px; as a bare sibling it
+   would have taken the whole column, and `ch` on .rot itself would resolve
+   against ITS font-size (32px), which is a different width entirely. The
+   wrapper carries the h1's font-size so the 14ch is the same 549px, and it
+   holds no text of its own, so it adds no line box and no height. The h1's
+   own margins are 0 top and bottom, which is why nothing moved vertically.
+   Verified by measuring every element in the hero before and after. */
+/* font-weight:600 as well, and it is not decoration: `ch` is the width of
+   the "0" glyph AT THE ELEMENT'S OWN FONT, and h1 is 600 while a div
+   inherits 400. Without it the same `14ch` computed 535px here against
+   549px on the h1, so the box this exists to reproduce was 6px narrower
+   than the one it replaced. The wrapper renders no text of its own, so the
+   weight does nothing except make the unit resolve identically. */
+.hero .rotw{max-width:14ch;font-size:clamp(38px,5.2vw,57px);font-weight:600}
+
 .rot{display:grid;margin-top:.34em;color:var(--or);
   font-size:clamp(21px,2.7vw,32px);line-height:1.22;letter-spacing:-.024em}
 .rot i{grid-area:1/1;font-style:normal;opacity:0;
