@@ -1719,6 +1719,7 @@ html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
 .fstat-bad{color:#B42318}
 .subf .fstat{margin-top:10px;font-size:13.8px}
 
+
 .fld{margin-bottom:17px}
 .fld label{display:block;font-size:14px;font-weight:550;color:var(--ink);margin-bottom:7px;
   letter-spacing:-.01em}
@@ -2908,6 +2909,30 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
 .subf input:focus-visible{outline:2px solid var(--or);outline-offset:1px;
   border-color:transparent}
 .subf .btn{margin-top:5px;width:100%;justify-content:center}
+
+/* The consent tick and the notice under it. Two elements on purpose: the
+   label is the agreement and the paragraph is information, and only the
+   first is ever sent to HubSpot.
+
+   EVERY SELECTOR HERE IS SCOPED TO .subf, and that is what makes it work.
+   The first version used bare `.sub-consent input`, which ties on
+   specificity with `.subf input{width:100%}` above and therefore LOSES to
+   it on order: the checkbox rendered 234px wide, the text was squeezed to
+   zero width, and the label overflowed its column all the way up to a
+   page-level sideways scroll. Same story for `.subf label`, which was
+   beating the label's own font size and colour. */
+.subf .sub-consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px;
+  font-size:13.4px;font-weight:400;line-height:1.45;color:var(--body);
+  cursor:pointer;text-transform:none;letter-spacing:0}
+.subf .sub-consent input{flex:none;width:16px;height:16px;margin:1px 0 0;
+  padding:0;accent-color:var(--or)}
+/* min-width:0 so the sentence can wrap: a flex item defaults to
+   min-width:auto and refuses to shrink below its own content width. */
+.subf .sub-consent span{min-width:0}
+.subf .sub-note{margin-top:7px;font-size:12.6px;line-height:1.45;
+  color:var(--mute)}
+.subf .sub-note a{color:var(--or-d);text-decoration:underline;
+  text-underline-offset:2px}
 
 /* Previous / next. Spans the full wrap under both columns, so it reads as the
    end of the page rather than the end of the text column. */

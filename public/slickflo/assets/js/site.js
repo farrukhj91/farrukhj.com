@@ -835,9 +835,31 @@
 
       var fields = [];
       [].forEach.call(f.querySelectorAll("input,textarea,select"), function (el) {
-        if (!el.name || el.name === "_confirm" || !el.value) return;
+        // `_confirm` is the honeypot and `_consent` is the tick box. Neither
+        // is a HubSpot field: the honeypot must never be transmitted at all,
+        // and consent travels in its own part of the payload below, not as a
+        // contact property.
+        if (!el.name || el.name === "_confirm" || el.name === "_consent") return;
+        if (el.type === "checkbox" && !el.checked) return;
+        if (!el.value) return;
         fields.push({ name: el.name, value: el.value });
       });
+
+      // Consent, recorded the way HubSpot records it: `legalConsentOptions`
+      // rather than a field, carrying the EXACT sentence the visitor was
+      // shown. The notice under the box ("You can unsubscribe...") is not
+      // part of this on purpose, because the stored record should be the
+      // agreement and nothing else.
+      var payload = {
+        fields: fields,
+        context: { pageUri: location.href, pageName: document.title }
+      };
+      var tick = f.querySelector('input[name="_consent"]');
+      if (tick && f.dataset.hsConsent) {
+        payload.legalConsentOptions = {
+          consent: { consentToProcess: !!tick.checked, text: f.dataset.hsConsent }
+        };
+      }
 
       busy = true;
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent;
@@ -848,10 +870,7 @@
             + f.dataset.hsPortal + "/" + f.dataset.hsForm, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fields: fields,
-          context: { pageUri: location.href, pageName: document.title }
-        })
+        body: JSON.stringify(payload)
       }).then(function (r) {
         done(r.ok ? "ok" : "fail");
       }).catch(function () {
