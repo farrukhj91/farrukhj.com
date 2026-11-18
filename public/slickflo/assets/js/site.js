@@ -796,3 +796,88 @@
   measure();
   paint();
 })();
+
+
+/* ---------------------------------------------------------------- forms ---
+   HubSpot submission, as progressive enhancement.
+
+   The form already works without a line of this: its `action` is HubSpot's
+   no-JavaScript endpoint, so with scripting off the browser posts natively
+   and the data is recorded. What that path cannot do is TELL the visitor
+   anything, because the endpoint answers 204 and the page simply sits
+   there. So this intercepts the submit, posts the same values as JSON, and
+   says what happened in the form itself.
+
+   No HubSpot script, no cookies, no consent banner: this is a fetch to a
+   documented endpoint and nothing else. The portal and form ids ride on the
+   element as data attributes rather than being written in here, so there is
+   one place they are declared, in content.HUBSPOT.                        */
+(function () {
+  var forms = document.querySelectorAll("form[data-hs-form]");
+  if (!forms.length || !window.fetch) return;
+
+  [].forEach.call(forms, function (f) {
+    var stat = f.querySelector(".fstat");
+    var btn = f.querySelector("button[type=submit]");
+    var busy = false;
+
+    f.addEventListener("submit", function (e) {
+      if (busy) { e.preventDefault(); return; }
+      // Let the browser run its own required/type checks first; if they
+      // fail, do nothing and let it show its messages.
+      if (f.checkValidity && !f.checkValidity()) return;
+      e.preventDefault();
+
+      // The honeypot. A human never sees this field, so anything in it is a
+      // bot: pretend it worked and send nothing.
+      var hp = f.querySelector('input[name="_confirm"]');
+      if (hp && hp.value) { done("ok"); return; }
+
+      var fields = [];
+      [].forEach.call(f.querySelectorAll("input,textarea,select"), function (el) {
+        if (!el.name || el.name === "_confirm" || !el.value) return;
+        fields.push({ name: el.name, value: el.value });
+      });
+
+      busy = true;
+      if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent;
+                 btn.textContent = "Sending..."; }
+      say("");
+
+      fetch("https://api.hsforms.com/submissions/v3/integration/submit/"
+            + f.dataset.hsPortal + "/" + f.dataset.hsForm, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fields: fields,
+          context: { pageUri: location.href, pageName: document.title }
+        })
+      }).then(function (r) {
+        done(r.ok ? "ok" : "fail");
+      }).catch(function () {
+        done("fail");
+      });
+    });
+
+    function done(how) {
+      busy = false;
+      if (btn) { btn.disabled = false;
+                 if (btn.dataset.label) btn.textContent = btn.dataset.label; }
+      if (how === "ok") {
+        f.reset();
+        say(f.dataset.hsOk || "Thank you.", "ok");
+      } else {
+        // NEVER a dead end: if the post failed the visitor still has
+        // something to do, and it is the address on the contact page.
+        say("That did not send. Please email us at slickflo.co@gmail.com "
+            + "and we will pick it up from there.", "bad");
+      }
+    }
+
+    function say(msg, kind) {
+      if (!stat) return;
+      stat.textContent = msg;
+      stat.className = "fstat" + (kind ? " fstat-" + kind : "");
+    }
+  });
+})();

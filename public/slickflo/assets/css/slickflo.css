@@ -1701,6 +1701,24 @@ html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
 /* --------------------------------------------------------------- form --- */
 .form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:34px;
   box-shadow:var(--sh-sm)}
+/* First and last name share a row above 520px and stack below it. */
+.fld2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media(max-width:520px){.fld2{grid-template-columns:1fr}}
+
+/* The honeypot. NOT display:none and not hidden: some bots skip anything
+   obviously hidden, and so do some password managers. Moved out of view and
+   out of the tab order instead, with aria-hidden on the wrapper, so no
+   keyboard or screen-reader user ever reaches it. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* What the form says back. Empty until there is something to report, so it
+   takes no space on a form nobody has submitted yet. */
+.fstat{margin-top:12px;font-size:14.6px;line-height:1.5}
+.fstat:empty{display:none}
+.fstat-ok{color:var(--or-d);font-weight:550}
+.fstat-bad{color:#B42318}
+.subf .fstat{margin-top:10px;font-size:13.8px}
+
 .fld{margin-bottom:17px}
 .fld label{display:block;font-size:14px;font-weight:550;color:var(--ink);margin-bottom:7px;
   letter-spacing:-.01em}
