@@ -589,6 +589,25 @@ html.js .doc-stack>.doc-pane:first-child{opacity:0}
 .cav-lg-t{font-size:clamp(12px,2.8vw,19px);font-weight:700;
   letter-spacing:-.02em;color:var(--ink);line-height:1.2}
 
+/* A LOCKUP: a mark with its name set beneath it, for a brand that publishes
+   an icon and sets its own name in type. SweetProcess does exactly that on
+   their own site, so there is no wordmark file in existence to take, and
+   inventing one would be inventing their logo.
+   Stacked rather than side by side because these cells are about 87px wide
+   and "SweetProcess" beside a cup does not fit in that. draw.io sits on
+   this same screen and is already a portrait mark with its words under its
+   icon, so the shape is not a one-off.
+   `--s` scales the font-size and the icon is sized in `em`, so one number
+   moves the whole lockup and the two parts cannot drift apart. */
+.cav-lg-lk{flex-direction:column;gap:.34em;
+  /* 11.4px, not 12.5px. At 12.5 the word measured 86px inside an 87px
+     cell, which is not a fit, it is a coincidence: a different font
+     fallback or a half-pixel of letter-spacing and it overflows. */
+  font-size:calc(clamp(8.5px,1.9vw,11.4px) * var(--s,1));
+  font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+.cav-lg-lk img{width:auto;height:1.95em;flex:none;transform:none}
+.cav-lg-lk span{white-space:nowrap}
+
 /* Each logo waits its turn, appears at the centre of the screen a little
    oversized, then travels to its own cell. `backwards` holds it invisible
    through the delay rather than letting it flash in place first. */
