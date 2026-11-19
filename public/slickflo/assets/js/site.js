@@ -808,15 +808,28 @@
    there. So this intercepts the submit, posts the same values as JSON, and
    says what happened in the form itself.
 
-   No HubSpot script, no cookies, no consent banner: this is a fetch to a
-   documented endpoint and nothing else. The portal and form ids ride on the
-   element as data attributes rather than being written in here, so there is
-   one place they are declared, in content.HUBSPOT.                        */
+   No HubSpot script, no cookies, no consent banner: this is a fetch to one
+   address on our own domain and nothing else.
+
+   2026-11-19: IT NO LONGER POSTS TO HUBSPOT. It posts to send.php on
+   slickflo.com, which holds the HubSpot ids where a scraper cannot read
+   them. The previous version carried the portal and form id in the markup
+   as data attributes, and a bot took them and posted ten casino submissions
+   directly to HubSpot, never loading a page here, so the honeypot below
+   never ran. It could not have: a static site cannot inspect a request that
+   never arrives. The honeypot is still here because it costs nothing and
+   stops the naive case early, but the check that matters now runs on the
+   server, where it cannot be skipped.                                     */
 (function () {
-  var forms = document.querySelectorAll("form[data-hs-form]");
+  var forms = document.querySelectorAll("form[data-hs-ok]");
   if (!forms.length || !window.fetch) return;
 
   [].forEach.call(forms, function (f) {
+    // When the page was loaded, in whole seconds. The gate rejects a form
+    // returned faster than a person could read it. A bot can forge this,
+    // which is why it is one signal among several and not the gate itself.
+    var t0 = f.querySelector('input[name="_t"]');
+    if (t0) { t0.value = String(Math.floor(Date.now() / 1000)); }
     var stat = f.querySelector(".fstat");
     var btn = f.querySelector("button[type=submit]");
     var busy = false;
@@ -833,44 +846,36 @@
       var hp = f.querySelector('input[name="_confirm"]');
       if (hp && hp.value) { done("ok"); return; }
 
-      var fields = [];
+      // Sent as an ordinary form encoding, exactly what the no-script path
+      // posts, so the gate has one shape to handle and the two paths cannot
+      // drift apart. `_confirm` and `_consent` DO travel now: the gate is
+      // what inspects the honeypot and what turns a ticked box into a
+      // HubSpot consent record, and it holds the sentence that gets stored.
+      // That sentence is no longer in this page at all, so it cannot be
+      // forged into the record by anyone posting at the gate directly.
+      var parts = [];
       [].forEach.call(f.querySelectorAll("input,textarea,select"), function (el) {
-        // `_confirm` is the honeypot and `_consent` is the tick box. Neither
-        // is a HubSpot field: the honeypot must never be transmitted at all,
-        // and consent travels in its own part of the payload below, not as a
-        // contact property.
-        if (!el.name || el.name === "_confirm" || el.name === "_consent") return;
+        if (!el.name) return;
         if (el.type === "checkbox" && !el.checked) return;
-        if (!el.value) return;
-        fields.push({ name: el.name, value: el.value });
+        if (!el.value && el.type !== "checkbox") return;
+        parts.push(encodeURIComponent(el.name) + "=" +
+                   encodeURIComponent(el.type === "checkbox" ? "1" : el.value));
       });
-
-      // Consent, recorded the way HubSpot records it: `legalConsentOptions`
-      // rather than a field, carrying the EXACT sentence the visitor was
-      // shown. The notice under the box ("You can unsubscribe...") is not
-      // part of this on purpose, because the stored record should be the
-      // agreement and nothing else.
-      var payload = {
-        fields: fields,
-        context: { pageUri: location.href, pageName: document.title }
-      };
-      var tick = f.querySelector('input[name="_consent"]');
-      if (tick && f.dataset.hsConsent) {
-        payload.legalConsentOptions = {
-          consent: { consentToProcess: !!tick.checked, text: f.dataset.hsConsent }
-        };
-      }
 
       busy = true;
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent;
                  btn.textContent = "Sending..."; }
       say("");
 
-      fetch("https://api.hsforms.com/submissions/v3/integration/submit/"
-            + f.dataset.hsPortal + "/" + f.dataset.hsForm, {
+      fetch(f.action, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          // Tells the gate to answer with JSON rather than its own
+          // thank-you page, which is what the no-script path gets.
+          "Accept": "application/json"
+        },
+        body: parts.join("&")
       }).then(function (r) {
         done(r.ok ? "ok" : "fail");
       }).catch(function () {
