@@ -1497,18 +1497,52 @@ html.js .bo-item p{max-width:38ch}
   background:var(--t-navy);color:var(--navy)}
 
 /* ------------------------------------------------------- services index --- */
-.svc-index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
-@media(max-width:760px){.svc-index{grid-template-columns:minmax(0,1fr)}}
-.svc-col{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:28px 30px;box-shadow:var(--sh-xs)}
-.svc-col h2{font-size:19px;letter-spacing:-.022em;margin-bottom:14px;padding-bottom:14px;
-  border-bottom:1px solid var(--line)}
+/* The services index. Seven practice areas, holding between none and eight
+   children each, so the cards are deliberately NOT equal height:
+   `align-items:start` lets each one stop where its content stops. Stretching
+   them leaves four cards two thirds empty to match the one that is full. */
+/* COLUMNS, NOT A GRID, and that is the point. A grid puts these in rows, so
+   the row is as tall as its tallest card: Technical Writing is 528px with
+   eight children and the two beside it are 257 and 328, which left a hole
+   under each of them the size of a card. Columns flow the next card into
+   the gap instead. DOM order is unchanged, so the reading order and the
+   order a screen reader announces are both still the menu's order. */
+.svc-index{columns:3;column-gap:20px}
+@media(max-width:1060px){.svc-index{columns:2}}
+@media(max-width:680px){.svc-index{columns:1}}
+.svc-col{break-inside:avoid;margin:0 0 20px}
+
+/* 14px, written out. `var(--r)` is not defined anywhere in this stylesheet,
+   so this rule used to resolve to nothing and these cards rendered square
+   while every other card on the site was rounded. That is the bug noted
+   against `.tcard` below, and it was what made this page look unfinished. */
+.svc-col{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:26px 26px 24px;box-shadow:var(--sh-xs);
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.svc-col:hover{border-color:var(--or);box-shadow:var(--sh-sm);transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){
+  .svc-col,.svc-col:hover{transition:none;transform:none}}
+
+.svc-ico{display:flex;align-items:center;justify-content:center;
+  width:42px;height:42px;border-radius:11px;margin-bottom:16px;
+  background:var(--or-l,rgba(234,88,12,.1));color:var(--or-d)}
+.svc-ico svg{display:block}
+
+.svc-col h2{font-size:18.5px;letter-spacing:-.022em;line-height:1.3;margin:0 0 8px}
 .svc-col h2 a{color:var(--navy)}
 .svc-col h2 a:hover{color:var(--or-d)}
-.svc-kids{display:flex;flex-direction:column;gap:2px}
-.svc-kids a{font-size:15.2px;line-height:1.5;padding:7px 0;color:var(--body)}
+.svc-sub{font-size:14.6px;line-height:1.55;color:var(--mute);margin:0}
+
+/* The children. A rule above them rather than a border on each, so a card
+   with none simply has no divider and does not look truncated. */
+.svc-kids{display:flex;flex-direction:column;margin-top:18px;padding-top:16px;
+  border-top:1px solid var(--line)}
+.svc-kids a{font-size:14.8px;line-height:1.45;padding:7px 0;color:var(--body);
+  display:flex;align-items:center;gap:9px}
+.svc-kids a::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--line-d,#cbd5e1);transition:background .15s ease}
 .svc-kids a:hover{color:var(--or-d)}
-.svc-kids:empty::before{content:"No sub-services";font-size:14.6px;color:var(--mute)}
+.svc-kids a:hover::before{background:var(--or)}
 
 /* -------------------------------------------------------------- check --- */
 .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:15px 40px;
