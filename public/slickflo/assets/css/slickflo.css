@@ -1325,6 +1325,11 @@ html.js .bo-item p{max-width:38ch}
 .own-who span{flex:1;background:var(--t-navy);color:var(--navy);
   border-radius:7px;font-size:10.5px;font-weight:600;text-align:center;
   padding:9px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* At 320px the three labels get 61px each and "Engineering" wants 64, so the
+   ellipsis above fired and a visitor read "Engineerin...". The rule is a
+   safety net for a label we do not control, not a design, so the type comes
+   down a notch on the narrowest phones and the word fits whole. */
+@media(max-width:360px){.own-who span{font-size:9.8px;padding:9px 1px}}
 .own-arr{display:flex;gap:6px;margin:7px 0}
 .own-arr i{flex:1;height:14px;position:relative}
 .own-arr i::before{content:"";position:absolute;left:50%;top:0;width:1.5px;
@@ -1392,9 +1397,18 @@ html.js .bo-item p{max-width:38ch}
 }
 
 /* -------------------------------------------------------------- stats --- */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
-@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 0}}
-.stats>div{padding:0 22px;border-right:1px solid var(--line-2)}
+/* minmax(0,1fr), not 1fr. A `1fr` column has an implicit MINIMUM of
+   `auto`, so it cannot shrink below the widest unbreakable thing inside it:
+   at 320px the two label columns wanted 131.9 and 116.8 against 245 of
+   container and overflowed by 4px. The same fix is already on `.psplit`
+   and `.svc-index`. The 22px side padding also comes off below 420px,
+   where it was eating a third of each column. */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  text-align:center}
+@media(max-width:760px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 0}}
+.stats>div{padding:0 22px;border-right:1px solid var(--line-2);min-width:0}
+@media(max-width:420px){.stats>div{padding:0 10px}}
 .stats>div:last-child{border-right:0}
 @media(max-width:760px){.stats>div:nth-child(2n){border-right:0}}
 .stats b{display:block;font-size:clamp(42px,5.2vw,58px);line-height:1;font-weight:600;
@@ -2862,8 +2876,26 @@ html.js .pwv-shot.rv{transition-duration:1.25s}
    lives beside the thing that uses it. */
 .pmeta{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;
   font-size:14.6px;line-height:1.5}
+/* NOWRAP, because the separator lives INSIDE the time element. His phone,
+   2026-11-20: the dot sat at the end of one line and the date dropped to
+   the next, which reads as a typo rather than a separator. The time is a
+   flex item, so when the byline leaves it too little room its CONTENTS wrap
+   and strand the dot. Keeping the date on one line sends the whole item to
+   the next line instead, dot and all, which is what the wrap was for. */
+.pmeta time{white-space:nowrap}
 .pmeta time::before{content:"\B7";margin-right:14px;color:var(--line-2)}
 .pmeta time:first-child::before{content:none}
+/* ON A PHONE THE SEPARATOR GOES ENTIRELY, because there is nothing left for
+   it to separate. The byline is about 240px and the date 137, so below
+   roughly 420px they can never share a line: the date always takes its own,
+   and a mid-sentence dot at the START of that line reads as a typo. This is
+   the same trap the rule further down names for a date with no byline. The
+   nowrap above is still doing its job, keeping "16 February 2026" whole. */
+@media(max-width:480px){
+  .pmeta{display:block}
+  .pmeta time{display:block;margin-top:5px}
+  .pmeta time::before{content:none}
+}
 
 .pbanner .pmeta{margin-top:14px;color:rgba(255,255,255,.82)}
 .pbanner .pmeta time{color:rgba(255,255,255,.82)}
@@ -3077,6 +3109,9 @@ html.js .md-row{animation:md-in 4.6s ease infinite backwards;
 .af-node i{width:38px;height:38px;border-radius:11px;display:grid;
   place-items:center;background:var(--t-navy);color:var(--navy);flex:none}
 .af-node b{font-size:12.4px;font-weight:550;color:var(--body);letter-spacing:-.006em}
+/* Same cause as `.own-who` above: at 320px each node gets 43px and
+   "Process" wants 45, so it spilled a pixel either side of its column. */
+@media(max-width:360px){.af-node b{font-size:11.4px;letter-spacing:-.012em}}
 html.js .af-run{animation:af-travel 3.6s linear infinite}
 html.js .af-node i{animation:af-lit 3.6s ease infinite;
   animation-delay:calc(var(--i) / var(--n) * 3.6s)}
