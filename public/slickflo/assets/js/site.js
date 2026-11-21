@@ -904,6 +904,14 @@
       if (how === "ok") {
         f.reset();
         say(f.dataset.hsOk || "Thank you.", "ok");
+        // Counted only on a CONFIRMED success, not on the click. A visitor
+        // who submits and fails is not a lead, and a metric that counts
+        // them is worse than no metric. Defined further down this file and
+        // a no-op when consent was declined.
+        if (window.sfTrackFormSubmit) {
+          var fn = f.querySelector('input[name="_form"]');
+          window.sfTrackFormSubmit(fn ? fn.value : "unknown");
+        }
       } else {
         // NEVER a dead end: if the post failed the visitor still has
         // something to do, and it is the address on the contact page.
@@ -919,3 +927,115 @@
     }
   });
 })();
+
+
+/* ------------------------------------------------------------ consent ---
+   Google Tag Manager, loaded ONLY after somebody accepts.
+
+   Not Google's Consent Mode, where gtm.js loads regardless and is asked to
+   hold back until permission arrives. Here the script is never fetched at
+   all until the answer is yes. It is a stronger promise, it is far easier
+   to verify, and it is the only version that lets the privacy policy say
+   plainly that declining means nothing loads.
+
+   The answer lives in localStorage, NOT in a cookie, which matters: a
+   cookie banner that sets a cookie in order to remember you refused cookies
+   is the joke everybody makes about them. localStorage for a stored
+   preference is permitted without consent, because it is what the visitor
+   asked for.
+
+   Wrapped in try/catch throughout: in a private window, or with site data
+   blocked, reading storage THROWS rather than returning null, and an
+   exception here would take the rest of this file's behaviour with it.  */
+(function () {
+  var KEY = "sf-consent";
+  var GTM = document.documentElement.getAttribute("data-gtm");
+  var bar = document.getElementById("cbar");
+
+  function stored() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+  function remember(v) {
+    try { localStorage.setItem(KEY, v); } catch (e) { /* private window */ }
+  }
+
+  /* The official snippet, written out. His pasted version loaded gtm.js and
+     then used the gtag() pattern from the other install method, missing the
+     dataLayer push below. Without that event the container downloads and
+     every "All Pages" tag sits there never firing. */
+  /* `granted` is the CURRENT answer, `loaded` is whether the script is in
+     the page. They are not the same thing and conflating them was a leak:
+     accept, then decline on the same page, and a script that cannot be
+     unloaded was still treated as permission. Found 2026-11-21 by testing
+     that exact order rather than the happy path. */
+  var granted = false;
+  var loaded = false;
+  function loadGTM() {
+    if (loaded || !GTM) { return; }
+    loaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM;
+    document.head.appendChild(s);
+  }
+
+  /* Declining after accepting has to take the cookies away too. The script
+     cannot be unloaded, but leaving its cookies behind while the policy
+     says declining means none is simply untrue. */
+  function dropAnalyticsCookies() {
+    var host = location.hostname;
+    var domains = ["", host, "." + host];
+    var parts = host.split(".");
+    if (parts.length > 2) { domains.push("." + parts.slice(-2).join(".")); }
+    document.cookie.split(";").forEach(function (c) {
+      var name = c.split("=")[0].trim();
+      if (!/^_(ga|gid|gat)/.test(name)) { return; }
+      domains.forEach(function (d) {
+        document.cookie = name + "=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
+          + (d ? "; domain=" + d : "");
+      });
+    });
+  }
+
+  function answer(v) {
+    remember(v);
+    granted = (v === "yes");
+    if (bar) { bar.hidden = true; }
+    if (granted) { loadGTM(); } else { dropAnalyticsCookies(); }
+  }
+
+  var was = stored();
+  granted = (was === "yes");
+  if (granted) {
+    loadGTM();
+  } else if (was !== "no" && bar) {
+    bar.hidden = false;
+  }
+
+  if (bar) {
+    bar.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-consent]");
+      if (b) { answer(b.getAttribute("data-consent") === "yes" ? "yes" : "no"); }
+    });
+  }
+
+  /* Lets the privacy policy offer a way to change the answer later, which a
+     consent banner has to provide and almost none do. */
+  window.sfConsentReset = function () {
+    try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+    if (bar) { bar.hidden = false; }
+  };
+
+  /* A form submission is worth counting, and only reaches GTM if GTM is
+     there: with consent declined this pushes into an array nobody reads,
+     which is the correct no-op rather than a special case. */
+  window.sfTrackFormSubmit = function (which) {
+    // `granted` first: the question is whether consent holds NOW, not
+    // whether a script happens to be present from earlier in this visit.
+    if (!granted || !loaded) { return; }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "form_submit", form_name: which });
+  };
+}());
