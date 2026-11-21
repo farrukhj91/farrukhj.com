@@ -830,6 +830,20 @@
     // which is why it is one signal among several and not the gate itself.
     var t0 = f.querySelector('input[name="_t"]');
     if (t0) { t0.value = String(Math.floor(Date.now() / 1000)); }
+
+    // Ask the gate for a signed token. THIS IS THE PROOF THE PAGE WAS
+    // LOADED, and it is the answer to the 2026-11-21 spam, which forged a
+    // referrer: a referrer costs a bot one header, while a token has to be
+    // fetched from the server and is signed with a secret that never leaves
+    // it. If this fails the form still submits; it simply cannot carry a
+    // link, which is what the gate tells the visitor.
+    var tok = f.querySelector('input[name="_tok"]');
+    if (tok && window.fetch) {
+      fetch(f.action + "?token=1", { headers: { "Accept": "application/json" } })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j && j.t) { tok.value = j.t; } })
+        .catch(function () { /* leave it empty; the gate copes */ });
+    }
     var stat = f.querySelector(".fstat");
     var btn = f.querySelector("button[type=submit]");
     var busy = false;
