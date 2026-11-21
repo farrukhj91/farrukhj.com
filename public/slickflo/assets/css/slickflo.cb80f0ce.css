@@ -1,0 +1,3251 @@
+/* ==========================================================================
+   SlickFlo design system
+   One file. Every colour, size and spacing value on the site comes from here.
+   See PLAN.md §2 and §3 before changing anything.
+   ========================================================================== */
+
+@font-face{
+  font-family:"Geist";
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url("../fonts/Geist-Variable.woff2") format("woff2-variations");
+}
+
+:root{
+  color-scheme:light;
+
+  /* brand spectrum — navy -> indigo -> orange. Nothing outside this. */
+  --navy-d:#050F3B; --navy:#07195A; --navy-l:#0E2470;
+  --indigo:#1B3A9C; --indigo-l:#2E56C8;
+  --or-l:#FF8534; --or:#FE6302; --or-d:#D94F00;
+
+  --t-navy:#EEF2FB; --t-indigo:#E9EEFC; --t-orl:#FFF1E6; --t-or:#FFF1E8;
+
+  /* navy-biased neutrals — never pure grey */
+  --bg:#FFFFFF; --bg-alt:#F6F8FC; --card:#FFFFFF;
+  --ink:#0A1330; --body:#4A5468; --mute:#78829A;
+  --line:#E6EBF4; --line-2:#D0D8E8;
+
+  --sh-xs:0 1px 2px rgba(7,25,90,.05);
+  --sh-sm:0 1px 3px rgba(7,25,90,.06),0 4px 10px rgba(7,25,90,.045);
+  --sh-md:0 2px 6px rgba(7,25,90,.07),0 14px 30px rgba(7,25,90,.08);
+  --sh-lg:0 8px 18px rgba(7,25,90,.08),0 30px 64px rgba(7,25,90,.13);
+
+  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --max:1180px;
+  --pad:104px;
+  --ease:cubic-bezier(.2,.8,.3,1);
+}
+@media(max-width:820px){:root{--pad:64px}}
+
+/* --------------------------------------------------------------- base --- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;overflow-x:hidden}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 30px}
+/* The header is position:sticky at 80px, so an anchor jump lands *under* it
+   without this. Applies to every in-page target — the menu's Product & Web
+   Design entries land on a card, Careers on a block, the hero button on a
+   section. #page-top clamps to 0 and is unaffected. */
+[id]{scroll-margin-top:96px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{margin:0;color:var(--ink);text-wrap:balance;font-weight:600}
+p{margin:0}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--or);outline-offset:3px;border-radius:5px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--navy);color:#fff;
+  padding:12px 18px;border-radius:0 0 8px 0;z-index:200}
+.skip:focus{left:0}
+
+/* ------------------------------------------------------------ sections --- */
+.sec{padding:var(--pad) 0}
+.sec.alt{background:var(--bg-alt);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)}
+.sec.tight{padding:calc(var(--pad) * .62) 0}
+/* 64ch was one measure doing two jobs. It is the right reading width for the
+   paragraph at 17.5px and far too narrow for the heading at 42px, which got
+   about 22 characters a line and ran to three rows on any heading of normal
+   length: "We work with all leading documentation and knowledgebase
+   platforms" is 66 characters and took three. Client 2026-09-02.
+
+   The block is wide enough for the heading now and the paragraph keeps its
+   own 64ch, so the reading measure is unchanged and only the display type
+   got the room it needed. 880px because the two longest headings on the site
+   need 760 and 800 to fall to two lines. */
+.shead{text-align:center;max-width:min(880px,100%);margin:0 auto 56px}
+.shead.left{text-align:left;margin-left:0}
+.shead h2{font-size:clamp(28px,3.7vw,42px);line-height:1.1;letter-spacing:-.032em}
+.shead p{font-size:17.5px;color:var(--body);margin-top:16px;
+  max-width:64ch;margin-left:auto;margin-right:auto}
+.shead.left p{margin-left:0}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:550;
+  color:var(--or-d);margin-bottom:14px;letter-spacing:-.008em}
+.kicker::before{content:"";width:18px;height:2px;background:var(--or);border-radius:2px}
+.shead:not(.left) .kicker{justify-content:center}
+
+/* ------------------------------------------------------------- header --- */
+.top{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.86);
+  backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line);
+  transition:box-shadow .25s var(--ease)}
+.top.stuck{box-shadow:0 1px 0 var(--line),0 6px 24px rgba(7,25,90,.06)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:80px}
+.brand{display:flex;align-items:center;flex:none}
+.brand img{height:34px;width:auto}
+/* The header logo is larger than the footer's, client 2026-08-17, paid for by
+   the CTA leaving. 40px needs the bar 4px taller to keep its breathing room. */
+.top .brand img{height:40px}
+.nav{display:flex;gap:2px}
+.nav>li{list-style:none;position:relative}
+/* Sized to the row, not picked. nowrap means a label that does not fit
+   overflows the header instead of silently going to two lines, so this number
+   is a measurement: dropping the 124px CTA bought room to go 13px -> 14px and
+   to grow the logo 34px -> 40px. At 14.2px the row came out at exactly 0px of
+   slack at 1181px, the narrowest width the desktop nav is shown at — correct on
+   paper and one rounding away from overflowing. 14px leaves ~22px there and
+   ~36px once .wrap hits its 1180px cap. Re-measure if a nav item is added or
+   renamed. */
+.nav a.lnk{display:flex;align-items:center;gap:4px;padding:9px 11px;border-radius:7px;
+  font-size:14px;white-space:nowrap;color:var(--body);
+  transition:color .18s,background .18s}
+.nav a.lnk:hover,.nav li:hover>a.lnk,.nav a.lnk[aria-current=page]{color:var(--navy);
+  background:var(--t-navy)}
+.nav a.lnk svg{transition:transform .2s var(--ease)}
+.nav li:hover>a.lnk svg{transform:rotate(180deg)}
+.drop{position:absolute;top:calc(100% + 8px);left:0;min-width:250px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-lg);padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s;
+  margin:0;list-style:none}
+.nav li:hover>.drop,.nav li:focus-within>.drop{opacity:1;visibility:visible;
+  transform:translateY(0)}
+/* 13.5px, a hair above the 13px bar. At the old 14.5px a submenu item was
+   larger than the item that opened it. */
+.drop a{display:block;padding:9px 12px;border-radius:8px;font-size:13.5px;
+  color:var(--body);transition:background .16s,color .16s}
+.drop a:hover{background:var(--t-navy);color:var(--navy)}
+.hact{margin-left:auto;display:flex;align-items:center;gap:12px}
+/* Menu button at the far right, client 2026-08-17 (referencing xgrid.co, whose
+   header is logo + links + a bare toggle and no CTA). Dropping "Get in Touch"
+   is what paid for the bigger logo and the bigger nav labels. */
+.mwrap{position:relative;display:none}
+@media(min-width:1181px){.mwrap{display:block}}
+.mbtn{display:grid;place-items:center;width:44px;height:44px;border-radius:9px;
+  border:1px solid var(--line-2);background:#fff;color:var(--navy);cursor:pointer;
+  transition:border-color .18s,background .18s,color .18s}
+.mbtn:hover,.mbtn[aria-expanded=true]{border-color:var(--navy);background:var(--t-navy)}
+/* Right-anchored: the button is the last thing in the row, so a left-anchored
+   panel would hang off the page. */
+.hmenu{position:absolute;top:calc(100% + 10px);right:0;min-width:200px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-lg);padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .18s,transform .18s var(--ease),visibility .18s}
+.hmenu.open{opacity:1;visibility:visible;transform:none}
+.hmenu a{display:block;padding:9px 12px;border-radius:8px;font-size:14px;
+  color:var(--body);white-space:nowrap;transition:background .16s,color .16s}
+.hmenu a:hover{background:var(--t-navy);color:var(--navy)}
+.burger{display:none;width:42px;height:42px;border:1px solid var(--line-2);
+  border-radius:9px;background:#fff;cursor:pointer;place-items:center;color:var(--navy)}
+/* The burger takes over below --max rather than at 1080px. Five nowrap labels
+   plus the logo and the CTA need 1144px of .wrap; at 1080 only ~1065 is there,
+   so the old breakpoint handed the desktop nav a band of widths it could not
+   fit in — which is how every label ended up on two lines. Above 1180 .wrap is
+   capped and the row always fits, with ~32px of slack before the CTA.
+   Re-measure this if a nav item is added or renamed. */
+@media(max-width:1180px){
+  .nav{display:none}
+  .burger{display:grid}
+}
+/* Phone header. With the CTA gone this row is only the logo and the burger, so
+   the squeeze that used to be needed here is not — the logo just comes down
+   from its 40px desktop size to something proportionate to a 320px bar. */
+@media(max-width:420px){
+  .top .wrap{gap:12px;height:70px}
+  .top .brand img{height:32px}
+  .burger{width:38px;height:38px}
+}
+.mnav{display:none;border-top:1px solid var(--line);background:#fff;padding:14px 0 20px}
+.mnav.open{display:block}
+/* The menu sits inside <header class="top">, so it would otherwise inherit
+   `.top .wrap{display:flex;height:76px}` and lay its 15 links out in one
+   non-wrapping row — everything past the second link ran off-screen. */
+.mnav .wrap{display:block;height:auto}
+.mnav a{display:block;padding:11px 0;font-size:16px;color:var(--body);
+  border-bottom:1px solid var(--line)}
+.mnav a.sub{padding-left:16px;font-size:14.6px;color:var(--mute)}
+.mnav a:last-child{border-bottom:0}
+/* The open menu can be taller than the screen; keep it scrollable under the
+   sticky header rather than pushing links out of reach. */
+.mnav.open{max-height:calc(100vh - 80px);overflow-y:auto;overscroll-behavior:contain}
+
+/* ------------------------------------------------------------ buttons --- */
+/* nowrap: the height is fixed, so a wrapped label does not make the button
+   taller — it overflows it. "Get in Touch" in the header was breaking across
+   two lines inside a 42px box. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:50px;
+  padding:0 25px;border-radius:9px;font-family:var(--sans);font-size:15.5px;font-weight:550;
+  letter-spacing:-.008em;white-space:nowrap;border:1px solid transparent;cursor:pointer;
+  transition:background .18s,border-color .18s,color .18s,transform .18s var(--ease),
+    box-shadow .18s}
+.btn svg{transition:transform .22s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-p{background:var(--or);color:#fff}
+.btn-p:hover{background:var(--or-d);transform:translateY(-1px);box-shadow:var(--sh-sm)}
+.btn-s{background:#fff;color:var(--navy);border-color:var(--line-2)}
+.btn-s:hover{border-color:var(--navy);transform:translateY(-1px)}
+.btn-w{background:#fff;color:var(--navy)}
+.btn-w:hover{background:#EEF2FB;transform:translateY(-1px)}
+.btn-o{background:transparent;color:#fff;border-color:rgba(255,255,255,.36)}
+.btn-o:hover{border-color:#fff;background:rgba(255,255,255,.09);transform:translateY(-1px)}
+.btn-sm{height:42px;padding:0 19px;font-size:14.5px;border-radius:8px}
+.btn-full{width:100%}
+
+/* --------------------------------------------------------------- hero --- */
+.hero{position:relative;padding:88px 0 var(--pad);overflow:hidden;
+  background:
+    radial-gradient(1100px 460px at 88% -6%,var(--t-orl) 0%,rgba(255,241,230,0) 62%),
+    radial-gradient(900px 420px at 4% 2%,var(--t-indigo) 0%,rgba(233,238,252,0) 60%),
+    #fff;
+  border-bottom:1px solid var(--line)}
+.hgrid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:60px;
+  align-items:center}
+.hgrid>*{min-width:0}
+@media(max-width:960px){.hgrid{grid-template-columns:1fr;gap:48px}.hero{padding-top:60px}}
+.hero h1{font-size:clamp(38px,5.2vw,57px);line-height:1.06;letter-spacing:-.036em;
+  max-width:14ch}
+.hero .sub{font-size:18px;line-height:1.6;max-width:47ch;margin:26px 0 34px}
+.hcta{display:flex;gap:13px;flex-wrap:wrap;align-items:center}
+/* On a narrow phone a long hero label ("Our Technical Writing Services") is
+   wider than the whole content box, and .btn is nowrap with a fixed height, so
+   it pushed the hero 9px past the viewport. Full-width stacked buttons here,
+   and only here is wrapping safe: the height goes auto at the same time, so a
+   second line grows the button instead of spilling out of it. */
+@media(max-width:420px){
+  .hcta{flex-direction:column;align-items:stretch;width:100%}
+  .hcta .btn{width:100%;height:auto;min-height:50px;padding:13px 18px;
+    white-space:normal;text-align:center}
+}
+.hmeta{display:flex;gap:30px;margin-top:38px;padding-top:26px;border-top:1px solid var(--line);
+  flex-wrap:wrap}
+.hmeta div{display:flex;align-items:baseline;gap:8px}
+.hmeta b{font-size:22px;font-weight:600;color:var(--navy);letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums}
+.hmeta span{font-size:14px;color:var(--mute)}
+
+/* rotating service line — grid-stacked so it can never overflow its column.
+   Duration and per-item delay are emitted by build.py from the length of the
+   list. They used to be nth-child rules here covering children 2-4 only, so a
+   fifth item ran with no delay and faded in on top of the first. Each item is
+   fully out at 20% — one fifth of the cycle — before the next begins. */
+/* The rotating service names left the <h1> on 2026-11-18, his approval of
+   the SEO brief's A3-b. The h1 read as one run-on string, "Elevating Your
+   Digital Presence with ExcellenceTechnical WritingContent Marketing...",
+   because the cycling span was a child of it.
+
+   `.rotw` EXISTS ONLY TO REPRODUCE THE OLD BOX. Inside the h1 the span was
+   constrained by `max-width:14ch` at the h1's 57px; as a bare sibling it
+   would have taken the whole column, and `ch` on .rot itself would resolve
+   against ITS font-size (32px), which is a different width entirely. The
+   wrapper carries the h1's font-size so the 14ch is the same 549px, and it
+   holds no text of its own, so it adds no line box and no height. The h1's
+   own margins are 0 top and bottom, which is why nothing moved vertically.
+   Verified by measuring every element in the hero before and after. */
+/* font-weight:600 as well, and it is not decoration: `ch` is the width of
+   the "0" glyph AT THE ELEMENT'S OWN FONT, and h1 is 600 while a div
+   inherits 400. Without it the same `14ch` computed 535px here against
+   549px on the h1, so the box this exists to reproduce was 6px narrower
+   than the one it replaced. The wrapper renders no text of its own, so the
+   weight does nothing except make the unit resolve identically. */
+.hero .rotw{max-width:14ch;font-size:clamp(38px,5.2vw,57px);font-weight:600}
+
+.rot{display:grid;margin-top:.34em;color:var(--or);
+  font-size:clamp(21px,2.7vw,32px);line-height:1.22;letter-spacing:-.024em}
+.rot i{grid-area:1/1;font-style:normal;opacity:0;
+  animation-name:rot;animation-iteration-count:infinite;
+  animation-timing-function:var(--ease);animation-fill-mode:both}
+@keyframes rot{0%{opacity:0;transform:translateY(9px)}
+  2%,17%{opacity:1;transform:none}20%,100%{opacity:0;transform:translateY(-9px)}}
+
+/* inner-page hero — shorter, no image column */
+.phero{position:relative;padding:76px 0 68px;overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 84% -18%,var(--t-orl) 0%,rgba(255,241,230,0) 60%),
+    radial-gradient(760px 340px at 2% -6%,var(--t-indigo) 0%,rgba(233,238,252,0) 58%),
+    #fff;
+  border-bottom:1px solid var(--line)}
+.phero h1{font-size:clamp(33px,4.4vw,50px);line-height:1.08;letter-spacing:-.034em;
+  max-width:19ch}
+.phero .sub{font-size:18px;line-height:1.6;max-width:58ch;margin:22px 0 30px;
+  color:var(--body)}
+/* A live lead line written as an arrow chain ("Make operations: Leaner ->
+   Intelligent -> Scalable"). It was rendering as a stray paragraph below the
+   hero; the client calls it the key line for the page, so it sits on the
+   cover. Verbatim live copy, re-set as a lockup.
+
+   Scaled up about 20% on 2026-08-10 — the client wants it to carry the page
+   without dominating the h1 above it. */
+/* Sized to hold "Make operations: Leaner -> Intelligent -> Scalable" on ONE
+   line, client 2026-10-04. It used to have the full hero width and fitted
+   easily; adding the hero graphic on 2026-10-04 made this column 564px and
+   the row needed 582, so it broke to four lines. Smaller type and tighter
+   gaps and pills bring it to 528, which clears 564 with room for the webfont
+   to measure differently from the fallback.
+
+   Only this page uses .hflow, so these numbers are tuned to its one string.
+   A longer string would wrap again, and it SHOULD: flex-wrap stays on, so
+   the failure mode is two tidy lines rather than an overflow. */
+.hflow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.hflow em{font-style:normal;font-size:15px;font-weight:550;color:var(--body);
+  letter-spacing:-.014em}
+.hflow i{font-style:normal;font-size:15px;font-weight:560;letter-spacing:-.016em;
+  padding:8px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  box-shadow:var(--sh-sm);color:var(--navy)}
+.hflow svg{color:var(--or);flex:none;width:16px;height:16px}
+@media(max-width:560px){
+  .hflow em,.hflow i{font-size:16px}
+  .hflow i{padding:9px 16px}
+}
+.phero .hflow+.hcta{margin-top:30px}
+
+.crumb{display:flex;gap:8px;align-items:center;font-size:13.8px;color:var(--mute);
+  margin-bottom:18px;flex-wrap:wrap}
+.crumb a:hover{color:var(--navy)}
+.crumb span{color:var(--line-2)}
+/* Touch: a 22px-tall breadcrumb link is under the 24px WCAG 2.5.8 minimum.
+   Pad it out on pointer-coarse devices without moving anything visually. */
+@media(pointer:coarse){
+  .crumb{gap:6px}
+  .crumb a{padding:6px 2px}
+}
+
+/* ------------------------------------------------------- hero orbit --- */
+/* Seven services circling the SlickFlo mark. Client 2026-11-13, from a
+   reference shot of product logos round a brand, and his own grouping:
+   three on the inner ring, two on the middle, two on the outer.
+
+   THE GEOMETRY IS ALL PERCENTAGES, so the whole diagram is one square that
+   scales with its column and keeps its proportions from 500px down to a
+   320px phone. Every number below was arrived at by measuring, because the
+   three things that can collide here collide quietly:
+
+     the badges and the centre mark   THE WORST CASE IS THE DIAGONAL, not
+                                      the axis: a badge at 45 degrees has
+                                      its corner pointing at the mark's
+                                      corner, so the clearance is the one
+                                      measured along that line. At 30% the
+                                      inner ring overlapped the mark there
+                                      while looking clear on the axes. 38%
+                                      and a 14% mark leave 10px.
+     the badges and each other        rings 24 percentage points apart, for
+                                      60px between ring radii against a 44px
+                                      badge
+     the badges and the frame         the outer ring at 86% puts the badge
+                                      edge 13px inside the square
+
+   A rotated child hands its ROTATED bounding box to its parent, which is
+   how a spinning thing quietly widens a page. The stage is a square with
+   nothing sticking out of it, which is why the numbers above have to hold
+   rather than merely look right. */
+/* overflow:hidden is NOT decoration. A rotated child hands its ROTATED
+   bounding box to its parent, so each ring reports a box up to 1.41x its own
+   width and the hero, the wrap and the grid all inherited it: at 768px the
+   hero measured 383px wide inside a 375px window. Nothing visible is lost by
+   clipping, because every badge stays at least 13px inside the square; what
+   is lost is a page that grows and shrinks as the rings turn.  itself
+   still reports the rotated box, so it is on the sweep exclusion list in
+   CLAUDE.md, the same as . */
+.orb{--tile:44px;position:relative;width:100%;max-width:500px;aspect-ratio:1;
+  margin:0 auto;overflow:hidden}
+.orb-core{position:absolute;left:50%;top:50%;width:14%;
+  transform:translate(-50%,-50%);display:block}
+.orb-core img{display:block;width:100%;height:auto}
+.orb-ring{position:absolute;left:50%;top:50%;width:var(--d);height:var(--d);
+  margin-left:calc(var(--d) / -2);margin-top:calc(var(--d) / -2);
+  border:1px solid var(--line);border-radius:50%;
+  animation:orb-spin var(--dur) linear infinite}
+/* The rings turn opposite ways, so the diagram reads as several things
+   moving rather than as one wheel. */
+.orb-ring.ccw{animation-direction:reverse}
+
+/* Three elements, one job each. `.orb-it` fills the ring and is rotated by
+   the service's own angle, so its top-centre point is where that service
+   belongs. `.orb-up` is that point, counter-spinning at the ring's speed so
+   the badge does not tumble. `.orb-chip` is the badge, centred on the point
+   and rotated back by the same angle so it sits upright. In one element it
+   cannot work: all three want `transform` and the last one wins. */
+.orb-it{position:absolute;inset:0;transform:rotate(var(--a))}
+.orb-up{position:absolute;left:50%;top:0;width:0;height:0;
+  animation:orb-spin var(--dur) linear infinite reverse}
+.orb-ring.ccw .orb-up{animation-direction:normal}
+.orb-chip{position:absolute;left:0;top:0;
+  width:var(--tile);height:var(--tile);display:grid;place-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:13px;
+  box-shadow:var(--sh-sm);color:var(--navy);
+  transform:translate(-50%,-50%) rotate(calc(-1 * var(--a)))}
+
+@keyframes orb-spin{to{transform:rotate(360deg)}}
+
+@media(max-width:1100px){.orb{--tile:40px}}
+@media(max-width:900px){.orb{--tile:38px;max-width:420px}}
+@media(max-width:420px){.orb{--tile:32px}}
+/* A small phone gives the stage only 260px, and the badges do not shrink
+   with it on their own: at 320px a badge was touching the centre mark with
+   nothing to spare. The badge and the mark both come down a step. */
+@media(max-width:360px){.orb{--tile:26px}.orb-core{width:11%}}
+
+/* No motion: the rings stop where the markup put them, which is still seven
+   services spaced around a centre. Nothing here is said by the movement. */
+@media(prefers-reduced-motion:reduce){
+  .orb-ring,.orb-up{animation:none}
+}
+
+/* --------------------------------------------------------- doc mockup --- */
+.shot{border-radius:15px;border:1px solid var(--line);background:#fff;
+  box-shadow:var(--sh-md);overflow:hidden}
+.shot-bar{display:flex;align-items:center;gap:9px;padding:13px 17px;
+  border-bottom:1px solid var(--line);background:#FBFCFE}
+.shot-bar em{font-style:normal;font-size:13.5px;color:var(--mute)}
+.shot-bar .dt{width:8px;height:8px;border-radius:50%;background:var(--line-2);flex:none}
+.shot-body{padding:22px 24px 26px}
+/* Five tabs since 2026-10-04 ("API" became "API Docs" and Customer Proposals
+   joined them), and five needed 483px in a 470px mock, so they broke to two
+   rows. Tighter padding and gap brought them to 459.
+
+   Tightened again 2026-11-13, when the mock went onto the Technical Writing
+   hero as well: that column is 9px narrower than the homepage's, the row
+   needed 462px and had 460, and the tabs broke to two rows on one page and
+   not the other. TWO PIXELS. At 8px of padding and a 5px gap the row needs
+   448 and the narrower of the two mocks gives it 460, so there are 12px of
+   slack rather than none, which is what the next rename will eat into.
+   flex-wrap stays: a sixth tab should wrap rather than overflow. */
+.doc-tabs{display:flex;gap:5px;margin-bottom:20px;flex-wrap:wrap}
+.doc-tabs em{font-style:normal;font-size:12.5px;padding:5px 8px;border-radius:6px;
+  background:#F4F6FB;color:var(--mute);border:1px solid var(--line)}
+.doc-tabs em.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* The hero mock cycles through five document types. Client 2026-11-12: it
+   used to sit on Guides with one fixed sample.
+
+   THE PANELS STACK IN ONE GRID CELL rather than being positioned
+   absolutely, so the mock is as tall as its tallest panel and the hero does
+   not change height mid-cycle.
+
+   Base state is the first tab and the first panel. The cycling is added
+   only under `html.js`, so with JavaScript off the mock is exactly what it
+   was before it became an animation. */
+.doc-stack{display:grid}
+.doc-stack>.doc-pane{grid-area:1/1;opacity:0}
+.doc-stack>.doc-pane:first-child{opacity:1}
+.doc-tabs em:first-child{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+html.js .doc-stack>.doc-pane,
+html.js .doc-tabs em{animation-duration:17.5s;animation-timing-function:linear;
+  animation-iteration-count:infinite;animation-delay:calc(var(--i) * 3.5s)}
+html.js .doc-stack>.doc-pane{animation-name:doc-pane}
+html.js .doc-tabs em{animation-name:doc-tab}
+/* The first tab's resting highlight has to come off once the cycle owns it,
+   or tab one stays dark through all five slots. */
+html.js .doc-tabs em:first-child{background:#F4F6FB;color:var(--mute);
+  border-color:var(--line)}
+html.js .doc-stack>.doc-pane:first-child{opacity:0}
+
+@keyframes doc-pane{
+  0%{opacity:0}3%{opacity:1}17%{opacity:1}20%{opacity:0}100%{opacity:0}}
+@keyframes doc-tab{
+  0%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}
+  3%{background:var(--navy);color:#fff;border-color:var(--navy)}
+  17%{background:var(--navy);color:#fff;border-color:var(--navy)}
+  20%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}
+  100%{background:#F4F6FB;color:var(--mute);border-color:var(--line)}}
+
+@media (prefers-reduced-motion:reduce){
+  /* Back to a still mock of the Guides panel. The five types are still all
+     listed as tabs, so nothing is said by the motion alone. */
+  html.js .doc-stack>.doc-pane,html.js .doc-tabs em{animation:none}
+  html.js .doc-stack>.doc-pane:first-child{opacity:1}
+  html.js .doc-tabs em:first-child{background:var(--navy);color:#fff;
+    border-color:var(--navy)}
+}
+.doc-h{font-size:19px;font-weight:600;color:var(--ink);letter-spacing:-.022em;margin-bottom:5px}
+.doc-s{font-size:13.5px;color:var(--mute);margin-bottom:20px}
+.lines{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.lines i{display:block;height:9px;border-radius:5px;background:#ECF0F8}
+.lines i:nth-child(1){width:100%}.lines i:nth-child(2){width:93%}
+.lines i:nth-child(3){width:97%}.lines i:nth-child(4){width:62%}
+.doc-cal{display:flex;align-items:center;gap:11px;padding:13px 15px;border-radius:9px;
+  background:var(--t-or);border:1px solid #FFDFC9}
+.doc-cal svg{color:var(--or-d);flex:none}
+.doc-cal span{font-size:13.5px;color:#8A4415}
+
+/* ------------------------------------------------------------- trust --- */
+.trust{padding:38px 0;border-bottom:1px solid var(--line)}
+.trust .wrap{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.trust>.wrap>p{font-size:14px;color:var(--mute);flex:none;margin:0}
+/* Trusted By marquee. .logos is the viewport and clips the motion to the strip;
+   .ltrack holds the logo set twice and slides by exactly one set width, which
+   is what makes the loop seamless.
+
+   The translate is -(50% + gap/2), not -50%: the track has 2N items and 2N-1
+   gaps, so half its width overshoots one set by half a gap. Keep the 19px in
+   step with the 38px gap.
+
+   min-width:0 because .logos is a flex item holding content wider than its
+   track — see the note in PLAN §4.
+
+   Height comes from content.CLIENTS, inline per logo, so marks of very
+   different proportions cover the same optical area. 150px is the width cap
+   that calculation assumes. */
+.logos{flex:1;min-width:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24px,
+    #000 calc(100% - 24px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 24px,
+    #000 calc(100% - 24px),transparent 100%)}
+.ltrack{display:flex;align-items:center;gap:38px;width:max-content;
+  animation:logoscroll 42s linear infinite}
+.logos:hover .ltrack{animation-play-state:paused}
+@keyframes logoscroll{from{transform:translateX(0)}
+  to{transform:translateX(calc(-50% - 19px))}}
+.logos img{width:auto;max-width:150px;object-fit:contain;flex:none;
+  filter:grayscale(1) opacity(.52);transition:filter .25s}
+.logos img:hover{filter:grayscale(0) opacity(1)}
+/* On a phone the inline "Trusted by" label plus its gap left the marquee about
+   190px to run in. Stack the label so the track gets the full width. */
+@media(max-width:600px){
+  .trust .wrap{flex-direction:column;align-items:flex-start;gap:16px}
+  .logos{flex:none;width:100%}
+}
+/* No motion: fall back to the static wrapped rows. */
+@media(prefers-reduced-motion:reduce){
+  .logos{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .ltrack{flex-wrap:wrap;width:auto;gap:22px 38px;animation:none}
+  .ltrack img[aria-hidden="true"]{display:none}
+}
+
+
+/* ------------------------------------------------ tech arsenal laptops ---
+   Client 2026-11-12. Four laptops, one per discipline. Each screen fills
+   with its logos one at a time: each arrives from the centre of the screen
+   and settles into the grid, starting top left.
+
+   THE GRID IS THE BASE STATE and the animation is added only under
+   `html.js`. With JavaScript off, or with the keyframes unsupported, every
+   logo is simply in place. Nothing here depends on the motion. */
+.cav{margin-top:38px}
+.cav-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
+@media(max-width:900px){.cav-row{grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px 20px}}
+@media(max-width:420px){.cav-row{grid-template-columns:minmax(0,1fr);gap:26px}}
+
+.cav-it{text-align:center}
+/* The lip has to be WIDER than the screen or the whole thing reads as a
+   card. The difference comes from insetting the screen inside a full-width
+   laptop box, NOT from a negative margin on the lip: a negative margin
+   hangs outside its parent and measures as a real overflow at every width. */
+.cav-lap{width:100%}
+.cav-scr{position:relative;width:91%;margin:0 auto;aspect-ratio:16/10;
+  background:#fff;border:1px solid var(--line-2);border-radius:9px 9px 2px 2px;
+  box-shadow:var(--sh-md);overflow:hidden}
+.cav-foot{display:block;width:100%;height:7px;background:var(--line-2);
+  border-radius:0 0 7px 7px}
+
+/* --gp is the gap, and the keyframe below moves each logo by whole cells
+   plus whole gaps, so the same --dx/--dy work at any screen size. */
+/* EQUAL ROWS, via grid-auto-rows:1fr. Letting rows size to their contents
+   is what made the LMS screen look ragged: TalentLMS is 2.1:1 where the
+   others are about 4:1, so its row stood 46px tall against 25px and nothing
+   lined up. Equal rows with each logo centred in its own row fixes the
+   alignment for any set of shapes, not just this one.
+
+   No justify-items/align-items override: each cell must be the FULL cell
+   box, because the keyframe below translates by percentages of the element
+   and those have to mean one whole cell. */
+.cav-grid{--gp:7px;position:absolute;inset:0;display:grid;
+  grid-template-columns:repeat(var(--c),minmax(0,1fr));
+  /* minmax(0,1fr), NOT 1fr. Plain `1fr` means `minmax(auto,1fr)`, and that
+     auto floor is the row's min-content height: an image with an intrinsic
+     ratio pushes it up, so rows that were meant to be identical came out
+     102x26 and 125x59. The 0 floor is what actually makes them equal. */
+  grid-auto-rows:minmax(0,1fr);gap:var(--gp);padding:6% 4%}
+.cav-lg{display:flex;align-items:center;justify-content:center;min-width:0}
+/* --s is the per-logo optical scale, 1 unless the data says otherwise.
+   A TRANSFORM, not a percentage on max-width/max-height. Those resolve
+   against the containing block, and `.cav-lg` is a flex box whose height is
+   not definite for that purpose, so `max-height:80%` was silently ignored
+   and TalentLMS still filled its row. A transform has no such dependency,
+   does not disturb the layout, and composes cleanly with the entrance
+   animation, which transforms the parent rather than the image. */
+/* The image BOX fills the cell and `object-fit:contain` letterboxes the
+   picture inside it. The obvious `max-width/max-height:100%` does NOT work
+   here: a percentage max-height resolves against the containing block, and
+   `.cav-lg` is a flex box with no definite height for that purpose, so the
+   limit was silently dropped and TalentLMS rendered 38px tall in a 26px row
+   from the day this was built. A filled box has no such dependency. */
+.cav-lg img{width:100%;height:100%;object-fit:contain;
+  transform:scale(var(--s,1))}
+/* Sized to sit level with the LOGOS around it, which land at about 22px of
+   lettering. At 15px a type-set name read as the small one in its screen. */
+.cav-lg-t{font-size:clamp(12px,2.8vw,19px);font-weight:700;
+  letter-spacing:-.02em;color:var(--ink);line-height:1.2}
+
+/* A LOCKUP: a mark with its name set beneath it, for a brand that publishes
+   an icon and sets its own name in type. SweetProcess does exactly that on
+   their own site, so there is no wordmark file in existence to take, and
+   inventing one would be inventing their logo.
+   Stacked rather than side by side because these cells are about 87px wide
+   and "SweetProcess" beside a cup does not fit in that. draw.io sits on
+   this same screen and is already a portrait mark with its words under its
+   icon, so the shape is not a one-off.
+   `--s` scales the font-size and the icon is sized in `em`, so one number
+   moves the whole lockup and the two parts cannot drift apart. */
+.cav-lg-lk{flex-direction:column;gap:.34em;
+  /* 11.4px, not 12.5px. At 12.5 the word measured 86px inside an 87px
+     cell, which is not a fit, it is a coincidence: a different font
+     fallback or a half-pixel of letter-spacing and it overflows. */
+  font-size:calc(clamp(8.5px,1.9vw,11.4px) * var(--s,1));
+  font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+.cav-lg-lk img{width:auto;height:1.95em;flex:none;transform:none}
+.cav-lg-lk span{white-space:nowrap}
+
+/* Each logo waits its turn, appears at the centre of the screen a little
+   oversized, then travels to its own cell. `backwards` holds it invisible
+   through the delay rather than letting it flash in place first. */
+/* Slowed from .62s/.34s on his note that the movement was too fast. Six
+   logos now take about 4.5s to land rather than 2.4s, which is slow enough
+   to watch one arrive before the next starts. */
+html.js .cav.in .cav-lg{
+  animation:cav-place 1.05s var(--ease) backwards;
+  animation-delay:calc(var(--i) * .68s)}
+@keyframes cav-place{
+  0%{opacity:0;
+    transform:translate(calc(var(--dx) * (100% + var(--gp))),
+                        calc(var(--dy) * (100% + var(--gp)))) scale(1.22)}
+  26%{opacity:1;
+    transform:translate(calc(var(--dx) * (100% + var(--gp))),
+                        calc(var(--dy) * (100% + var(--gp)))) scale(1.22)}
+  100%{opacity:1;transform:translate(0,0) scale(1)}
+}
+
+.cav-cap{display:block;font-size:12.8px;font-weight:700;letter-spacing:-.004em;
+  color:var(--ink);margin-top:14px;line-height:1.35}
+
+@media (prefers-reduced-motion:reduce){
+  /* The grid is already the base state, so removing the animation leaves
+     every logo exactly where it belongs. */
+  html.js .cav.in .cav-lg{animation:none}
+}
+
+/* ------------------------------------------------------- tool logo grid ---
+   The "Platforms and Tools We Work With" strips.
+
+   Every selector here is scoped under .tools. Unscoped `.tool` also matched
+   `.dtag.tool` — the Tools row on a case study — so a one-word tag inherited
+   `height:78px;display:grid` and rendered as a large empty box (client
+   feedback 2026-08-07, "the box around the tools is oddly sized").
+
+   Wordmark files, no printed name — the client's preference. Centred so a
+   strip of 4 does not sit left of a 5-wide grid.
+
+   `.sq` is for marks squarer than 1.6:1. A square app icon and a wide wordmark
+   set to the same max-height do not read at the same weight — the square one
+   looks half the size and its lettering goes illegible. build.py adds the
+   class from the logo's real pixel size. */
+.tools{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px}
+.tools .tool{display:flex;align-items:center;justify-content:center;
+  width:calc((100% - 4*14px)/5);min-width:130px;
+  height:88px;padding:16px 18px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-xs);
+  transition:border-color var(--t),transform var(--t),box-shadow var(--t)}
+@media(max-width:900px){.tools .tool{width:calc((100% - 3*14px)/4)}}
+@media(max-width:680px){.tools .tool{width:calc((100% - 2*14px)/3)}}
+@media(max-width:420px){.tools .tool{width:calc((100% - 14px)/2)}}
+.tools .tool:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);
+  transform:translateY(-3px)}
+.tools .tool img{max-height:32px;max-width:100%;width:auto;object-fit:contain;
+  filter:grayscale(1) opacity(.62);transition:filter .25s}
+.tools .tool.sq img{max-height:46px}
+.tools .tool:hover img{filter:grayscale(0) opacity(1)}
+
+/* ------------------------------------------------------------- tiles --- */
+.ic-t{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;flex:none;
+  transition:background .22s,color .22s,border-color .22s}
+.ic-t.c1{background:var(--t-navy);color:var(--navy)}
+.ic-t.c2{background:var(--t-indigo);color:var(--indigo)}
+.ic-t.c3{background:var(--t-orl);color:var(--or-l)}
+.ic-t.c4{background:var(--t-or);color:var(--or-d)}
+
+/* --------------------------------------------------------------- grid ---
+   minmax(0,1fr), never a bare 1fr. A bare 1fr is minmax(auto,1fr), so a long
+   unbreakable label ("Vocational Education & Training") pushes its track wider
+   than the container and the whole page scrolls sideways on a phone. */
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media(max-width:1000px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:820px){.g2{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.g4,.g3{grid-template-columns:minmax(0,1fr)}}
+
+/* --------------------------------------------------------------- card --- */
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:30px 26px 26px;
+  box-shadow:var(--sh-xs);overflow:hidden;
+  transition:border-color .22s,box-shadow .22s,transform .22s var(--ease)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.card.c1::before{background:var(--navy)}
+.card.c2::before{background:var(--indigo)}
+.card.c3::before{background:var(--or-l)}
+.card.c4::before{background:var(--or)}
+.card:hover{border-color:var(--line-2);box-shadow:var(--sh-md);transform:translateY(-4px)}
+.card:hover::before{transform:scaleX(1)}
+.card .ic-t{margin-bottom:20px;width:48px;height:48px;border-radius:12px}
+.card.c1:hover .ic-t{background:var(--navy);color:#fff}
+.card.c2:hover .ic-t{background:var(--indigo);color:#fff}
+.card.c3:hover .ic-t{background:var(--or-l);color:#fff}
+.card.c4:hover .ic-t{background:var(--or);color:#fff}
+.card h3{font-size:18.5px;letter-spacing:-.024em;line-height:1.3;margin-bottom:10px}
+.card p{font-size:14.8px;line-height:1.6;color:var(--mute);flex:1;margin-bottom:20px}
+.card p:last-child{margin-bottom:0}
+/* The live Technical Writing page carries a one-line tagline under each
+   service name, above the description. */
+.card p.csub{flex:none;margin-bottom:9px;color:var(--body);font-weight:520;
+  font-size:14.4px;letter-spacing:-.008em}
+.go{display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:550;
+  color:var(--navy);transition:color .22s}
+.go svg{transition:transform .22s var(--ease)}
+.card:hover .go svg,a:hover>.go svg{transform:translateX(3px)}
+.card.c3:hover .go,.card.c4:hover .go{color:var(--or-d)}
+.card.c2:hover .go{color:var(--indigo)}
+
+/* row card (icon left, text right) */
+.rowcard{display:flex;gap:20px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:30px;box-shadow:var(--sh-xs);
+  transition:border-color .22s,box-shadow .22s,transform .22s var(--ease)}
+.rowcard:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);transform:translateY(-2px)}
+.rowcard h3{font-size:18px;letter-spacing:-.022em;margin-bottom:8px}
+.rowcard p{font-size:14.8px;line-height:1.6;color:var(--mute)}
+
+/* --------------------------------------------------- Our Strengths row ---
+   Two columns of tiles under two headings, every cell placed explicitly: each
+   heading owns row 1 of its own column, and tile i on the left shares row i+2
+   with tile i on the right. That shared row is what holds the columns level.
+   As two independent flex stacks they had different row pitches (~112px
+   against ~143px), so each pair sat further out than the one above it and the
+   fourth was ~95px adrift. Stretching the cells also makes each pair the same
+   height. A margin would fix neither, and would break the moment a heading or
+   a description wrapped.
+   The row index arrives from build.py as --r rather than from an nth-child
+   rule, so it follows the length of the lists — and, being a stylesheet
+   declaration rather than an inline one, the media query below can still
+   reset it. */
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px 56px;align-items:stretch}
+.sg-head{grid-column:1;grid-row:1;margin-bottom:11px}
+.sg-head2{grid-column:2}
+.sg-head h2{font-size:clamp(26px,3.2vw,36px);line-height:1.1;letter-spacing:-.032em}
+.sgrid>.sg-l{grid-column:1;grid-row:var(--r)}
+.sgrid>.sg-r{grid-column:2;grid-row:var(--r)}
+/* Source order is heading, the four strengths, heading, the four impacts, so
+   the single column stacks in reading order with no `order` needed. */
+@media(max-width:820px){
+  .sgrid{grid-template-columns:minmax(0,1fr)}
+  .sg-head,.sg-head2,.sgrid>.sg-l,.sgrid>.sg-r{grid-column:1;grid-row:auto}
+  .sg-head2{margin-top:44px}
+}
+
+/* One component in both columns. The strengths were borderless, vertically
+   centred rows styled inline in build.py, sitting beside bordered top-aligned
+   impact cards, so neither the icons nor the first line of text registered
+   across the two columns even where a pair happened to be level. Both are the
+   same card now; only what the title line holds differs. */
+.dl.str,.dl.imp{align-items:flex-start;padding:18px 20px}
+.dl.str .di,.dl.imp .di{margin-top:2px}
+.dl.str .dn b,.dl.imp .dn b{font-size:15px;margin-bottom:5px}
+.dl.str .dn span,.dl.imp .dn span{display:block;font-size:13.6px;line-height:1.55;
+  color:var(--mute);white-space:normal}
+.dl.str:hover,.dl.imp:hover{transform:none;border-color:var(--line-2);
+  box-shadow:var(--sh-sm)}
+/* Impact only: "Documentation -> Fewer support tickets" wraps as a unit, with
+   the arrow and the outcome carrying the emphasis. */
+.dl.imp .dn b{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.dl.imp .dn b svg{color:var(--or);flex:none}
+.dl.imp .dn b em{font-style:normal;color:var(--navy)}
+
+/* ---------------------------------------------------- deliverable list ---
+   `.stack`, the flex column these rows used to sit in, went with the Our
+   Strengths restructure — the tiles are grid children of .sgrid now and their
+   spacing is its row-gap. It had no other users. */
+.dl{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:16px 18px;box-shadow:var(--sh-xs);
+  transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
+.dl:hover{transform:translateX(4px);box-shadow:var(--sh-sm);border-color:var(--line-2)}
+.dl .di{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none}
+.dl .dn{flex:1;min-width:0}
+.dl .dn b{display:block;font-size:14.8px;font-weight:600;color:var(--ink);
+  letter-spacing:-.016em;line-height:1.35}
+.dl .dn span{font-size:13px;color:var(--mute)}
+.chip{font-size:12px;font-weight:550;padding:4px 10px;border-radius:20px;flex:none}
+.chip.ok{background:var(--t-navy);color:var(--navy)}
+.chip.go{background:var(--t-or);color:var(--or-d)}
+
+/* ------------------------------------------------------------ vacancy --- */
+/* `.loc` rather than reusing `.chip.go`, which exists but drags in the bare
+   `.go` "Explore ->" link rule: inline-flex, a 7px gap and a navy colour,
+   all of which then have to be beaten back. A chip is not a link. */
+.chip.loc{background:var(--t-or);color:var(--or-d)}
+.jchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+/* `.chip` is `flex:none` globally, which is right for a short status pill and
+   wrong here: "Rawalpindi / Islamabad (On-site)" is 207px and the card is
+   191px wide at 320, so it cannot shrink and it cannot wrap, and it ran out
+   of the card. Shrinkable and `min-width:0` lets the text wrap instead. */
+.jchips .chip{flex:0 1 auto;min-width:0}
+.jchips-lg{margin-bottom:28px}
+/* Technologies, inside .prose. Outlined rather than tinted: six solid pills
+   in a row compete with the headings around them. */
+.jskills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.jskills .chip{flex:0 1 auto;min-width:0}
+.chip.sk{background:transparent;color:var(--body);
+  border:1px solid var(--line-2);padding:4px 11px}
+/* Roles side by side across the full width, invitation centred below.
+   Client 2026-10-30. `.g2` supplies the two columns and its own 820px
+   breakdown; this only adds the gap to the invitation underneath. */
+.jgrid{display:grid;gap:20px;margin-bottom:34px}
+/* One role: capped and centred, because `.g2` would give it half the width
+   and an empty half beside it. */
+.jgrid-1{max-width:620px;margin-inline:auto}
+.jcard h3{margin-bottom:9px}
+/* The card is a flex column, so this pins the button to the bottom and the
+   two cards in a pair line their buttons up even with unequal blurbs. */
+.jcta{margin-top:auto}
+
+/* ------------------------------------------------- capabilities slider ---
+   Client 2026-11-12: bigger boxes, three or four in view, arrows under the
+   right, and drag to move. Seven cards in a four-wide grid left a ragged
+   last row of three; a slider has no last row.
+
+   A NATIVE overflow scroller with snap points, so with JavaScript off it
+   still works by touch, trackpad, scrollbar and keyboard. The arrows and
+   the click-drag are enhancement, hidden until html.js says they run. */
+/* ------------------------------------------ capabilities slider ---
+   Full width, edge to edge. Client 2026-11-12: bigger boxes, horizontally
+   and vertically, with the row running past both gutters of the content
+   column the way the reference shot does.
+
+   The leading and trailing gutters are flex SPACERS inside the scroller,
+   not padding on it. That is the whole trick. A percentage flex-basis
+   resolves against the flex container's CONTENT box, so padding here would
+   have kept every card sized against the old 1120px column and the section
+   would have been full width in name only. With the gutters as content, a
+   card is measured against the full width of the screen, and the row's
+   home position stays a plain 0.
+
+   `scroll-padding-left` then has to match the leading spacer, or mandatory
+   snapping yanks the first card flush against the screen edge and swallows
+   the very gutter it is supposed to line up with. */
+.cslide{position:relative;margin-top:34px}
+.cslide-track{
+  --gut:max(30px, calc((100% - var(--max)) / 2 + 30px));
+  --cgap:24px;
+  display:flex;gap:var(--cgap);overflow-x:auto;
+  scroll-snap-type:x mandatory;scroll-padding-left:var(--gut);
+  scroll-behavior:smooth;scrollbar-width:none;
+  /* Room for the cards' hover lift and shadow, which a clipped scroller
+     would otherwise shave off the top and bottom. */
+  padding:8px 0 14px}
+.cslide-track::-webkit-scrollbar{display:none}
+/* The gutters. `gap` already supplies one gap's worth of each. */
+.cslide-track::before,.cslide-track::after{
+  content:"";flex:0 0 calc(var(--gut) - var(--cgap))}
+/* (W - gutter - (n - 1) * gap) / n, for n cards in view. The leading
+   gutter comes off the top because it is never free for a card to sit in,
+   and sizing without it pushed the fourth card one pixel past the screen
+   edge: three cards and no peek, which is a grid pretending to be a slider.
+   That quarter card is the only honest hint that the row moves; the arrows
+   say it too, but they are not there without JavaScript. */
+.cslide-track>.card{
+  flex:0 0 calc((100% - var(--gut) - 2.25 * var(--cgap)) / 3.25);
+  max-width:460px;scroll-snap-align:start;
+  min-height:300px;padding:34px 30px 30px;border-radius:16px}
+.cslide-track>.card .ic-t{width:54px;height:54px;border-radius:13px;
+  margin-bottom:24px}
+.cslide-track>.card .ic-t svg{width:26px;height:26px}
+.cslide-track>.card h3{font-size:21px;margin-bottom:12px}
+.cslide-track>.card p{font-size:15.3px;margin-bottom:24px}
+@media(max-width:1100px){
+  .cslide-track>.card{flex-basis:calc((100% - var(--gut) - 1.8 * var(--cgap)) / 2.8)}
+}
+@media(max-width:900px){
+  .cslide-track>.card{flex-basis:calc((100% - var(--gut) - 1.3 * var(--cgap)) / 2.3)}
+}
+@media(max-width:620px){
+  .cslide-track{--cgap:16px}
+  .cslide-track>.card{flex-basis:calc((100% - var(--gut) - .2 * var(--cgap)) / 1.2);
+    min-height:0;padding:28px 24px 26px}
+  .cslide-track>.card h3{font-size:19.5px}
+}
+
+.cslide-nav{display:none;justify-content:flex-end;gap:10px;margin-top:20px}
+html.js .cslide-nav{display:flex}
+.cslide-btn{width:42px;height:42px;border-radius:50%;display:grid;
+  place-items:center;background:var(--card);border:1px solid var(--line-2);
+  color:var(--ink);cursor:pointer;
+  transition:border-color .2s,box-shadow .2s,opacity .2s,transform .2s var(--ease)}
+.cslide-btn:hover:not(:disabled){border-color:var(--navy);box-shadow:var(--sh-md);
+  transform:translateY(-1px)}
+.cslide-btn:disabled{opacity:.35;cursor:default}
+
+/* While a drag is in progress the snap has to be off, or every pointer move
+   fights the browser trying to settle on a snap point. */
+.cslide-track.dragging{scroll-snap-type:none;scroll-behavior:auto;
+  cursor:grabbing;user-select:none}
+/* `.rolling` says the drift is live, and both of these have to be off for
+   it. `scroll-behavior:smooth` catches a plain scrollLeft assignment, so
+   each frame's write would start its own animation and the row would crawl;
+   mandatory snapping hauls the row back to the card edge the drift is
+   trying to leave. Both are left alone when the drift is not running, under
+   prefers-reduced-motion or with JavaScript off, where snapping is exactly
+   what a swipe or a trackpad wants.
+
+   The duplicate set only exists for the loop, so it stays out of the layout
+   until the loop is running: no repeated cards for anyone who is not seeing
+   the row move. */
+.cslide-track.rolling{scroll-snap-type:none;scroll-behavior:auto}
+.cslide-track>.card[aria-hidden="true"]{display:none}
+.cslide-track.rolling>.card[aria-hidden="true"]{display:flex}
+html.js .cslide-track{cursor:grab}
+.cslide-track.dragging a{pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){
+  .cslide-track{scroll-behavior:auto}
+}
+
+/* --------------------------------------------------- business outcomes ---
+   A photograph on the left, the outcome on the right across a vertical rule,
+   four of them taking turns in one frame that the scroll drags upward.
+
+   WHAT FOLLOWS IS THE BASE STATE, and it is deliberately the dull one. The
+   two wrappers are `display:contents`, so the figures and the outcomes fall
+   into one shared grid and pair up by the row number each carries: four
+   photographs, each beside its own outcome, nothing pinned and nothing
+   moving. That is what a reader with no JavaScript gets, and it carries the
+   whole content of the section. */
+.bo{margin-top:46px}
+.bo-stage{display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);
+  gap:94px 54px;align-items:center}
+.bo-art,.bo-list{display:contents}
+.bo-rule{display:none}
+.bo-fig{margin:0;grid-column:1}
+.bo-fig img{display:block;width:100%;height:auto;aspect-ratio:4/5;
+  object-fit:cover;border-radius:16px;box-shadow:var(--sh-md)}
+.bo-item{grid-column:2;border-left:1px solid var(--line-2);padding-left:46px}
+.bo-item h3{font-size:clamp(25px,2.7vw,34px);line-height:1.14;
+  letter-spacing:-.03em;margin-bottom:16px}
+.bo-item p{font-size:17px;line-height:1.62;color:var(--body);max-width:42ch}
+
+/* ---- pinned, which is what everybody with JavaScript actually sees ----
+   The section is given several screens of height and its stage is stuck to
+   the window, so scrolling moves THROUGH the section without moving the
+   frame. `--step` is how much scrolling one outcome is worth.
+
+   `--f` is the live scroll position expressed in outcomes: 0 at the top of
+   the section, 3 at the bottom, and every fraction in between. Script writes
+   it and nothing else. Every figure and every outcome carries its own index
+   as `--i`, so `--i` minus `--f` is how many places from the reading line a
+   thing is, and one declaration positions all of them.
+
+   `--itemh` is the tallest outcome, measured by script. Everything vertical
+   is built off it: the gap between outcomes, the height of the rule, and
+   where the column sits so that the outcome being read is on the line.
+
+   THE READING LINE IS AT 46%, not at the middle. Client 2026-11-12: "I think
+   the first one can move a little bit up". Optical centre rather than
+   geometric: a block of text with more below it than above reads as sitting
+   low when it is actually centred. */
+/* ONE SWITCH FOR THE VIEWPORT UNIT, and it has to be an @supports block.
+   This section was written with `100svh` (the small viewport height, the one
+   that does not jump when a phone's address bar slides away) and a `100vh`
+   line above each use as a fallback. That trick works for a normal property
+   and NOT for a custom property, which is the bug he reported as "jumbling
+   up images and text on each other" on mobile.
+
+   A custom property holds whatever tokens it is given without checking them,
+   so a browser that has never heard of `svh` still accepts `--cardh:30svh`
+   and quietly discards the `100vh` line above it. The value only turns out
+   to be nonsense when it is substituted, and at that point `height` falls
+   back to `auto`, not to the earlier declaration. Measured: the picture
+   frame collapsed from 228px to 0 and 127px of photograph sat on the words.
+
+   @supports is skipped wholesale when the unit is unknown, so the `vh`
+   values below survive. Everything vertical reads `--vh`, nothing names a
+   viewport unit twice. */
+html.js .bo{--step:80vh;--itemh:110px;--vgap:96px;--gut:112px;
+  --row:calc(var(--itemh) + var(--vgap));
+  --line:46%;
+  --vh:100vh;
+  --frameh:calc(var(--vh) - 136px);
+  /* The daylight between two photographs, seen only while one is handing
+     over to the next: the frame is one card tall, so at rest there is
+     nothing of the next one on screen. */
+  --artgap:56px;
+  /* The card is capped by the COLUMN as well as by the window. Capped only
+     by the window, a 768px tablet got a 291x616 card: a 4:5 photograph in a
+     1:2.1 hole, which object-fit solves by throwing away half the picture.
+     Worked back from the content width the wrap actually gives it, so the
+     card is 4:5 wherever there is room and only ever crops when the window
+     is too short for it. */
+  --wrapw:min(1120px, calc(100vw - 60px));
+  --cardh:min(calc(var(--wrapw) * .42 * 1.25), 616px, calc(var(--vh) - 210px));
+  position:relative;
+  height:calc(var(--vh) + (var(--n) - 1) * var(--step))}
+@supports(height:1svh){html.js .bo{--vh:100svh}}
+/* The clipping happens HERE and nowhere else. Client: "when I scroll up, the
+   one going up disappears under a ribbon. it should fade away just like the
+   one from the bottom comes in." It was disappearing under the top edge of a
+   window of its own; there is no such window now, and what leaves the frame
+   leaves it at the edge of the frame, by which point it has faded out. */
+html.js .bo-stage{position:sticky;top:96px;display:block;overflow:hidden;
+  height:var(--frameh)}
+
+/* ONE FRAME, one card tall, and the photographs are swapped inside it.
+   Client 2026-11-13: "the images should be swapped in same frame instead of
+   being loaded on the page one after the other." They were sliding through
+   the whole pinned stage, so a card waiting its turn stood on the page
+   under the one being read; now anything that is not in the frame is not on
+   the page at all.
+
+   They are still not stitched together, which was the correction before
+   this one: each card keeps its own rounding, and there is 56px of the
+   section's own background between them, which you see crossing the frame
+   as one hands over to the next. The shadow belongs to the frame rather
+   than to the cards, because a frame that clips at the card's own edge
+   clips the card's shadow away with it. */
+html.js .bo-art{display:block;position:absolute;left:0;width:42%;
+  top:var(--line);transform:translateY(-50%);height:var(--cardh);
+  overflow:hidden;border-radius:16px;box-shadow:var(--sh-md)}
+html.js .bo-fig{position:absolute;left:0;right:0;top:0;height:var(--cardh);
+  border-radius:16px;overflow:hidden;background:var(--card);
+  transform:translateY(calc((var(--i) - var(--f))
+            * (var(--cardh) + var(--artgap))))}
+html.js .bo-fig img{width:100%;height:100%;aspect-ratio:auto;
+  border-radius:0;box-shadow:none}
+
+/* The rule stands in the MIDDLE of the gutter, with the same air on the
+   photograph's side as on the words' side. Client: "the separating line is
+   very close to text. it should be centered and away from both images on
+   left and text from right side." It is as tall as one outcome and it does
+   not move: the outcomes slide past it. */
+html.js .bo-rule{display:block;position:absolute;
+  left:calc(42% + var(--gut) / 2);width:1px;height:var(--itemh);
+  top:var(--line);transform:translateY(-50%);background:var(--line-2)}
+
+/* No window and no clipping of its own: the column simply hangs off the
+   reading line and the outcomes above and below it fade out. */
+html.js .bo-list{display:block;position:absolute;right:0;
+  width:calc(58% - var(--gut));top:var(--line);height:0;
+  margin-top:calc(var(--itemh) * -.5)}
+html.js .bo-item{position:absolute;left:0;right:0;top:0;
+  border-left:0;padding-left:0;
+  transform:translateY(calc((var(--i) - var(--f)) * var(--row)))}
+html.js .bo-item p{max-width:38ch}
+
+@media(max-width:1000px){
+  .bo-stage{gap:74px 34px}
+  .bo-item{padding-left:30px}
+  html.js .bo{--gut:74px;--vgap:76px}
+}
+@media(max-width:760px){
+  .bo-stage{grid-template-columns:minmax(0,1fr);gap:0}
+  /* Stacked, every figure and its outcome need their own two rows, so the
+     row number each carries is doubled and the outcome takes the one after
+     its picture. */
+  .bo-fig{grid-column:1;grid-row:calc(var(--i) * 2 + 1);margin-bottom:24px}
+  .bo-item{grid-column:1;grid-row:calc(var(--i) * 2 + 2);margin-bottom:54px;
+    border-left:0;padding-left:0}
+  .bo-item p{max-width:none}
+  .bo-fig img{aspect-ratio:1/1;max-height:62vh}
+  /* Pinned on a phone the picture and the words share one screen, so the
+     picture takes a band across the top and the outcomes run underneath.
+     No rule: a vertical line between things that are stacked separates
+     nothing. */
+  html.js .bo{--vgap:54px;--artgap:30px;--cardh:calc(var(--vh) * .3)}
+  /* The same frame, a band across the top. It clipped here before it
+     clipped anywhere else, because on a phone the words sit directly under
+     the picture rather than beside it, so a card waiting its turn below the
+     band landed on top of them: at 375px the whole of the next photograph
+     was sitting over the outcome. */
+  html.js .bo-art{left:0;right:0;width:auto;top:0;transform:none;z-index:2}
+  html.js .bo-fig{margin-bottom:0}
+  html.js .bo-rule{display:none}
+  /* The picture sits OVER the words here, which it never has to do on a
+     desktop where they are side by side. On a phone they are stacked, so an
+     outcome on its way up crosses the 30px of background and then the
+     photograph itself: measured, a text block still 84% opaque was sitting
+     on the picture. It passes behind it now. Fading it out sooner was the
+     other option and a worse one, since the whole point of the fade is that
+     it finishes only once the outcome has been fully read. */
+  html.js .bo-list{left:0;right:0;width:auto;z-index:1;
+    top:calc(var(--vh) * .3 + 30px);margin-top:0}
+  html.js .bo-item{margin-bottom:0}
+  html.js .bo-item p{max-width:none}
+}
+
+/* No motion: no pinning and no sliding either, because holding a section
+   still while its contents move IS motion. Back to the base state above,
+   which loses nothing. */
+@media(prefers-reduced-motion:reduce){
+  html.js .bo{height:auto;position:static}
+  html.js .bo-stage{position:static;height:auto;display:grid;overflow:visible}
+  html.js .bo-art,html.js .bo-list{display:contents}
+  html.js .bo-rule{display:none}
+  html.js .bo-fig,html.js .bo-item{position:static;transform:none;opacity:1;
+    height:auto;border-radius:0;box-shadow:none;overflow:visible;
+    background:none}
+  html.js .bo-fig img{width:100%;height:auto;aspect-ratio:4/5;
+    border-radius:16px;box-shadow:var(--sh-md)}
+  html.js .bo-item{border-left:1px solid var(--line-2);padding-left:46px}
+}
+
+/* ------------------------------------------ technical writing, SEO batch ---
+   Three pieces from his 2026-11-13 brief. Each reuses something the site
+   already has rather than introducing a pattern: the bullets are `.cs-pts`,
+   the steps are `process(vert=True)`, the three ways are `minicards`. */
+
+/* The old h1, now the line under the new one. Between a heading and body
+   copy in size, because that is what it is. */
+.ph-tag{font-size:clamp(19px,2vw,22.5px);line-height:1.38;color:var(--ink);
+  letter-spacing:-.018em;font-weight:520;max-width:30ch;margin-top:18px}
+@media(max-width:960px){.ph-tag{max-width:none}}
+/* A short tagline the client wants kept on one line, 2026-11-17. Opt-in, not
+   a wider .ph-tag for everyone: the hub's tagline is 77 characters, always
+   wraps, and currently breaks at its sentence boundary, which a wider box
+   would spoil. Only above 960px, where the line below already removes the
+   cap; a 45-character sentence at 19px cannot fit a 320px phone and nothing
+   here pretends otherwise. */
+@media(min-width:961px){.ph-tag.one{max-width:none;white-space:nowrap}}
+
+/* "When does it make sense to outsource": a white panel on the tinted
+   section, holding its lead line and the five points as a ticked list.
+
+   A panel because the five points are a SELF-TEST rather than prose: the
+   reader is meant to look down them and recognise one, which is a thing you
+   do to a card, not to a paragraph. It also gives the section a shape of its
+   own between a two-column definition above it and a grid of service cards
+   below, where a centred stack of bullets read as more of the same.
+
+   The ticks are `checks()`, the list Workflow Automation already uses, so
+   nothing new is introduced to maintain. */
+.oput{max-width:880px;margin:0 auto;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;
+  padding:34px 38px 36px;box-shadow:var(--sh-xs)}
+.oput-lead{font-size:17.4px;line-height:1.6;color:var(--ink);font-weight:520;
+  letter-spacing:-.012em;margin-bottom:22px;padding-bottom:20px;
+  border-bottom:1px solid var(--line)}
+.oput .checks{max-width:none;margin:0;gap:17px 44px}
+.oput .chk span{font-size:15.8px;color:var(--body)}
+@media(max-width:760px){
+  .oput{padding:26px 24px 28px;border-radius:16px}
+  .oput-lead{margin-bottom:18px;padding-bottom:16px}
+}
+
+/* Pricing was a block under the ways of working and is a section of its own
+   from 2026-11-17, on his instruction. It had outgrown the slot: it is not a
+   fourth way of working, it is what all four of them cost. */
+.price{max-width:680px;margin:0 auto;text-align:center}
+.price p{font-size:16.8px;line-height:1.62;color:var(--body)}
+.price .hcta{justify-content:center;margin-top:26px}
+
+/* A centred button under a section's grid, 2026-11-17: "add a button under
+   this section that takes visitor to main blogs page." Its own class rather
+   than another `.price .hcta`-style one-off, because that is now the second
+   place wanting exactly this and there will be a third.
+
+   NO PHONE RULE HERE, deliberately, and it is only safe while the label is
+   short: `.btn` is nowrap with a fixed height, and the full-width stacking
+   that saves the hero from that lives on `.hcta` and does not reach this
+   class. "See All Articles" measures 188px inside a 320px box. A longer
+   label in this slot needs `.hcta`'s treatment copied down here. */
+.sec-cta{display:flex;justify-content:center;margin-top:34px}
+
+/* ------------------------------------------------ featured work ---
+   One case study laid out the way his reference sheet lays one out:
+   title, the problem, the approach as steps, the customer's words, then
+   what was delivered and what it was built in. 2026-11-17.
+
+   Replaces the two-quote proof block of 2026-11-16, which he removed: a
+   single worked example says more than two quotes with nothing behind
+   them, and this one has the quote inside it anyway. */
+/* Tightened throughout 2026-11-17 so the whole section clears one screen at
+   100% zoom, which is what he asked for: "entire section should be visible to
+   me/visitor." Nothing is removed, every measurement is smaller. */
+/* 1120px from 2026-11-17, which is the full content width: "increase the
+   width of Featured work section box so Deliverables and tools can come in
+   parallel." The panel had horizontal room it was not using. */
+.cw{max-width:1120px;margin:0 auto;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;
+  padding:18px 28px 16px;box-shadow:var(--sh-xs)}
+/* The rule moved off the title onto the row, so the industry chip sits on the
+   same line as the title and above the same line. */
+.cw-head{display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;
+  border-bottom:1px solid var(--line)}
+.cw-t{font-size:clamp(19px,2vw,22px);line-height:1.22;letter-spacing:-.026em;
+  color:var(--navy);margin:0}
+.cw-ind{flex:none;font-size:12.4px;font-weight:600;letter-spacing:.005em;
+  color:var(--or-d);background:var(--t-or);border-radius:999px;
+  padding:5px 13px}
+.cw-blk+.cw-blk{margin-top:16px}
+/* Sentence case, 2026-11-17: "Why are heading full caps? Make them normal."
+   Without the uppercase these need to be bigger to hold the same weight in
+   the block, and the wide tracking that made the caps readable now works
+   against them. */
+.cw-blk h4{font-size:15px;font-weight:600;letter-spacing:-.012em;
+  color:var(--or-d);margin-bottom:12px}
+.cw-blk>p{font-size:15.4px;line-height:1.56;color:var(--body);margin:0}
+
+/* The steps are the site's own stepped component, so the page shows one way
+   of drawing a sequence and not two. Inside a white panel they lose the card
+   chrome, which would be a white box on a white box, and take a tinted fill
+   instead. The narrower basis is what keeps five of them on one line here
+   where the full-width section has room for 190px each. */
+.cw .proc{gap:8px}
+.cw .pstep{flex:1 1 128px;padding:13px 13px 14px;background:var(--bg-alt);
+  box-shadow:none;border-color:var(--line)}
+.cw .pstep:hover{transform:none;box-shadow:none;border-color:var(--line-2)}
+
+/* THE ICON AND THE NUMBER SHARE A ROW, 2026-11-17. Stacked, they cost 78px
+   of a 202px card before a word of it was read, and the client's note was
+   about exactly that: "remove the SlickFlo Approach box size/height."
+   Done in CSS rather than by wrapping them in build.py, because `process()`
+   emits the mark and the badge as plain siblings for six other callers and
+   none of them wants this layout. A two-column grid puts the pair on row one
+   and lets the title and the line below span both columns, which needs no
+   new element and leaves the markup those callers share alone. */
+.cw .pstep{display:grid;grid-template-columns:auto auto;
+  align-items:center;justify-content:start;column-gap:9px;
+  /* `.proc` stretches every step to the tallest one, and a grid's default
+     align-content behaves as stretch, so the two-line cards were spreading
+     their rows out to fill the extra height and their titles sat above the
+     three-line cards'. The rows stay their own size and the slack goes to
+     the bottom. */
+  align-content:start}
+.cw .pstep .pic{grid-column:1;margin:0}
+.cw .pstep .pn{grid-column:2;width:25px;height:25px;font-size:12px;margin:0}
+.cw .pstep h3{grid-column:1/-1;font-size:14.8px;margin:7px 0 4px}
+.cw .pstep p{grid-column:1/-1;font-size:12.9px;line-height:1.42}
+.pic{display:block;color:var(--or)}
+
+/* Italic, as he asked. The rule rather than a quotation mark, because the
+   site already marks a pulled quote that way in the outsourcing panel. */
+.cw-q{margin:0;font-style:italic;font-size:15px;line-height:1.48;
+  color:var(--ink);border-left:2px solid var(--or);padding-left:18px}
+.cw-q cite{display:block;margin-top:8px;font-style:normal;font-size:13.4px;
+  color:var(--mute)}
+
+/* The heading sits closer to the panel than a section heading normally does,
+   for the same one-screen reason as everything else in this block. */
+/* The only section on the site with a height target rather than a rhythm,
+   so it sets its own band padding outright rather than stacking `tight`:
+   two class rules setting the same property at the same specificity are
+   decided by source order, which is not a thing to depend on. */
+.sec.work{padding:34px 0}
+.sec.work .shead{margin-bottom:18px}
+
+/* The problem on the left, what was delivered and what it was built in
+   stacked on the right, 2026-11-17, which is how his reference sheet reads.
+   The right column takes a rule rather than a box: it is the same case
+   study, not a sidebar about something else. */
+/* The left column is wider than the 1.45fr it used to take: the problem
+   paragraph is the tallest thing in the panel and every line it stops
+   wrapping onto is a line off the section's height. */
+.cw-top{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);
+  gap:28px}
+.cw-top>.cw-blk{margin-top:0}
+/* Deliverables and tools beside each other rather than stacked. Tools takes
+   `auto`: it is a logo strip and sizes to what it holds, which leaves the
+   rest to the deliverable labels, and those are the ones that wrap. */
+.cw-side{padding-left:28px;border-left:1px solid var(--line);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  column-gap:26px;align-content:start}
+.cw-side .cw-blk+.cw-blk{margin-top:0}
+.cw-top+.cw-blk{margin-top:18px}
+.cw-dels{display:flex;flex-wrap:wrap;gap:10px 26px}
+.cw-del{display:flex;align-items:center;gap:11px}
+.cw-del img{width:30px;height:30px;flex:none}
+.cw-del span{font-size:14.6px;font-weight:550;color:var(--ink);
+  letter-spacing:-.01em}
+.cw-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.cw-tool img{height:24px;width:auto;display:block}
+
+@media(max-width:860px){
+  .cw{padding:26px 22px 24px;border-radius:16px}
+  .cw-top{grid-template-columns:minmax(0,1fr);gap:26px}
+  .cw-side{padding-left:0;border-left:0;padding-top:24px;
+    border-top:1px solid var(--line);column-gap:20px}
+  .cw .pstep{flex:1 1 150px}
+}
+/* Narrower than this the two of them stop being worth a row of their own. */
+@media(max-width:420px){
+  .cw-side{grid-template-columns:minmax(0,1fr)}
+  .cw-side .cw-blk+.cw-blk{margin-top:18px}
+}
+
+/* --------------------------------------------------- the constraint ---
+   Three reasons the documentation does not get written, drawn rather than
+   written. Client 2026-11-17: "Convey them in a visual not as text."
+
+   Divs and tokens, not images. These have to be legible at 320px and they
+   have to follow the palette, and a picture of a chart does neither. */
+.cst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;
+  max-width:1060px;margin:0 auto}
+.cst-c{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:26px 24px 24px;box-shadow:var(--sh-xs);display:flex;
+  flex-direction:column}
+.cst-c h3{font-size:18px;letter-spacing:-.022em;margin:16px 0 18px}
+.cst-c>p{font-size:14.6px;line-height:1.56;color:var(--mute);margin:18px 0 0}
+/* The diagram sits in a fixed band so three cards of different drawings
+   still line their headings and their captions up with each other. */
+.cst-v{min-height:124px;display:flex;flex-direction:column;justify-content:center}
+
+/* Capacity: a week that is already full, and the thing that does not fit.
+   No numbers on the blocks. A percentage would be a claim about somebody's
+   calendar that nobody measured. */
+.cap-bar{display:flex;gap:3px;border-radius:7px;overflow:hidden}
+.cap-bar span{flex:1;background:var(--t-navy);color:var(--navy);
+  font-size:10.5px;font-weight:600;letter-spacing:-.004em;text-align:center;
+  padding:11px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cap-out{margin-top:14px;display:flex}
+.cap-out span{flex:1;border:1.5px dashed var(--or);border-radius:7px;
+  color:var(--or-d);font-size:11.5px;font-weight:600;text-align:center;
+  padding:10px 4px;background:var(--t-or)}
+
+/* Ownership: three teams who could, an empty box that stays empty. */
+.own-who{display:flex;gap:6px}
+.own-who span{flex:1;background:var(--t-navy);color:var(--navy);
+  border-radius:7px;font-size:10.5px;font-weight:600;text-align:center;
+  padding:9px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* At 320px the three labels get 61px each and "Engineering" wants 64, so the
+   ellipsis above fired and a visitor read "Engineerin...". The rule is a
+   safety net for a label we do not control, not a design, so the type comes
+   down a notch on the narrowest phones and the word fits whole. */
+@media(max-width:360px){.own-who span{font-size:9.8px;padding:9px 1px}}
+.own-arr{display:flex;gap:6px;margin:7px 0}
+.own-arr i{flex:1;height:14px;position:relative}
+.own-arr i::before{content:"";position:absolute;left:50%;top:0;width:1.5px;
+  height:9px;background:var(--line-2)}
+.own-arr i::after{content:"";position:absolute;left:50%;top:7px;
+  width:5px;height:5px;border-right:1.5px solid var(--line-2);
+  border-bottom:1.5px solid var(--line-2);transform:translateX(-50%) rotate(45deg)}
+.own-box{border:1.5px dashed var(--line-2);border-radius:8px;
+  text-align:center;padding:12px 0;color:var(--mute);font-size:17px;
+  font-weight:600}
+
+/* The hire: a need that ends against a cost that does not. The second bar
+   runs out of its own box, which is the argument in one shape. */
+.hire-row+.hire-row{margin-top:12px}
+.hire-row b{display:block;font-size:10.8px;font-weight:600;color:var(--mute);
+  letter-spacing:.03em;text-transform:uppercase;margin-bottom:6px}
+.hire-bar{border-radius:7px;padding:10px 12px;font-size:11.5px;
+  font-weight:600;white-space:nowrap;overflow:hidden}
+.hire-bar.need{width:62%;background:var(--t-or);color:var(--or-d)}
+.hire-bar.perm{background:linear-gradient(90deg,var(--t-navy) 72%,transparent);
+  color:var(--navy);text-overflow:clip}
+
+@media(max-width:900px){
+  .cst{grid-template-columns:minmax(0,1fr);gap:18px;max-width:560px}
+  .cst-v{min-height:0}
+}
+
+/* A small label over an authored list inside a live section, and the
+   paragraphs that follow it. 2026-11-17, SVC-03. */
+.minih{font-size:16.5px;font-weight:600;letter-spacing:-.016em;
+  color:var(--navy);margin:30px 0 14px;text-align:center}
+.aftp{max-width:760px;margin:18px auto 0;text-align:center;
+  font-size:16px;line-height:1.62;color:var(--body)}
+
+/* ------------------------------------------- the split process ---
+   Heading in a left column, steps as rows on the right. Client 2026-11-17
+   with a reference image, and opt-in per page: every other process section
+   on the site is a centred heading over a row of tiles.
+
+   The heading column is sticky on a tall viewport, so it stays beside the
+   steps it names rather than scrolling away from them. */
+.psplit{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.6fr);
+  gap:30px 56px;align-items:start}
+.psplit-h{position:sticky;top:110px}
+.psplit .shead{margin:0;max-width:none}
+.psplit .shead h2{font-size:clamp(28px,3.3vw,40px)}
+
+/* Rows, not tiles: a variant OF .proc.vert, so the badge-beside-text markup
+   is unchanged and only the frame goes. */
+.proc.vert.rows{grid-template-columns:minmax(0,1fr);gap:0}
+.proc.vert.rows .pstep{background:none;border:0;border-radius:0;
+  box-shadow:none;padding:24px 0;
+  border-top:1px solid var(--line);gap:20px;align-items:flex-start}
+.proc.vert.rows .pstep:first-child{border-top:0;padding-top:0}
+.proc.vert.rows .pstep:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.proc.vert.rows .pstep:first-child:hover{border-top-color:transparent}
+.proc.vert.rows .pn{margin-top:2px}
+.proc.vert.rows .pv-t h3{font-size:19px;letter-spacing:-.022em}
+.proc.vert.rows .pv-t p{margin-top:7px;font-size:15.4px;line-height:1.6}
+
+@media(max-width:900px){
+  .psplit{grid-template-columns:minmax(0,1fr);gap:26px}
+  .psplit-h{position:static}
+  .psplit .shead{text-align:left}
+}
+
+/* -------------------------------------------------------------- stats --- */
+/* minmax(0,1fr), not 1fr. A `1fr` column has an implicit MINIMUM of
+   `auto`, so it cannot shrink below the widest unbreakable thing inside it:
+   at 320px the two label columns wanted 131.9 and 116.8 against 245 of
+   container and overflowed by 4px. The same fix is already on `.psplit`
+   and `.svc-index`. The 22px side padding also comes off below 420px,
+   where it was eating a third of each column. */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  text-align:center}
+@media(max-width:760px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 0}}
+.stats>div{padding:0 22px;border-right:1px solid var(--line-2);min-width:0}
+@media(max-width:420px){.stats>div{padding:0 10px}}
+.stats>div:last-child{border-right:0}
+@media(max-width:760px){.stats>div:nth-child(2n){border-right:0}}
+.stats b{display:block;font-size:clamp(42px,5.2vw,58px);line-height:1;font-weight:600;
+  color:var(--navy);letter-spacing:-.044em;font-variant-numeric:tabular-nums}
+.stats b i{font-style:normal;color:var(--or)}
+.stats span{display:block;margin-top:13px;font-size:15px;color:var(--body);line-height:1.45}
+
+/* ------------------------------------------------------------- steps --- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:1020px;
+  margin:0 auto}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr);gap:40px 0}}
+@media(max-width:560px){.steps{grid-template-columns:1fr;gap:36px}}
+.step{position:relative;padding:0 18px;text-align:center}
+.step .n{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--navy);color:#fff;font-size:14.5px;font-weight:600;margin:0 auto 18px;
+  font-variant-numeric:tabular-nums;position:relative;z-index:2}
+.step::after{content:"";position:absolute;left:calc(50% + 27px);right:calc(-50% + 27px);
+  top:19px;height:1px;background:var(--line-2)}
+.step:last-child::after{display:none}
+@media(max-width:900px){.step:nth-child(2n)::after{display:none}}
+@media(max-width:560px){.step::after{display:none}}
+.step h3{font-size:17px;letter-spacing:-.02em;margin-bottom:8px}
+.step p{font-size:14.6px;line-height:1.58;color:var(--mute)}
+
+/* --------------------------------------------------------------- flow ---
+   The live "Our Approach" / "Our Process" strips: an ordered row of labels
+   with no supporting prose. Any count from 3 to 6, so this wraps rather than
+   using the fixed 4-column .steps grid.
+
+   Arrows between the steps, and a larger chip than a tag — client feedback
+   2026-08-07: "this is a linear process, please add arrows between each
+   stage". The arrow is markup, not a ::after, so it can drop out of the flow
+   cleanly when the row wraps to one column on a phone. */
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:8px;max-width:1080px;margin:0 auto}
+.fstep{display:flex;align-items:center;gap:12px;padding:13px 24px 13px 13px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;
+  box-shadow:var(--sh-sm);transition:border-color var(--t),transform var(--t)}
+.fstep:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.fstep b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  font-size:13.5px;font-weight:600;flex:none;font-variant-numeric:tabular-nums}
+.fstep.c1 b{background:var(--t-navy);color:var(--navy)}
+.fstep.c2 b{background:var(--t-indigo);color:var(--indigo)}
+.fstep.c3 b{background:var(--t-orl);color:var(--or-l)}
+.fstep.c4 b{background:var(--t-or);color:var(--or-d)}
+.fstep span{font-size:16.5px;font-weight:530;letter-spacing:-.014em;color:var(--ink)}
+.farr{display:grid;place-items:center;color:var(--line-2);flex:none;padding:0 2px}
+@media(max-width:820px){
+  .flow{gap:7px}
+  .fstep{padding:11px 19px 11px 11px;gap:10px}
+  .fstep b{width:28px;height:28px;font-size:12.5px}
+  .fstep span{font-size:15px}
+}
+@media(max-width:600px){
+  .flow{flex-direction:column;align-items:stretch}
+  .fstep{width:100%}
+  .farr{transform:rotate(90deg);height:16px}
+}
+
+/* ------------------------------------------------------------ process ---
+   The same linear process, for the pages whose live version gives each step a
+   description ("Our Process" on SEO and Content Marketing). Those rendered as
+   a 2x2 card grid, which reads as four unrelated things rather than a
+   sequence. Same numbering, same arrow, one component across the site. */
+.proc{display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;
+  gap:10px;max-width:1120px;margin:0 auto}
+.pstep{flex:1 1 190px;display:flex;flex-direction:column;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:24px 22px;
+  box-shadow:var(--sh-xs);
+  transition:border-color var(--t),transform var(--t),box-shadow var(--t)}
+.pstep:hover{border-color:var(--line-2);box-shadow:var(--sh-sm);transform:translateY(-3px)}
+.pstep .pn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  font-size:13.5px;font-weight:600;margin-bottom:15px;
+  font-variant-numeric:tabular-nums}
+.pstep.c1 .pn{background:var(--t-navy);color:var(--navy)}
+.pstep.c2 .pn{background:var(--t-indigo);color:var(--indigo)}
+.pstep.c3 .pn{background:var(--t-orl);color:var(--or-l)}
+.pstep.c4 .pn{background:var(--t-or);color:var(--or-d)}
+.pstep h3{font-size:17px;letter-spacing:-.022em;line-height:1.3;margin-bottom:9px}
+.pstep p{font-size:14.6px;line-height:1.6;color:var(--mute)}
+.parr{display:grid;place-items:center;color:var(--line-2);flex:none;align-self:center}
+/* Steps whose live copy carries no description — most "Our Approach" strips.
+   Same component, but the box is not padded out for prose that is not there,
+   and the number sits beside the label rather than above it. Narrower basis so
+   five short steps still make one row. */
+.proc.lean .pstep{flex:1 1 150px;flex-direction:row;align-items:center;gap:12px;
+  padding:15px 20px}
+.proc.lean .pstep .pn{margin-bottom:0;width:29px;height:29px;font-size:13px}
+.proc.lean .pstep h3{margin-bottom:0;font-size:16px}
+@media(max-width:900px){.pstep{flex:1 1 240px}}
+@media(max-width:680px){
+  .proc{flex-direction:column;align-items:stretch}
+  .parr{transform:rotate(90deg);height:16px}
+}
+
+/* Label lists that belong to a prose block (Workflow Automation industries) */
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.labels.mid{justify-content:center}
+.label{font-size:13.4px;font-weight:520;padding:6px 13px;border-radius:20px;
+  background:var(--t-navy);color:var(--navy)}
+
+/* ------------------------------------------------------- services index --- */
+/* The services index. Seven practice areas, holding between none and eight
+   children each, so the cards are deliberately NOT equal height:
+   `align-items:start` lets each one stop where its content stops. Stretching
+   them leaves four cards two thirds empty to match the one that is full. */
+/* COLUMNS, NOT A GRID, and that is the point. A grid puts these in rows, so
+   the row is as tall as its tallest card: Technical Writing is 528px with
+   eight children and the two beside it are 257 and 328, which left a hole
+   under each of them the size of a card. Columns flow the next card into
+   the gap instead. DOM order is unchanged, so the reading order and the
+   order a screen reader announces are both still the menu's order. */
+.svc-index{columns:3;column-gap:20px}
+@media(max-width:1060px){.svc-index{columns:2}}
+@media(max-width:680px){.svc-index{columns:1}}
+.svc-col{break-inside:avoid;margin:0 0 20px}
+
+/* 14px, written out. `var(--r)` is not defined anywhere in this stylesheet,
+   so this rule used to resolve to nothing and these cards rendered square
+   while every other card on the site was rounded. That is the bug noted
+   against `.tcard` below, and it was what made this page look unfinished. */
+.svc-col{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:26px 26px 24px;box-shadow:var(--sh-xs);
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.svc-col:hover{border-color:var(--or);box-shadow:var(--sh-sm);transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){
+  .svc-col,.svc-col:hover{transition:none;transform:none}}
+
+.svc-ico{display:flex;align-items:center;justify-content:center;
+  width:42px;height:42px;border-radius:11px;margin-bottom:16px;
+  background:var(--or-l,rgba(234,88,12,.1));color:var(--or-d)}
+.svc-ico svg{display:block}
+
+.svc-col h2{font-size:18.5px;letter-spacing:-.022em;line-height:1.3;margin:0 0 8px}
+.svc-col h2 a{color:var(--navy)}
+.svc-col h2 a:hover{color:var(--or-d)}
+.svc-sub{font-size:14.6px;line-height:1.55;color:var(--mute);margin:0}
+
+/* The children. A rule above them rather than a border on each, so a card
+   with none simply has no divider and does not look truncated. */
+.svc-kids{display:flex;flex-direction:column;margin-top:18px;padding-top:16px;
+  border-top:1px solid var(--line)}
+.svc-kids a{font-size:14.8px;line-height:1.45;padding:7px 0;color:var(--body);
+  display:flex;align-items:center;gap:9px}
+.svc-kids a::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--line-d,#cbd5e1);transition:background .15s ease}
+.svc-kids a:hover{color:var(--or-d)}
+.svc-kids a:hover::before{background:var(--or)}
+
+/* -------------------------------------------------------------- check --- */
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:15px 40px;
+  max-width:840px;margin:0 auto}
+@media(max-width:760px){.checks{grid-template-columns:1fr}}
+.chk{display:flex;gap:12px;align-items:flex-start}
+.chk svg{color:var(--or);flex:none;margin-top:3px}
+.chk span{font-size:15.4px;line-height:1.55;color:var(--body)}
+
+/* -------------------------------------------------------- testimonial ---
+   Two columns: heading and controls left, a vertical slider right, one card
+   highlighted with its neighbours dimmed above and below. Client instruction
+   2026-08-25, from a reference GIF.
+
+   --tsi-h is THE load-bearing number. The track translates by whole steps of
+   (card + gap), so every card must be the same height or the active one stops
+   landing in the middle. Quotes run 4 to 5 lines at this width; the height is
+   set for the longest plus the three meta lines. If a longer quote is ever
+   added, this grows: check with a sweep, do not guess. */
+.tsplit{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
+  gap:56px;align-items:stretch}
+
+/* THE QUOTE HAS TO LINE UP WITH ITS OWN CARD, client 2026-08-25.
+   Centring the left column as a whole does not do it: the column also holds
+   the quote mark above and the buttons below, and those are not symmetric,
+   so the quote text sat 35px above the active card's top and 54px above its
+   middle. Three rows of 1fr / auto / 1fr put the quote in the middle row,
+   which centres THE QUOTE rather than the column, and the active card is
+   always the middle slot of the slider, so the two centres coincide by
+   construction at any height. The mark hangs at the bottom of the row above
+   it, the buttons at the bottom of the row below. */
+.tsplit-l{min-width:0;display:grid;grid-template-rows:1fr auto 1fr}
+.tsplit-l .tq{grid-row:2}
+/* margin-bottom lifts them off the column's bottom edge, which they sat flush
+   against. Client 2026-08-25, "move the up and down button slightly upward". */
+.tsplit-l .tnav{grid-row:3;align-self:end;margin-bottom:26px}
+.tsplit-r{--tsi-h:132px;--tsi-gap:14px;min-width:0}
+
+/* The quote is the left-hand half now, and the biggest text in the section.
+   All seven are in the DOM; the JS puts `hidden` on the six that are not
+   active, which drops them from the accessibility tree as well as the
+   layout, so what is announced matches what is on screen. With JS off none
+   of that runs and all seven read as a plain list. */
+/* Sits with the quote rather than at the top of the column, so the gap is a
+   plain margin and does not grow when the quote is shorter than the tallest. */
+.tq-i .qm{color:var(--or);display:block;line-height:0;margin-bottom:13px}
+.tq-i blockquote{margin:0;font-size:21px;line-height:1.55;color:var(--ink);
+  letter-spacing:-.014em;font-weight:450}
+/* The box reserves the height of the LONGEST quote so the buttons below it
+   do not jump every five seconds. Without centring, a short quote then sits
+   at the top of that reserved space and drifts above its card by however
+   much shorter it is. Centre the visible one inside the reservation. */
+.tq{display:grid;align-content:center}
+/* Nudged down by --tq-shift, which the JS sets to half the height of the
+   "What we did" pill plus its margin.
+
+   Centring the BLOCK is not the same as centring the QUOTE. The block is the
+   words plus the pill under them, so centring it puts the words 23px above
+   the card and the reader, who is looking at the words and not at an
+   invisible box, sees the quote sitting high. Shifting by half the pill puts
+   the WORDS on the card's centre line and lets the pill hang below. Zero
+   below 900px, where the layout stacks and there is no card to line up with. */
+.tq-i{position:relative;top:var(--tq-shift,0px)}
+/* "What we did" moved here from the card, client 2026-08-25, so the work
+   sits with the words about the work. */
+.tq-i .tdel{margin-top:16px}
+html.js .tq-i{animation:tqin .45s ease both}
+@keyframes tqin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){html.js .tq-i{animation:none}}
+
+/* No JS: the transform never runs, so show the whole list as a plain stack
+   rather than a 3-card window onto a track that cannot move. */
+.tslide-list{list-style:none;margin:0;padding:0;display:flex;
+  flex-direction:column;gap:var(--tsi-gap)}
+/* 22px, and written out rather than var(--r). THERE IS NO --r ON :root: it
+   was only ever set inline by build.py as a GRID ROW INDEX on .sg-l/.sg-r,
+   so `border-radius:var(--r)` here resolved to nothing and these cards had
+   been rendering perfectly square while every other card on the site is
+   14px. That is what the client saw when he asked for curvy edges. The value
+   is deliberately rounder than the site's 14px, which is what he asked for.
+
+   .svc-col still has the same var(--r) bug and is still square. Left alone
+   because rounding it is a change to a section nobody asked about: see
+   PLAN §8. */
+.tcard{margin:0;background:var(--card);border:1px solid var(--line);
+  border-radius:22px;padding:18px 22px;box-shadow:var(--sh-sm)}
+
+html.js .tslide{position:relative;overflow:hidden;
+  height:calc(var(--tsi-h)*3 + var(--tsi-gap)*2);
+  /* The dimmed neighbours fade out at the edges instead of being cut by a
+     hard line, which is what makes it read as a wheel rather than a list. */
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%)}
+html.js .tslide-list{transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+html.js .tsi{height:var(--tsi-h);flex:none;opacity:.42;
+  transition:opacity .45s var(--t-e,ease),transform .45s var(--t-e,ease)}
+html.js .tsi .tcard{height:100%;display:flex;flex-direction:column;
+  transform:scale(.94);transform-origin:center;
+  transition:transform .45s ease,background-color .45s ease,
+  border-color .45s ease,box-shadow .45s ease}
+html.js .tsi.is-on{opacity:1}
+html.js .tsi.is-on .tcard{transform:scale(1);background:var(--navy-d);
+  border-color:var(--navy-d);box-shadow:var(--sh-lg)}
+html.js .tsi.is-on .tn,html.js .tsi.is-on .tn b{color:#fff}
+html.js .tsi.is-on .torg{color:rgba(255,255,255,.72)}
+html.js .tsi.is-on blockquote{color:rgba(255,255,255,.92)}
+/* THE SECTOR TAG ON THE ACTIVE CARD. Without this it keeps var(--body), a
+   dark grey, on a transparent tag over the navy card: dark on dark, which is
+   what the client reported. The "What we did" tag never had this problem
+   because it had its own is-on rule, and it has since moved off the card
+   entirely, so this is the only tag left that needs one. */
+html.js .tsi.is-on .tsec{color:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.38);background:rgba(255,255,255,.08)}
+@media (prefers-reduced-motion:reduce){
+  html.js .tslide-list,html.js .tsi,html.js .tsi .tcard{transition:none}
+}
+
+.tcap{display:block}
+.tcap .tn{font-size:15px;line-height:1.45;color:var(--body);
+  letter-spacing:-.016em;display:block}
+.tcap .tn b{font-weight:600;color:var(--ink)}
+.tcap .torg{display:block;margin-top:2px;font-size:13.4px;color:var(--mute);
+  letter-spacing:0}
+/* Sector and "What we did" share a row of their own, client 2026-08-25:
+   "I feel the industry should be in separate row or something." Both are
+   labels about the engagement, where the line above is who and where. Wraps
+   rather than overflows on a narrow card. */
+.ttags{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:11px}
+.tsec,.tdel{display:inline-flex;align-items:baseline;gap:6px;
+  padding:4px 11px;border-radius:999px;font-size:12.8px;letter-spacing:0}
+/* The sector is the quieter of the two: an outline tag, so it reads as a
+   category rather than competing with the work we actually did. */
+.tsec{border:1px solid var(--line-2);background:transparent;color:var(--body)}
+/* "What we did", sentence case. Was "Delivered" in small caps until the
+   client called it bland; all caps is a standing no on this site anyway. */
+.tdel{border:1px solid var(--line);background:var(--t-navy);color:var(--ink)}
+.tdel-k{font-size:12.8px;font-weight:600;color:var(--navy)}
+.tdel-k::after{content:":"}
+
+.tnav{display:flex;align-items:center;gap:10px;margin-top:26px}
+.tnav-b{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);display:grid;place-items:center;
+  cursor:pointer;transition:border-color var(--t),background var(--t),
+  color var(--t)}
+.tnav-b:hover{border-color:var(--navy);background:var(--t-navy);color:var(--navy)}
+.tnav-b:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+.tnav-next svg{transform:rotate(180deg)}
+
+@media (max-width:900px){
+  .tsplit{grid-template-columns:1fr;gap:26px}
+  /* Stacked, so there is no card to line up with and the three-row trick
+     would just add empty space above and below the quote. */
+  .tsplit-l{display:block}
+  /* No column bottom to lift off when it is stacked. */
+  .tsplit-l .tnav{margin-top:22px;margin-bottom:0}
+}
+/* One card at a time on a phone. Three cards came to 979px at 375, most of
+   two screens for a section where only the middle card is readable anyway.
+   The JS reads the slot count back off this height, so changing the number
+   here is the whole change. */
+@media (max-width:620px){
+  html.js .tslide{height:var(--tsi-h);
+    -webkit-mask-image:none;mask-image:none}
+  html.js .tsi{opacity:1}
+  html.js .tsi .tcard{transform:none}
+  .tcard{padding:20px}
+}
+
+/* ------------------------------------------- gradient band -------------- */
+/* A defined gradient plane, square edges. Crisp, no halo. One per page max. */
+.band{position:relative;color:#fff;padding:var(--pad) 0;overflow:hidden;
+  background:linear-gradient(108deg,var(--navy-d) 0%,var(--navy) 34%,var(--navy-l) 58%,
+    var(--indigo) 82%,var(--indigo-l) 100%)}
+.band::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(820px 360px at 94% 6%,rgba(254,99,2,.30),transparent 62%)}
+.band>.wrap{position:relative;z-index:2}
+.band h2{color:#fff;font-size:clamp(28px,3.7vw,42px);line-height:1.1;letter-spacing:-.032em}
+.band p{color:rgba(232,236,247,.76);margin-top:18px;font-size:16.8px;max-width:52ch}
+.band .kicker{color:var(--or-l)}
+.band .kicker::before{background:var(--or-l)}
+.bdiv{height:1px;background:rgba(255,255,255,.17);margin:30px 0}
+.bstats{display:flex;gap:38px;flex-wrap:wrap}
+.bstats b{display:block;font-size:30px;font-weight:600;letter-spacing:-.034em;color:#fff;
+  font-variant-numeric:tabular-nums}
+.bstats span{font-size:14px;color:rgba(232,236,247,.62)}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:58px;align-items:center}
+@media(max-width:940px){.bgrid{grid-template-columns:1fr;gap:42px}}
+.bphoto{border-radius:15px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.36);
+  border:1px solid rgba(255,255,255,.15)}
+.bphoto img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+
+/* ---------------------------------------------------------- industries --- */
+.ind{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:16px 17px;box-shadow:var(--sh-xs);
+  transition:transform .2s var(--ease),box-shadow .2s,border-color .2s}
+.ind:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--line-2)}
+.ind .ii{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;flex:none}
+/* min-width:0 lets the label wrap instead of being clipped — a flex item will
+   not shrink below its min-content width without it. */
+.ind span{font-size:14.6px;font-weight:550;color:var(--ink);letter-spacing:-.014em;
+  line-height:1.35;min-width:0}
+.g6{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media(max-width:960px){.g6{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.g6{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Two columns leaves ~68px for the label once the icon and padding are taken
+   out — not enough for "Manufacturing". Single column below this. */
+@media(max-width:520px){.g6{grid-template-columns:minmax(0,1fr);gap:10px}}
+
+/* --------------------------------------------------------------- form --- */
+.form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:34px;
+  box-shadow:var(--sh-sm)}
+/* First and last name share a row above 520px and stack below it. */
+.fld2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media(max-width:520px){.fld2{grid-template-columns:1fr}}
+
+/* The honeypot. NOT display:none and not hidden: some bots skip anything
+   obviously hidden, and so do some password managers. Moved out of view and
+   out of the tab order instead, with aria-hidden on the wrapper, so no
+   keyboard or screen-reader user ever reaches it. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* What the form says back. Empty until there is something to report, so it
+   takes no space on a form nobody has submitted yet. */
+.fstat{margin-top:12px;font-size:14.6px;line-height:1.5}
+.fstat:empty{display:none}
+.fstat-ok{color:var(--or-d);font-weight:550}
+.fstat-bad{color:#B42318}
+.subf .fstat{margin-top:10px;font-size:13.8px}
+
+
+.fld{margin-bottom:17px}
+.fld label{display:block;font-size:14px;font-weight:550;color:var(--ink);margin-bottom:7px;
+  letter-spacing:-.01em}
+.fld input,.fld select,.fld textarea{width:100%;font-family:var(--sans);font-size:15.4px;
+  color:var(--ink);background:#FBFCFE;border:1px solid var(--line-2);border-radius:9px;
+  padding:13px 14px;transition:border-color .18s,box-shadow .18s,background .18s}
+.fld textarea{min-height:112px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;background:#fff;
+  border-color:var(--navy);box-shadow:0 0 0 3px rgba(7,25,90,.09)}
+.fld input::placeholder,.fld textarea::placeholder{color:#A6AEC0}
+.fnote{font-size:13px;color:var(--mute);margin-top:13px}
+/* Contact page: the form leads the page, then a two-column row of the
+   consultation and careers blocks. Matches the live page's order. */
+.form-lead{max-width:720px;margin:0 auto}
+.ccol{display:flex;flex-direction:column;align-items:flex-start}
+.ccol h2{font-size:clamp(26px,3.2vw,34px);line-height:1.12;letter-spacing:-.03em}
+.ccol p{margin-top:14px;font-size:16.4px;line-height:1.68;color:var(--body)}
+.ccol .cinfo{width:100%}
+.ccol>.btn{margin-top:22px}
+/* .checks is a two-up grid centred in an 840px section. In a half-width
+   column that reads as two cramped columns shoved to the middle, so it
+   is a single column here. */
+.ccol .checks{grid-template-columns:minmax(0,1fr);max-width:none;
+  margin:22px 0 0;gap:13px}
+
+.cinfo{display:flex;flex-direction:column;gap:12px;margin-top:30px}
+.ci{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:17px 18px;box-shadow:var(--sh-xs);transition:border-color .2s}
+.ci:hover{border-color:var(--line-2)}
+.ci .ii{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex:none;
+  background:var(--t-navy);color:var(--navy)}
+.ci b{display:block;font-size:13.5px;color:var(--mute);font-weight:450}
+/* The email and the LinkedIn URL are single unbreakable tokens. Without
+   min-width:0 the text block refuses to shrink below them and the page scrolls
+   sideways on a 320px screen. */
+.ci>span{min-width:0}
+/* The value is styled by its own class, never by `.ci span`. A descendant
+   selector here is 0-1-1 and silently out-specified .ci-go below it, so the
+   LinkedIn URL and its link cue rendered at identical size, weight and colour
+   — and, both being inline, on the same line. They read as one long URL. */
+.ci-v{display:block;font-size:15.6px;font-weight:550;color:var(--ink);
+  letter-spacing:-.014em;overflow-wrap:anywhere}
+/* The LinkedIn row shows link text instead of the URL (client 2026-08-17) —
+   the URL read as noise beside an email address and a phone number. It carries
+   the colour and the arrow so it still announces itself as the one row that
+   goes somewhere, and all three rows are the same height again.
+   (This replaces the separate .ci-go cue line, and with it the size clamp and
+   the <wbr>s that existed only to break `linkedin.com/company/slickflo`.) */
+/* flex, not inline-flex: as an inline-level box it sat on a line box whose
+   strut made this row 2px deeper than the email and phone rows beside it.
+   Line-height is left inherited so the row measures exactly what a plain
+   .ci-v value measures and all three cards come out the same height. */
+.ci-link{display:flex;align-items:center;gap:7px;color:var(--indigo)}
+.ci-link svg{flex:none;transition:transform .22s var(--ease)}
+.ci:hover .ci-link{color:var(--or-d)}
+.ci:hover .ci-link svg{transform:translateX(3px)}
+
+/* ----------------------------------------------------------- articles --- */
+.art{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;box-shadow:var(--sh-xs);
+  transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
+.art:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:var(--line-2)}
+/* 2:1, not 4:3. Client 2026-08-25: the cover was being cropped down its sides,
+   because a 2:1 image filling a 4:3 box scales to the height and loses the
+   width. The covers are the standard for every post from here, and the three
+   older branded tiles lose nothing to the change: checked before making it,
+   the ~90px trimmed off their top and bottom is white space, and the logo,
+   title, illustration and strapline all survive intact.
+
+   3:1 as of 2026-08-25, following the covers themselves; it was 40/21 while
+   they were 1200x630. THE CARD AND THE BANNER SHARE THIS NUMBER. They show the
+   same file, and when they disagreed by 25% the page read as zoomed against
+   its own thumbnail. Change both together or one of them starts lying about
+   the picture. */
+.art .thumb{aspect-ratio:3/1;overflow:hidden;background:var(--bg-alt);
+  border-bottom:1px solid var(--line)}
+.art .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+/* Not every card image is 3:1. The articles still on their original WordPress
+   tile are 4:3 graphics with the headline printed on them, and `cover` would
+   crop 56% and cut the title. Contained and set on white, which is the tiles'
+   own background, so it reads as a smaller picture rather than a broken one.
+   Retire this rule when the last article is supplied with a real cover. */
+.art .thumb-legacy{background:#fff}
+.art .thumb-legacy img{object-fit:contain}
+.art:hover .thumb-legacy img{transform:none}
+.art:hover .thumb img{transform:scale(1.04)}
+.art .ab{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.art .tag{font-size:12.5px;font-weight:550;color:var(--or-d);margin-bottom:9px}
+.art h3{font-size:17.5px;line-height:1.32;letter-spacing:-.022em;margin-bottom:9px}
+.art p{font-size:14.4px;line-height:1.56;color:var(--mute);flex:1;margin-bottom:16px}
+.art:hover .go svg{transform:translateX(3px)}
+
+/* ----------------------------------------------------------------- faq --- */
+.faq{max-width:800px;margin:0 auto}
+.qa{border-bottom:1px solid var(--line)}
+.qa summary{display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:22px 0;font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-.018em;
+  cursor:pointer;list-style:none}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary .pm{width:28px;height:28px;border-radius:8px;background:var(--t-navy);
+  color:var(--navy);display:grid;place-items:center;flex:none;transition:transform .25s var(--ease),
+  background .2s,color .2s}
+.qa[open] summary .pm{transform:rotate(45deg);background:var(--or);color:#fff}
+.qa p{padding:0 0 24px;font-size:15.6px;line-height:1.65;color:var(--body);max-width:70ch}
+
+/* -------------------------------------------------------------- close --- */
+.close{padding:var(--pad) 0;border-top:1px solid var(--line)}
+.close .wrap{display:flex;align-items:center;justify-content:space-between;gap:44px;
+  flex-wrap:wrap}
+.close h2{font-size:clamp(26px,3.4vw,38px);line-height:1.12;letter-spacing:-.032em;
+  max-width:17ch}
+.close p{margin-top:14px;font-size:17px;max-width:42ch}
+
+/* -------------------------------------------------------------- prose --- */
+.prose{max-width:74ch}
+/* A section heading is centred, so a one-line body under it must be too —
+   left-aligning a single short sentence inside a centred 74ch block reads as
+   a misalignment (client feedback 2026-08-07 on Content & Growth, Content
+   Marketing and Workflow Automation). Applied only to short bodies; a real
+   multi-paragraph block still sets ragged-right. */
+.prose.mid{text-align:center;max-width:68ch}
+.prose h2{font-size:26px;letter-spacing:-.026em;margin:44px 0 14px}
+.prose h3{font-size:19px;letter-spacing:-.02em;margin:30px 0 10px}
+.prose p{margin-bottom:16px;font-size:16.4px;line-height:1.72}
+.prose ul{margin:0 0 18px;padding-left:0;list-style:none}
+.prose li{position:relative;padding-left:24px;margin-bottom:9px;line-height:1.66}
+.prose li::before{content:"";position:absolute;left:7px;top:11px;width:5px;height:5px;
+  border-radius:50%;background:var(--or)}
+.prose a{color:var(--indigo);border-bottom:1px solid var(--line-2)}
+.prose a:hover{color:var(--or-d);border-color:var(--or)}
+
+/* ------------------------------------------------------------- footer --- */
+.site-foot{background:var(--navy-d);color:rgba(232,236,247,.66);padding:64px 0 0}
+/* Brand block, one track per group in content.FOOTER, then Our Socials. Keep
+   the count in step with that list — the Technical Writing column was removed
+   2026-08-07 and a stale fourth track left a hole on the right. The socials
+   track is `auto`: it holds one icon and should not take a share of the width
+   the link columns need. */
+.fg{display:grid;grid-template-columns:1.7fr minmax(0,1fr) minmax(0,1fr) auto;
+  gap:44px;padding-bottom:48px}
+@media(max-width:860px){.fg{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px}}
+@media(max-width:520px){.fg{grid-template-columns:minmax(0,1fr)}}
+.site-foot .brand{margin-bottom:18px}
+.site-foot .brand img{height:34px}
+.site-foot p{font-size:14.5px;line-height:1.66;max-width:33ch;margin-bottom:20px}
+.site-foot h4{font-size:14px;color:#fff;font-weight:600;margin-bottom:14px;
+  letter-spacing:-.012em}
+.site-foot a{display:block;font-size:14.8px;line-height:2.05;color:rgba(232,236,247,.66);
+  width:fit-content;max-width:100%;overflow-wrap:anywhere;transition:color .18s}
+.site-foot a:hover{color:var(--or-l)}
+/* Footer links sit at 30px on a phone — comfortable enough to read, tight to
+   tap. Open them up where the pointer is a finger. */
+@media(pointer:coarse){.site-foot a{line-height:1.5;padding:8px 0}}
+/* Socials. A bordered tile rather than a bare glyph, so a single icon still
+   reads as a control next to three columns of text links. Back to top sits
+   under it in the space this column was otherwise leaving empty. */
+.fsoc .soc{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;
+  border:1px solid rgba(255,255,255,.16);color:rgba(232,236,247,.78);
+  transition:color .18s,border-color .18s,background-color .18s}
+.fsoc .soc:hover{color:#fff;border-color:var(--or);background:var(--or)}
+@media(pointer:coarse){.fsoc .soc{padding:0}}
+/* Back to top, client 2026-08-17. A plain anchor, so it works with JS off and
+   inherits html{scroll-behavior:smooth}. `white-space:nowrap` because the
+   socials track is sized `auto` — without it the label wraps to two lines and
+   drags the whole column wider than the icon needs. */
+.totop{display:inline-flex;align-items:center;gap:7px;margin-top:22px;
+  font-size:14px;font-weight:550;white-space:nowrap;color:rgba(232,236,247,.66)}
+.totop svg{flex:none;transition:transform .22s var(--ease)}
+.totop:hover svg{transform:translateY(-3px)}
+
+.fbot{border-top:1px solid rgba(255,255,255,.11);padding:22px 0;display:flex;
+  align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-size:14px;color:rgba(232,236,247,.5)}
+.fbot a{display:inline;font-size:14px;line-height:inherit}
+/* Legal links right-aligned, client 2026-08-17 — with three items in a
+   space-between row they sat in the middle. `margin-left:auto` keeps them right
+   however many there are, so adding Terms of Service later needs no change. */
+.flegal{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+
+/* ------------------------------------------ narrative (Technical Writing) ---
+   Components for the story built around the two preserved live sections
+   (client brief 2026-08-17). Every one of them holds its full text in the DOM;
+   motion only affects how a thing arrives, never whether it is readable. */
+
+/* Hero: copy left, animation right (client 2026-08-17). */
+.ph-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:46px;align-items:center}
+.phero-split h1{max-width:none}
+.phero-split .sub{max-width:46ch}
+@media(max-width:960px){
+  .ph-grid{grid-template-columns:minmax(0,1fr);gap:38px}
+}
+
+/* Product knowledge becoming documentation.
+   The left chips knock around their box, a gate between the boxes pulses as
+   they arrive, and the right list resolves one item at a time. Every keyframe
+   runs `backwards` from a perturbed state INTO the element's natural one, so
+   the finished state is simply what the CSS says without any animation at all.
+   That is what makes prefers-reduced-motion safe here: the site-wide
+   `*{animation:none!important}` leaves both boxes complete and readable, and
+   no information is carried by the motion. */
+.tf{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:16px;align-items:stretch}
+.tf-col{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px;box-shadow:var(--sh-xs);min-width:0}
+.tf-col b{display:block;font-size:11.5px;font-weight:600;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:13px}
+.tf-set{display:flex;flex-wrap:wrap;gap:7px}
+.tf-bit{display:inline-flex;align-items:center;gap:6px;font-size:13px;
+  font-weight:550;padding:6px 10px;border-radius:8px;line-height:1.3}
+.tf-in{overflow:hidden}
+.tf-in .tf-bit{background:var(--bg-alt);color:var(--body);
+  border:1px dashed var(--line-2);
+  animation:tf-knock 3.4s cubic-bezier(.5,.05,.5,.95) calc(var(--i) * .16s) infinite alternate
+            backwards}
+.tf-out .tf-bit{background:var(--t-navy);color:var(--navy);
+  animation:tf-land .5s var(--ease) calc(1.1s + var(--i) * .26s) backwards}
+.tf-out .tf-bit svg{color:var(--or);flex:none}
+/* Odd items drift the other way, so the box reads as knocked about rather than
+   as one block sliding. */
+.tf-in .tf-bit:nth-child(even){animation-direction:alternate-reverse;
+  animation-duration:2.9s}
+@keyframes tf-knock{
+  0%{transform:translate3d(0,0,0) rotate(-2deg)}
+  35%{transform:translate3d(9px,-7px,0) rotate(2.5deg)}
+  70%{transform:translate3d(-7px,5px,0) rotate(-1.5deg)}
+  100%{transform:translate3d(5px,3px,0) rotate(1deg)}
+}
+@keyframes tf-land{from{opacity:0;transform:translateX(-14px) scale(.94)}}
+/* The gate they pass through. */
+.tf-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;color:var(--or-d)}
+.tf-gate i{flex:1;width:2px;background:linear-gradient(var(--line),var(--or-l));
+  border-radius:2px;min-height:14px}
+.tf-gate svg{flex:none;padding:7px;border-radius:50%;background:var(--t-or);
+  animation:tf-pulse 3.4s ease-in-out infinite}
+@keyframes tf-pulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(254,99,2,.28)}
+  50%{transform:scale(1.09);box-shadow:0 0 0 9px rgba(254,99,2,0)}
+}
+@media(max-width:760px){
+  .tf{grid-template-columns:minmax(0,1fr);gap:12px}
+  .tf-gate{flex-direction:row;height:26px}
+  .tf-gate i{flex:1;height:2px;width:auto;min-height:0;
+    background:linear-gradient(90deg,var(--line),var(--or-l))}
+}
+
+/* The problem, as a sequence: what ships, the turn, what it costs. */
+.stg{margin-top:34px}
+.stg-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.stg-chip{background:#fff;border:1px solid var(--line-2);border-radius:24px;
+  padding:9px 18px;font-size:14.4px;font-weight:550;color:var(--ink);
+  box-shadow:var(--sh-xs)}
+.stg-turn{max-width:52ch;margin:30px auto;text-align:center;
+  font-size:clamp(18px,2.2vw,22px);line-height:1.42;font-weight:600;
+  letter-spacing:-.02em;color:var(--navy);text-wrap:balance}
+
+/* Cause and effect. Horizontal and wrapping: the vertical column it replaced
+   ran the height of a screen for six short labels (client 2026-08-17). */
+.cc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:10px;margin-top:34px}
+.cc-step{background:#fff;border:1px solid var(--line);border-radius:22px;
+  padding:9px 17px;font-size:14.2px;font-weight:550;color:var(--ink);
+  box-shadow:var(--sh-xs)}
+.cc-link{display:grid;place-items:center;color:var(--or);flex:none}
+/* Two labelled runs, 2026-08-18. No box around either: they are two ways the
+   same gap plays out, and carding them would read as two things to compare. */
+/* One run that forks, 2026-08-18 (4.0). The trunk is centred, the connector
+   opens under it, and the two outcomes sit side by side beneath it. */
+.fork{margin-top:26px}
+.fork .cc{margin-top:0}
+.fork-split{display:block;position:relative;height:30px;margin:14px auto 0;
+  width:min(64%,600px)}
+.fork-split::before{content:"";position:absolute;left:calc(50% - 1px);top:0;
+  width:2px;height:12px;background:var(--line-2)}
+.fork-split::after{content:"";position:absolute;left:0;right:0;top:12px;
+  height:18px;border:2px solid var(--line-2);border-bottom:0;
+  border-radius:10px 10px 0 0}
+.fork-arms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.fork-arm .cc{margin-top:12px}
+/* 2026-08-18 (5.0): branches run downward. Three steps never fit one line in
+   an arm, so they wrapped and the arrow at the end of a line pointed away from
+   the box it led to. The arrow turns with the flow. */
+.cc-down{flex-direction:column;align-items:center;gap:8px}
+.cc-down .cc-link svg{transform:rotate(90deg)}
+/* The closing step is the consequence, not another event. Filled, and it says
+   so, because "shown differently" on its own does not say what it is. */
+.cc-imp{background:var(--t-or);border-color:var(--or-l)!important;
+  color:var(--navy);font-weight:650;text-align:center;padding-top:7px}
+.cc-imp b{display:block;font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--or-d);margin-bottom:2px}
+.scn-tag{display:block;text-align:center;font-size:11.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--or-d)}
+/* Once the arms stack, a two-legged connector points at nothing. Plain stem. */
+@media(max-width:860px){
+  .fork-split{width:2px;height:26px}
+  .fork-split::after{display:none}
+  .fork-split::before{height:26px}
+  .fork-arms{grid-template-columns:minmax(0,1fr);gap:28px}
+}
+.lede{max-width:60ch;margin:32px auto 0;text-align:center;font-size:17.4px;
+  line-height:1.66;color:var(--body)}
+
+/* Five adjectives, set rather than boxed. */
+.wlead{margin:38px auto 0;text-align:center;font-size:17px;font-weight:600;
+  color:var(--navy);letter-spacing:-.016em}
+/* 2026-08-18 (6.1): definition left, qualities right, kicker centred above
+   both. The kicker used to sit inside the definition column, where its own
+   height pushed that column's heading down and the two columns no longer
+   lined up with each other. align-items:start is what holds them level now.
+   DOM order matches visual order, so nothing is placed explicitly. */
+.basics-k{text-align:center;margin-bottom:26px}
+.basics{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:26px 52px;align-items:start}
+/* .shead is centred with a 56px drop by default; in a column neither applies. */
+.basics .shead{margin:0 0 20px;max-width:none}
+.basics .wlead{margin:0;text-align:left}
+/* 2026-08-18 (6.2): four corners and a centre. Only five of the nine cells are
+   ever filled; the middle row and column are what hold the corners apart. */
+.wgrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  justify-items:center;align-items:center;gap:20px 14px;margin-top:30px}
+.wgrid span{font-size:clamp(16px,1.9vw,22px);font-weight:600;letter-spacing:-.024em;
+  color:var(--navy);position:relative;text-align:center}
+.wgrid span::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+  background:var(--or);opacity:.5;border-radius:2px}
+.wgrid span:nth-child(1){grid-area:1/1}
+.wgrid span:nth-child(2){grid-area:1/3}
+.wgrid span:nth-child(3){grid-area:3/1}
+.wgrid span:nth-child(4){grid-area:3/3}
+.wgrid span:nth-child(5){grid-area:2/2}
+/* Not five words: place nothing, stack them. */
+.wgrid-flow{grid-template-columns:minmax(0,1fr);justify-items:start}
+.wgrid-flow span{grid-area:auto!important;text-align:left}
+/* 360, not 560: measured, not guessed. At 375 the shape still has 19px between
+   "Structured" and "Maintainable" and nothing wraps. At 320 the 1fr column is
+   narrower than "Structured", which then hangs 4px outside its own cell, and
+   the centre gap is down to 6px. So the corners hold on a phone and only give
+   up on the narrowest ones. */
+@media(max-width:360px){
+  .wgrid{grid-template-columns:minmax(0,1fr);justify-items:start;gap:24px}
+  .wgrid span{grid-area:auto!important;text-align:left}
+}
+@media(max-width:860px){
+  .basics{grid-template-columns:minmax(0,1fr);gap:32px}
+}
+
+/* Before / after. Both panels sit in one grid cell so they are the same size
+   and both lists are in the DOM in order; the reveal is a clip driven by a
+   native range input, which is keyboard operable without any work. */
+/* Starts at 0, so the page lands on Before and the handle is dragged rightward
+   to bring After in. --f is the fade on the Before text: dimming it as the
+   handle travels is what moves the attention across, rather than the clip
+   alone (client 2026-08-17). */
+/* --x, --f and --p live here rather than on .cmp-stack: the label under the
+   slider is a sibling of the stack and needs the same position. They inherit,
+   so everything inside still reads them. */
+.cmp{max-width:900px;margin:38px auto 0;--x:0%;--f:1;--p:0}
+.cmp-stack{position:relative;display:grid}
+.cmp-pane{grid-area:1/1;border-radius:16px;padding:26px 28px;border:1px solid var(--line)}
+/* After is revealed from the left edge as the handle travels right, so at the
+   default 0 the whole box is Before and each new line of After appears at the
+   handle as it passes. Getting this the wrong way round hides Before on load,
+   which is the one thing the brief is explicit about. */
+.cmp-b{background:var(--bg-alt);clip-path:inset(0 0 0 var(--x))}
+.cmp-b ul,.cmp-b .cmp-tag{opacity:var(--f);transition:opacity .12s linear}
+.cmp-a{background:#fff;box-shadow:var(--sh-sm);
+  clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+.cmp-tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:16px}
+.cmp-b .cmp-tag{color:var(--mute)}
+.cmp-a .cmp-tag{color:var(--or-d)}
+.cmp-pane ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.cmp-pane li{font-size:15.2px;font-weight:550;line-height:1.4;
+  padding-left:22px;position:relative}
+.cmp-b li{color:var(--mute)}
+.cmp-b li::before{content:"";position:absolute;left:0;top:.55em;width:11px;height:2px;
+  background:var(--line-2);border-radius:2px}
+.cmp-a li{color:var(--ink)}
+.cmp-a li::before{content:"";position:absolute;left:0;top:.34em;width:11px;height:6px;
+  border-left:2px solid var(--or);border-bottom:2px solid var(--or);
+  transform:rotate(-45deg)}
+/* The handle carries the "After" label, so what the control does is legible
+   before anyone drags it. */
+.cmp-handle{position:absolute;top:0;bottom:0;left:var(--x);width:2px;
+  background:var(--or);pointer-events:none;display:flex;align-items:center;
+  justify-content:center}
+/* 2026-08-18: the label was a filled pill sitting mid-bar beside the arrow,
+   and it read as a button to be clicked rather than a slider to be dragged.
+   It is now a plain label low on the bar, and the knob is the only thing that
+   looks interactive.
+   Both still sit beside or on the line, never centred across it: centred, they
+   hang half outside the panel at 0 and at 100. The label rides on the Before
+   side while there is room and flips to the After side once the handle passes
+   62%, so it is always fully inside the box. */
+/* 2026-08-18 (5.0): the handle is only the line now. The label sits under the
+   range thumb instead, which is the thing a visitor actually drags, so the
+   instruction is attached to the control rather than floating on the divider.
+   Nothing is centred on the 2px rule any more, so it no longer reports a
+   scrollWidth past its own box either. */
+.cmp-ctl{position:relative;margin-top:16px}
+/* The thumb's centre travels from half a thumb in to half a thumb short of the
+   end, so its position is not a bare percentage of the track. --tw is the
+   thumb width. --half keeps the label from hanging off either end; it is a
+   little over half the label's own width. */
+/* 2026-08-24: a pill, and a real drag handle rather than a marker. --tw must
+   stay in step with THUMB in site.js. --half is a little over half the pill's
+   own width and is what keeps it inside the track at both ends. */
+.cmp-hint{--tw:18px;--half:56px;position:absolute;top:calc(100% + 7px);
+  left:clamp(var(--half), calc(var(--tw) / 2 + (100% - var(--tw)) * var(--p)),
+             calc(100% - var(--half)));
+  transform:translateX(-50%);display:inline-flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  white-space:nowrap;background:var(--or);color:#fff;padding:6px 13px;
+  border-radius:20px;box-shadow:var(--sh-sm);cursor:grab;
+  /* touch-action:none or the browser scrolls the page instead of dragging. */
+  touch-action:none;user-select:none;-webkit-user-select:none}
+.cmp-hint.dragging{cursor:grabbing}
+/* The nudge is an invitation. Once it is being dragged it is just noise. */
+.cmp-hint svg{flex:none;animation:cmp-nudge 1.5s ease-in-out infinite}
+.cmp-hint.dragging svg{animation:none}
+@keyframes cmp-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+/* Explicit horizontal margin: the UA stylesheet gives <input> 2px each side,
+   which pushed the block 2px past its own container. */
+.cmp-range{display:block;width:100%;margin:16px 0 0;accent-color:var(--or);
+  cursor:ew-resize}
+/* On a phone the clip cuts words in half, and the brief asks for sliders to
+   become plain stacked content there. Both panels show in full instead. */
+@media(max-width:760px){
+  .cmp-stack{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+  .cmp-pane{grid-area:auto;clip-path:none!important}
+  .cmp-b ul,.cmp-b .cmp-tag{opacity:1!important}
+  .cmp-handle,.cmp-range,.cmp-ctl{display:none}
+}
+
+/* ------------------------------------------------------------- reveal --- */
+/* Hidden only once JS has confirmed it is running, so a script failure can
+   never leave the page blank. Without JS every .rv stays fully visible. */
+html.js .rv{opacity:0;transform:translateY(14px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease)}
+html.js .rv.in{opacity:1;transform:none}
+
+/* Directional variants. Business Outcomes arrives as one movement: its top row
+   in from the left and right edges, its bottom row up, all at the same moment
+   (client 2026-08-17, after the "Improving the Government Contracting
+   Experience" section on leadpursuits.com). data-rv-group in site.js is what
+   fires them together; these rules only say which way each one travels, and
+   .rv-up is the longer rise for a heading that leads such a section.
+   Specificity note: these are 0-3-0 against .rv's 0-2-0, so they win here —
+   which is also why the reduced-motion block below has to name them. */
+/* Slower and further than the site default, on client instruction 2026-08-17:
+   "the transition is so fast not even visible by naked eye. keep it nice and
+   smooth." 1.05s over 64px reads as travel; 0.68s over 40px read as a flicker.
+   The other half of that fix is in site.js — the group was also triggering
+   while it was still a sliver at the bottom of the screen, so the movement was
+   finished before the reader was looking at it. */
+html.js .rv.rv-l{transform:translateX(-64px);transition-duration:1.05s}
+html.js .rv.rv-r{transform:translateX(64px);transition-duration:1.05s}
+html.js .rv.rv-up{transform:translateY(36px);transition-duration:1.05s}
+html.js .rv.rv-l.in,html.js .rv.rv-r.in,html.js .rv.rv-up.in{transform:none}
+/* Below 820px .g2 is one column, so there is no left and right to come in
+   from — everything rises instead, and by the same 36px as the rest of the
+   group so the four still read as one movement. */
+@media(max-width:820px){
+  html.js .rv.rv-l,html.js .rv.rv-r{transform:translateY(36px)}
+}
+/* The 40px outward travel reaches past .wrap's 30px padding. body already has
+   overflow-x:hidden, but clipping at the section keeps the motion off the
+   document scroll width outright rather than relying on that. overflow-x:clip
+   and not hidden: hidden would force the other axis to auto and crop the
+   cards' hover shadow. */
+.clipx{overflow-x:clip}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rot i{opacity:1;display:none}
+  .rot i:first-child{display:block}
+  html.js .rv,html.js .rv.rv-l,html.js .rv.rv-r,html.js .rv.rv-up{
+    opacity:1;transform:none}
+}
+
+/* ------------------------------------------------------- case studies --- */
+.cs-wrap{display:flex;flex-direction:column;gap:18px;max-width:980px;margin:0 auto}
+.cs{display:flex;gap:24px;background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:30px;box-shadow:var(--sh-xs);
+  transition:border-color .22s,box-shadow .22s,transform .22s var(--ease)}
+.cs:hover{border-color:var(--line-2);box-shadow:var(--sh-md);transform:translateY(-3px)}
+.cs-n{width:46px;height:46px;border-radius:12px;flex:none;display:grid;place-items:center;
+  font-size:15px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.cs-n.c1{background:var(--t-navy);color:var(--navy)}
+.cs-n.c2{background:var(--t-indigo);color:var(--indigo)}
+.cs-n.c3{background:var(--t-orl);color:var(--or-l)}
+.cs-n.c4{background:var(--t-or);color:var(--or-d)}
+.cs:hover .cs-n.c1{background:var(--navy);color:#fff}
+.cs:hover .cs-n.c2{background:var(--indigo);color:#fff}
+.cs:hover .cs-n.c3{background:var(--or-l);color:#fff}
+.cs:hover .cs-n.c4{background:var(--or);color:#fff}
+.cs-b{flex:1;min-width:0}
+.cs-b h3{font-size:19px;line-height:1.32;letter-spacing:-.024em;margin-bottom:12px}
+.cs-b p{font-size:15.2px;line-height:1.62;color:var(--mute);margin-bottom:11px}
+.cs-b p:last-of-type{margin-bottom:0}
+.cs-pts{margin:12px 0 0;padding-left:0;list-style:none}
+.cs-pts li{position:relative;padding-left:22px;margin-bottom:8px;font-size:15px;
+  line-height:1.58;color:var(--mute)}
+.cs-pts li::before{content:"";position:absolute;left:6px;top:10px;width:5px;height:5px;
+  border-radius:50%;background:var(--or)}
+.cs-pts li:last-child{margin-bottom:0}
+.dtags{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:16px;
+  padding-top:14px;border-top:1px solid var(--line)}
+.dtags+.dtags{margin-top:10px;padding-top:10px;border-top:0}
+.dtags b{font-size:12.5px;font-weight:550;color:var(--mute);min-width:62px}
+.dtag{font-size:12.5px;font-weight:550;padding:5px 11px;border-radius:20px;
+  background:var(--t-navy);color:var(--navy);letter-spacing:-.004em}
+.dtag.tool{background:transparent;border:1px solid var(--line-2);color:var(--body);
+  font-weight:450}
+@media(max-width:600px){
+  .cs{flex-direction:column;gap:16px;padding:24px}
+  .dtags b{min-width:0;width:100%}
+}
+
+/* ==========================================================================
+   UI/UX page only, 2026-08-24 (2.0)
+   --------------------------------------------------------------------------
+   The 1.0 build reused the Technical Writing components wholesale, and the
+   objection to that was the right one: a UI/UX page that looks like every
+   other page argues against the service it is selling.
+   Everything here is asymmetric and left aligned, because section 3 rejects
+   "everything centred" and the narrative pages had drifted into exactly that.
+   Angled planes and hairlines per section 3. No glows, no gradient text, and
+   no second navy band, since the closing CTA already spends that budget.
+   ========================================================================== */
+
+/* ---- hero: a screen resolving from wireframe to designed --------------- */
+.scr{border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:#fff;box-shadow:var(--sh-sm)}
+.scr-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--bg-alt)}
+.scr-bar i{width:9px;height:9px;border-radius:50%;background:var(--line-2);flex:none}
+.scr-bar span{margin-left:8px;font-size:11.5px;color:var(--mute);
+  background:#fff;border:1px solid var(--line);border-radius:5px;padding:3px 10px}
+.scr-body{position:relative;display:grid;padding:18px;min-height:214px}
+.scr-layer{grid-area:1/1;align-content:start}
+.scr-row{display:grid;grid-template-columns:1.55fr 1fr;gap:14px}
+.scr-wire b{display:block;background:var(--line);border-radius:4px}
+.scr-wire .w1{height:15px;width:52%}
+.scr-wire .w2{height:9px;width:78%;margin-top:9px}
+.scr-wire .w3{height:9px;width:64%;margin-top:6px}
+.scr-wire .w4{height:72px;width:100%;margin-top:13px}
+.scr-wire .w5{height:26px;width:38%;margin-top:13px;background:var(--line-2)}
+.scr-live h4{font-size:15.5px;letter-spacing:-.022em;color:var(--ink);margin:0}
+.scr-live p{font-size:12.4px;line-height:1.6;color:var(--body);margin:7px 0 0}
+.scr-live .sl-cta{display:inline-flex;align-items:center;gap:6px;margin-top:13px;
+  background:var(--or);color:#fff;font-size:11.5px;font-weight:650;
+  border-radius:7px;padding:7px 13px}
+.scr-live .sl-panel{border:1px solid var(--line);border-radius:9px;padding:12px;
+  display:grid;gap:8px;align-content:start;background:var(--bg-alt)}
+.scr-live .sl-panel i{display:block;height:7px;border-radius:3px;background:var(--line-2)}
+.scr-live .sl-panel i:first-child{background:var(--or-l);width:60%}
+/* The wireframe's natural state is gone, so prefers-reduced-motion simply
+   renders the designed screen. The animation only ever perturbs it away from
+   where it already sits: the same rule the Technical Writing hero follows. */
+.scr-wire{opacity:0;z-index:2}
+.scr-live{opacity:1}
+@media(prefers-reduced-motion:no-preference){
+  .scr-wire{animation:scr-out 3.4s var(--ease) .35s 1 both}
+  .scr-live{animation:scr-in 3.4s var(--ease) .35s 1 both}
+}
+@keyframes scr-out{0%,45%{opacity:1}72%,100%{opacity:0}}
+@keyframes scr-in{0%,52%{opacity:0}80%,100%{opacity:1}}
+
+/* ---- the problem: a rail that thins out and breaks --------------------- */
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:38px}
+.rail-n{position:relative;padding:30px 18px 0 0}
+.rail-n::before{content:"";position:absolute;left:0;right:0;top:7px;height:2px;
+  background:var(--or);opacity:calc(1 - (var(--i) * .27))}
+.rail-n:last-child::before{background:repeating-linear-gradient(90deg,
+  var(--line-2) 0 5px,transparent 5px 10px)}
+.rail-n::after{content:"";position:absolute;left:0;top:2px;width:12px;height:12px;
+  border-radius:50%;background:#fff;border:2px solid var(--or);
+  opacity:calc(1 - (var(--i) * .22))}
+.rail-n:last-child::after{border-color:var(--line-2)}
+.rail-n span{display:block;font-size:14.6px;font-weight:600;color:var(--ink);
+  letter-spacing:-.018em;line-height:1.35}
+.rail-end{margin-top:28px;max-width:46ch;font-size:17.4px;line-height:1.62;
+  color:var(--body)}
+@media(max-width:820px){.rail{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:26px}}
+@media(max-width:520px){.rail{grid-template-columns:minmax(0,1fr)}}
+
+/* ---- the shortcut: two annotated artefacts ----------------------------- */
+.anno{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px;
+  margin-top:36px}
+.anno-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:#fff;box-shadow:var(--sh-xs);
+  transition:box-shadow .22s var(--ease),border-color .22s}
+.anno-card:hover{box-shadow:var(--sh-sm);border-color:var(--line-2)}
+.anno-top{position:relative;padding:16px;background:var(--bg-alt);
+  border-bottom:1px solid var(--line);min-height:128px}
+.anno-top b{display:block;background:var(--line);border-radius:4px}
+.anno-top .a1{height:12px;width:44%}
+.anno-top .a2{height:8px;width:72%;margin-top:9px}
+.anno-top .a3{height:8px;width:58%;margin-top:6px}
+.anno-top .a4{height:40px;width:86%;margin-top:13px;background:var(--line-2)}
+/* Annotation pins: what a UI/UX review actually looks like, which is the
+   point of drawing one rather than describing it. */
+.pin{position:absolute;width:21px;height:21px;border-radius:50%;
+  background:var(--or);color:#fff;font-size:11px;font-weight:700;
+  display:grid;place-items:center;box-shadow:var(--sh-sm)}
+.anno-body{padding:17px 18px 19px}
+.anno-body h3{font-size:15.6px;letter-spacing:-.02em;margin-bottom:12px}
+.anno-body ol{margin:0;padding:0;list-style:none;counter-reset:a;display:grid;gap:9px}
+.anno-body li{position:relative;padding-left:29px;font-size:14px;line-height:1.55;
+  color:var(--body);counter-increment:a}
+.anno-body li::before{content:counter(a);position:absolute;left:0;top:1px;
+  width:19px;height:19px;border-radius:50%;background:var(--t-or);
+  color:var(--or-d);font-size:10.5px;font-weight:700;display:grid;place-items:center}
+.anno-body li:last-child{font-weight:600;color:var(--ink)}
+.anno-body li:last-child::before{background:var(--or);color:#fff}
+@media(max-width:820px){.anno{grid-template-columns:minmax(0,1fr);gap:26px}}
+
+/* ---- what gets skipped: a research wall -------------------------------- */
+.wall{margin-top:36px;padding:28px 24px;border:1px solid var(--line);
+  border-radius:16px;background-color:var(--bg-alt);
+  background-image:repeating-linear-gradient(0deg,var(--line) 0 1px,transparent 1px 26px),
+    repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 26px);
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.note{background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:15px 15px 17px;box-shadow:var(--sh-sm);
+  transition:transform .2s var(--ease)}
+.note:nth-child(odd){transform:rotate(-1.2deg)}
+.note:nth-child(even){transform:rotate(1deg)}
+.note:hover{transform:rotate(0) translateY(-3px)}
+.note b{display:block;font-size:14.4px;letter-spacing:-.018em;color:var(--ink);
+  margin-bottom:7px;line-height:1.3}
+.note span{font-size:13.4px;line-height:1.55;color:var(--body)}
+@media(max-width:900px){.wall{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){
+  .wall{grid-template-columns:minmax(0,1fr);padding:20px 16px}
+  .note:nth-child(odd),.note:nth-child(even){transform:none}
+}
+
+/* ---- the service: the funnel the brief says nobody builds --------------- */
+.fun{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);
+  gap:46px;align-items:center;margin-top:36px}
+.fun svg{width:100%;height:auto;display:block}
+.fun-list{display:grid}
+.fun-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.fun-item:last-child{border-bottom:0}
+.fun-item em{display:inline-block;font-style:normal;font-size:10.5px;
+  font-weight:700;color:var(--or-d);background:var(--t-or);border-radius:5px;
+  padding:3px 7px;margin-bottom:7px}
+.fun-item b{display:block;font-size:15.4px;letter-spacing:-.02em;color:var(--ink)}
+.fun-item span{display:block;font-size:13.8px;line-height:1.55;color:var(--body);
+  margin-top:4px}
+@media(max-width:900px){
+  .fun{grid-template-columns:minmax(0,1fr);gap:28px}
+  .fun-fig{max-width:290px}
+}
+
+/* ---- how we work: an angled plane, section 3's first cue --------------- */
+.plane{position:relative;margin-top:38px;padding:44px 40px;border-radius:18px;
+  overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(103deg,var(--t-navy) 0%,var(--t-indigo) 44%,
+    var(--t-orl) 100%)}
+/* A crisp skewed edge, not a halo. */
+.plane::before{content:"";position:absolute;inset:-20% -28% auto auto;
+  width:50%;height:190%;transform:skewX(-11deg);
+  background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.18))}
+.plane>*{position:relative}
+.plane h3{font-size:clamp(20px,2.4vw,26px);letter-spacing:-.026em;
+  color:var(--navy);max-width:22ch;line-height:1.18}
+.plane p{margin-top:14px;max-width:54ch;font-size:16.2px;line-height:1.66;
+  color:var(--body)}
+.bars{display:grid;gap:12px;margin-top:28px;max-width:520px}
+.bar{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;
+  align-items:center}
+.bar span{font-size:12.4px;font-weight:650;color:var(--mute)}
+.bar i{display:block;height:11px;border-radius:6px;background:var(--line-2)}
+.bar.now i{background:linear-gradient(90deg,var(--or),var(--or-l))}
+@media(max-width:640px){
+  .plane{padding:30px 22px}
+  .bar{grid-template-columns:82px minmax(0,1fr)}
+}
+/* The bars draw themselves once the plane is reached. Both start together and
+   the run time is proportional to the distance, so the short one stops early
+   while the long one is still going: that gap is the point being made.
+   The full width is the natural state, matching the .rv guard above, so a
+   script that never runs leaves both bars drawn rather than empty. */
+.bar i{width:var(--w)}
+html.js .bar i{width:0}
+html.js .bar.in i{width:var(--w);transition:width var(--d,1s) var(--ease)}
+
+/* ---- past work, 2.0: one project per row, screens cascading ------------ */
+/* Client 2026-08-24: projects listed vertically, the write-up on the left and
+   the screens on the right, each one sliding in and covering about half of the
+   one before it.
+
+   The slide reuses .rv-l from the reveal system rather than adding another
+   keyframe block, which also means it inherits the rule at 760px where .rv-l
+   becomes a rise instead of a sideways move. Below that width the cascade
+   would be sliding shots into a column barely wider than one of them.
+
+   Each shot is 56% wide at 22% offsets, so each covers 61% of the one behind
+   it. Shadows and z-index carry the stacking; the frames themselves are still
+   placeholders, see build.pastwork(). */
+.pwv{display:grid;gap:66px;margin-top:42px}
+.pwv-row{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+  gap:52px;align-items:center}
+/* A project whose captures have not been supplied yet. One column, so the
+   write-up uses the width instead of sitting beside an empty half that reads
+   as a failed image. PTRI Academy, 2026-10-04. */
+.pwv-solo{grid-template-columns:minmax(0,1fr)}
+.pwv-solo .pwv-stage{display:none}
+/* Sentence case since 2026-10-04, on his instruction and on the standing
+   "all caps is AI slop" rule that predates it. The letter-spacing and the
+   size were both set for capitals; lower case at 11px/.08em reads loose and
+   small, so both move with the transform. This class is also on the UI/UX
+   page, which had the same problem and is fixed by the same change. */
+.pwv-ind{display:inline-block;font-size:12px;font-weight:650;letter-spacing:0;
+  color:var(--or-d);background:var(--t-or);
+  border-radius:5px;padding:4px 9px}
+.pwv-meta h3{margin-top:14px;font-size:clamp(21px,2.5vw,27px);letter-spacing:-.028em;
+  line-height:1.16;color:var(--ink)}
+.pwv-meta p{margin-top:13px;font-size:15.6px;line-height:1.65;color:var(--body)}
+.pwv-facts{margin:22px 0 0;display:grid;gap:11px}
+.pwv-facts>div{display:grid;grid-template-columns:78px minmax(0,1fr);gap:14px;
+  padding-top:11px;border-top:1px solid var(--line)}
+.pwv-facts dt{font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--mute);padding-top:2px}
+.pwv-facts dd{margin:0;font-size:14.6px;color:var(--ink);font-weight:550}
+/* ---- the cascade ---- */
+/* Derived, not picked. Shots are half the stage wide at 5/6, so each is 0.6 of
+   the stage width tall, and the last starts 26% down. At 6/5 its floor lands
+   about 10px clear of the stage bottom. */
+.pwv-stage{position:relative;aspect-ratio:6/5}
+/* Half the stage wide at 25% offsets: each screen covers exactly half of the
+   one behind it, which is what he asked for, and the third lands flush with
+   the right edge so the cascade spans the stage rather than stopping short.
+   Portrait, because the client's note was that the first cut looked zoomed
+   in: these are whole pages now, not the hero band of one.
+
+   object-fit:cover with a top anchor is what lets three differently shaped
+   sources share one frame. The two pages a reader actually sees are 0.49 and
+   0.61 tall, so the frame shows most of them; s1 is a wider crop but it sits
+   furthest back with two thirds covered, and cover trims the side nobody can
+   see anyway. */
+.pwv-shot{position:absolute;width:50%;aspect-ratio:5/6;
+  border:1px solid var(--line);border-radius:11px;overflow:hidden;
+  background:#fff;box-shadow:var(--sh-sm)}
+.pwv-shot img{display:block;width:100%;height:100%;object-fit:cover;
+  object-position:top center}
+.pwv-shot.s1{left:0;top:0;z-index:1}
+.pwv-shot.s2{left:25%;top:13%;z-index:2}
+.pwv-shot.s3{left:50%;top:26%;z-index:3}
+
+@media(max-width:900px){
+  .pwv-row{grid-template-columns:minmax(0,1fr);gap:30px}
+  .pwv{gap:52px}
+}
+/* The overlap needs room. On a phone the shots go one under another, which is
+   the only way three of them stay legible. */
+@media(max-width:560px){
+  .pwv-stage{aspect-ratio:auto;display:grid;gap:12px}
+  .pwv-shot{position:static;width:100%}
+}
+/* Slower than the reveal system's 1.05s default. These are the largest things
+   that move on the site and they were arriving at the same speed as a card,
+   which read as a flick rather than a cascade. Pairs with the 850ms stagger in
+   build.pastwork(); change the two together or the sequence stops reading. */
+html.js .pwv-shot.rv{transition-duration:1.25s}
+
+/* ==========================================================================
+   Website Design & Development page only, 2026-08-24
+   --------------------------------------------------------------------------
+   Its own components, not the UI/UX page's. That page was rejected once for
+   reusing another page's layout and the lesson carries. Left aligned per
+   section 3, which rejects "everything centred".
+   ========================================================================== */
+
+/* ---- hero: one layout at three widths --------------------------------- */
+/* 1 : .53 : .27 is not arbitrary, it is roughly 1440 / 768 / 390. Fixed widths
+   here made the desktop frame the narrowest thing on the row once the hero
+   column got tight, which is the opposite of the point. */
+.wset{display:grid;grid-template-columns:1fr .53fr .27fr;gap:16px;
+  align-items:end}
+.wf{border:1px solid var(--line);border-radius:12px;background:#fff;
+  box-shadow:var(--sh-xs);overflow:hidden}
+.wf>span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--mute);padding:9px 12px;
+  border-bottom:1px solid var(--line);background:var(--bg-alt)}
+.wf-in{padding:12px;display:grid;gap:9px;align-content:start}
+.wf b{display:block;background:var(--line);border-radius:4px}
+.wf .w-nav{height:8px;width:72%;background:var(--line-2)}
+.wf .w-h{height:13px;width:64%;background:var(--line-2)}
+.wf .w-l{height:7px;width:92%}
+.wf .w-l.s{width:74%}
+.wf .w-btn{height:16px;width:38%;background:var(--or);border-radius:5px}
+.wf .w-img{height:74px;width:100%;background:var(--t-navy)}
+.wf .w-img.t{height:58px}
+.wf .w-img.p{height:48px}
+.wf-d .wf-in{min-height:172px}
+.wf-d .w-row{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;
+  align-items:start}
+.wf-d .w-row>div{display:grid;gap:7px;align-content:start}
+.wf-d .w-three{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.wf-d .w-three b{height:30px}
+.wf-t .w-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wf-t .w-two b{height:26px}
+@media(max-width:820px){
+  .wset{grid-template-columns:1fr 1fr;gap:14px}
+  .wf-d{grid-column:1/-1}
+}
+
+/* ---- what we build: layers standing on each other --------------------- */
+/* Not a card grid. Four cards in a row would say these are four things you
+   could buy separately; the indent and the numbering say the opposite. */
+.slab{display:grid;gap:10px;margin-top:36px}
+.slab-i{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;
+  align-items:start;background:#fff;border:1px solid var(--line);
+  border-radius:13px;padding:19px 22px;box-shadow:var(--sh-xs);
+  /* Each layer sits a little further in than the one under it. */
+  margin-left:calc(var(--d) * 22px);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease)}
+.slab-i:hover{transform:translateY(-3px);box-shadow:var(--sh-sm)}
+.slab-i>b{width:30px;height:30px;border-radius:9px;background:var(--t-or);
+  color:var(--or-d);font-size:13px;font-weight:700;display:grid;
+  place-items:center;flex:none}
+.slab-i h3{font-size:16px;letter-spacing:-.022em;color:var(--ink)}
+.slab-i p{margin-top:5px;font-size:14.2px;line-height:1.58;color:var(--body)}
+@media(max-width:760px){
+  .slab-i{margin-left:0;padding:16px 17px;gap:14px}
+}
+
+/* ==========================================================================
+   Data Engineering & Management page only, 2026-08-24
+   --------------------------------------------------------------------------
+   Own components where the argument needs them, shared ones where it does not.
+   Left aligned per section 3, which rejects "everything centred".
+   ========================================================================== */
+
+/* ---- tool wordmarks, reinstated for a page with no logo files ---------- */
+.stack{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.stack-i{border:1px solid var(--line);background:#fff;border-radius:10px;
+  padding:12px 18px;font-size:15.4px;font-weight:650;letter-spacing:-.02em;
+  color:var(--navy);box-shadow:var(--sh-xs);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.stack-i:hover{transform:translateY(-3px);box-shadow:var(--sh-sm)}
+
+/* ---- hero: many sources becoming one store ---------------------------- */
+.cv{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,.9fr);
+  gap:0;align-items:center}
+.cv-in{display:grid;gap:8px}
+.cv-src{background:#fff;border:1px dashed var(--line-2);border-radius:9px;
+  padding:9px 13px;font-size:12.8px;font-weight:550;color:var(--body)}
+/* The lines that meet. A bracket rather than an SVG, so it stretches. */
+.cv-join{position:relative;height:100%;min-height:120px}
+.cv-join::before{content:"";position:absolute;left:0;top:12%;bottom:12%;
+  width:22px;border:2px solid var(--line-2);border-right:0;
+  border-radius:10px 0 0 10px}
+.cv-join::after{content:"";position:absolute;left:22px;top:50%;right:0;
+  height:2px;background:var(--or);transform:translateY(-1px)}
+.cv-out{background:var(--t-navy);border:1px solid var(--line);
+  border-radius:12px;padding:16px;display:grid;gap:7px;align-content:start;
+  box-shadow:var(--sh-xs)}
+.cv-out b{font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+.cv-out i{display:block;height:8px;border-radius:3px;background:#fff}
+.cv-out i:first-of-type{background:var(--or);width:56%}
+@media(max-width:640px){
+  .cv{grid-template-columns:minmax(0,1fr);gap:16px}
+  .cv-join{min-height:26px;height:26px}
+  .cv-join::before{left:12%;right:12%;top:0;bottom:auto;width:auto;height:14px;
+    border:2px solid var(--line-2);border-bottom:0;border-radius:10px 10px 0 0}
+  .cv-join::after{left:50%;top:14px;right:auto;bottom:0;width:2px;height:auto;
+    transform:translateX(-1px)}
+}
+
+/* ---- the pipeline: one bar cut into segments -------------------------- */
+/* Not a row of cards and not another node rail. One flow that changes the
+   material as it passes through, so it is drawn as one bar. The tint runs from
+   the palest brand step to full orange, which carries the refining idea the
+   hero sets up without needing a caption. */
+.pipe{margin-top:36px}
+.pipe-bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.pipe-bar i{display:block;height:12px;
+  background:color-mix(in srgb, var(--or) calc((var(--i) + 1) / var(--n) * 100%),
+             var(--t-orl));
+  border-radius:2px}
+.pipe-bar i:first-child{border-radius:7px 2px 2px 7px}
+.pipe-bar i:last-child{border-radius:2px 7px 7px 2px}
+.pipe-cols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;
+  margin-top:16px}
+.pipe-cols>div{padding-right:14px}
+.pipe-cols b{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;
+  color:var(--or-d)}
+.pipe-cols h3{margin-top:5px;font-size:15px;letter-spacing:-.02em;
+  color:var(--ink)}
+.pipe-cols p{margin-top:5px;font-size:13.4px;line-height:1.55;color:var(--body)}
+@media(max-width:900px){
+  .pipe-bar,.pipe-cols{grid-auto-flow:row;grid-auto-columns:auto}
+  .pipe-bar{grid-template-columns:repeat(5,1fr);grid-auto-flow:column}
+  .pipe-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px;
+    margin-top:22px}
+  .pipe-cols>div{padding-right:0}
+}
+@media(max-width:520px){
+  .pipe-cols{grid-template-columns:minmax(0,1fr)}
+}
+/* Grouped logo strips. Left aligned like the rest of that page, where the flat
+   .tools strip centres itself for the live-derived pages. */
+.tgrps{display:grid;gap:28px;margin-top:32px}
+/* Sentence case, and the tracking comes off with it. Client 2026-08-24: "All
+   caps case is ai slop." §3 has listed all-caps tracked-out micro-labels among
+   the rejected patterns since the start; this label was one anyway. Size goes
+   up slightly because 11px was sized for capitals. */
+.tgrp-l{display:block;font-size:12.8px;font-weight:700;letter-spacing:-.004em;
+  color:var(--mute)}
+.tgrp .tools{justify-content:flex-start;margin-top:12px}
+/* Centred variant, for the tool strips on the live-derived pages. Those
+   sections are centred like every other live section, so the left-aligned
+   label block the authored pages use reads as a mistake inside one.
+
+   The gap is WIDER than the left-aligned variant, not narrower. Left-aligned
+   groups are held together by a shared left edge; centred ones have only
+   proximity, so the distance from a label to its own strip (12px) has to beat
+   the distance to the group above it by a clear margin or the labels start
+   reading as captions under the wrong strip. */
+.tgrps.tc{gap:34px}
+.tgrps.tc .tgrp-l{text-align:center}
+.tgrps.tc .tools{justify-content:center}
+
+/* ==========================================================================
+   Paired sector sections, Proposal Writing, 2026-08-25
+   --------------------------------------------------------------------------
+   Client: merge each sector with the approach that follows it, description
+   left and approach right. Six sections became three.
+
+   Left column is wider than the right: the description is prose that wants a
+   comfortable measure, the approach is five short labelled steps that do not.
+   ========================================================================== */
+/* Centred, not top-aligned. The description runs 163 to 190px against a
+   571px column of steps, so aligning to the top left ~380px of white under it
+   and the section read as top-heavy rather than as a pair. */
+.sect{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:52px;align-items:center}
+.sect-l h2{font-size:clamp(24px,2.5vw,31px);letter-spacing:-.03em;
+  line-height:1.18;color:var(--ink)}
+.sect-l p{margin-top:16px;font-size:16.4px;line-height:1.68;color:var(--body)}
+.sect-l p + p{margin-top:13px}
+/* Not a section heading: it labels the column beside it. Sized down to the
+   kicker scale so it cannot compete with the sector name across the gap. */
+.sect-k{font-size:12.8px;font-weight:700;letter-spacing:-.004em;
+  color:var(--mute);margin-bottom:14px}
+
+/* Two across, not stacked. Client 2026-08-25: five tiles in one column ran
+   571px against a 190px description and the section was mostly white space.
+   Two per row brings it to three rows, about 350px.
+
+   The fifth tile spans the full width rather than sitting alone in the left
+   cell: an odd tile half-width at the end reads as a missing sixth step. Keyed
+   on :last-child:nth-child(odd) so it holds for any odd count, and does
+   nothing at all for an even one.
+
+   Reuses .pstep wholesale, so the tiles, the c1-c4 tints and the reveal
+   behaviour are the ones every other approach block already uses. */
+.proc.vert{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.proc.vert .pstep:last-child:nth-child(odd){grid-column:1/-1}
+/* Placement, fixed 2026-08-25 after "the text placement in boxes look so bad".
+   Measured rather than guessed. Three faults, all mine:
+
+   1. `gap:14px` set the ROW gap as well as the column gap, so a step title sat
+      14px clear of its own description and the two read as unrelated lines
+      rather than as a label and its gloss.
+   2. `.pstep h3` carries a 9px bottom margin from the horizontal strip, which
+      added to the gap instead of replacing it.
+   3. The badge was a sibling of the two text lines in one grid, so it aligned
+      against the title's row rather than against the pair.
+
+   process() now wraps the text for the vertical variant, so the tile is a
+   badge beside ONE block and all three faults disappear into a single
+   `align-items:center`. */
+/* flex-direction:row explicitly. The base .pstep is a COLUMN, which is right
+   for the horizontal strip where the badge sits above its label, and stacked
+   the badge over the text here: the tile went to 121px and nothing was
+   centred. `flex` is reset too, since the base grows tiles from a 190px
+   basis and these are grid cells now. */
+.proc.vert .pstep{width:100%;min-width:0;text-align:left;flex:none;
+  display:flex;flex-direction:row;align-items:center;gap:14px;padding:15px 18px}
+.proc.vert .pstep .pn{flex:none;margin:0}
+.proc.vert .pv-t{min-width:0}
+.proc.vert .pv-t h3{margin:0;font-size:15.4px;line-height:1.3}
+.proc.vert .pv-t p{margin:3px 0 0;font-size:13.6px;line-height:1.45}
+
+@media(max-width:900px){
+  .sect{grid-template-columns:minmax(0,1fr);gap:30px}
+}
+/* One column again once two tiles cannot hold a step title and its
+   description on a sane measure. */
+@media(max-width:560px){
+  .proc.vert{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:520px){
+  .sect{gap:26px}
+  .proc.vert .pstep{padding:13px 15px;gap:12px}
+}
+
+/* ==========================================================================
+   Blog post pages, 2026-08-25
+   --------------------------------------------------------------------------
+   An article, not a service page. The one job is a comfortable read: a measure
+   short enough that the eye finds the next line without hunting, and headings
+   with enough air above them to work as waypoints in a long scroll.
+   ========================================================================== */
+/* Visually hidden, still read aloud and still indexed. The article <h1> uses
+   it because the title lives in the cover artwork now; nothing else on this
+   site should. Not display:none, which removes it from the accessibility tree
+   as well and would defeat the point entirely. */
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---- article banner: photo behind, headline in front ------------------ */
+/* Replaces the cover-as-<img> header on 2026-08-25. The picture is a
+   background because it is decoration now: the headline on top carries the
+   meaning, and role="img" + aria-label keeps the photograph described.
+
+   40/21 matches the artwork exactly, so nothing is cropped, and `min-height`
+   catches the case the ratio cannot: a long headline at a narrow width. */
+/* NO max-height. There was one, 500px, added to stop the banner filling the
+   first screen; it made the box shorter than the picture and `cover` then
+   cropped 164px, a QUARTER of every photograph, off the bottom. The card on
+   /blog/ showed the whole image and the banner showed three quarters of it,
+   which is exactly what "fine on the thumbnail, very zoomed in on the page"
+   describes. Client 2026-08-25.
+
+   The banner is the artwork's own ratio and crops nothing. That ratio is now
+   3:1, not 40/21: at 40/21 it ran 664px on a 1280 screen and the client had to
+   scroll to reach his own headline. 3:1 is 421px, and it is what xgrid.co runs
+   on the page he gave as the reference. The covers are generated at 3:1 to
+   match, so shortening the frame costs no crop. `background-position` stays at
+   the top so that a viewport too narrow to satisfy min-height crops the foot
+   rather than the logo. */
+/* `width:100%` is load-bearing. With `aspect-ratio` and `max-height` and no
+   explicit width, the box solves the ratio the other way round and derives its
+   WIDTH from the capped height: the banner came out 952px wide instead of full
+   bleed, and the headline sat 42px left of the article under it. Width first,
+   height from the ratio, max-height clamps it, background-size:cover absorbs
+   the difference. */
+.pbanner{position:relative;width:100%;
+  background-image:var(--cover);
+  background-size:cover;background-position:50% 0%;
+  background-color:var(--navy-d);aspect-ratio:3/1;
+  min-height:300px;
+  display:flex;align-items:flex-end}
+/* The gradient the picture no longer carries. In CSS it sits at the foot of
+   the BANNER rather than the foot of the image, so it is under the headline at
+   every height, and a raw photograph with no processing still gets one. */
+.pbanner::after{content:"";position:absolute;inset:0;pointer-events:none;
+  /* Stops MEASURED, not chosen by eye. The first pass was tuned against two
+     dark photographs and read fine; the WordPress cover he swapped in on
+     2026-08-25 is a white tablet screen, and the headline's worst backdrop
+     came out at luminance 115, a contrast ratio of 2.17 against the 3.0 large
+     text needs. Re-tuned again when the banner went to 3:1: the frame got
+     shorter, so the headline sits proportionally HIGHER in it, at 58% rather
+     than near the foot, and the ramp had slipped back to 3.28. It now reaches
+     .78 by 52%, which puts the worst case near 3.8:1.
+
+     Steep at the bottom and gentle at the top on purpose: the photograph is
+     still a photograph for its top half, and only the strip the words sit on
+     is carried down to something they can be read against. Re-measure before
+     softening this; a brighter photograph than the tablet one would need
+     more, not less. */
+  background:linear-gradient(to bottom,
+    rgba(5,15,59,0) 0%, rgba(5,15,59,.10) 18%, rgba(5,15,59,.42) 38%,
+    rgba(5,15,59,.78) 52%, rgba(5,15,59,.96) 100%)}
+/* A flex item does not take `margin:0 auto` from the base .wrap, so it sat at
+   952px and the headline started 42px left of the article below it. Explicit
+   basis and auto inline margins put the two on one edge. */
+.pbanner .wrap{flex:1 1 100%;max-width:1180px;margin-inline:auto;
+  position:relative;z-index:1}
+.pb-in{padding-bottom:44px;max-width:900px}
+.pbanner h1{font-size:clamp(27px,3.6vw,46px);line-height:1.16;
+  letter-spacing:-.032em;color:#fff;
+  /* The artwork's own gradient does the lifting; this is insurance for a
+     photograph swapped in without one, which is the whole point of the split. */
+  text-shadow:0 1px 24px rgba(5,15,59,.45)}
+/* Base. Lost once in the rewrite that introduced the banner, which ran the
+   byline into the date with no separator; restored and kept here so the rule
+   lives beside the thing that uses it. */
+.pmeta{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;
+  font-size:14.6px;line-height:1.5}
+/* NOWRAP, because the separator lives INSIDE the time element. His phone,
+   2026-11-20: the dot sat at the end of one line and the date dropped to
+   the next, which reads as a typo rather than a separator. The time is a
+   flex item, so when the byline leaves it too little room its CONTENTS wrap
+   and strand the dot. Keeping the date on one line sends the whole item to
+   the next line instead, dot and all, which is what the wrap was for. */
+.pmeta time{white-space:nowrap}
+.pmeta time::before{content:"\B7";margin-right:14px;color:var(--line-2)}
+.pmeta time:first-child::before{content:none}
+/* ON A PHONE THE SEPARATOR GOES ENTIRELY, because there is nothing left for
+   it to separate. The byline is about 240px and the date 137, so below
+   roughly 420px they can never share a line: the date always takes its own,
+   and a mid-sentence dot at the START of that line reads as a typo. This is
+   the same trap the rule further down names for a date with no byline. The
+   nowrap above is still doing its job, keeping "16 February 2026" whole. */
+@media(max-width:480px){
+  .pmeta{display:block}
+  .pmeta time{display:block;margin-top:5px}
+  .pmeta time::before{content:none}
+}
+
+.pbanner .pmeta{margin-top:14px;color:rgba(255,255,255,.82)}
+.pbanner .pmeta time{color:rgba(255,255,255,.82)}
+.pbanner .pmeta time::before{color:rgba(255,255,255,.45)}
+.pbanner-ph{background-image:linear-gradient(140deg,var(--navy) 0%,var(--navy-d) 100%)}
+
+/* Below 760px the headline goes UNDER the picture. Three lines of title over
+   a 197px-tall banner is a scrim fighting a photograph and losing; separating
+   them is legible at any length. */
+@media(max-width:760px){
+  /* `background-image:none` now actually works: the photograph arrives as
+     --cover, so there is no inline background-image to outrank this. */
+  .pbanner{display:block;aspect-ratio:auto;min-height:0;
+    background-image:none;background-color:transparent}
+  /* No overlay once the headline is under the picture rather than on it. */
+  .pbanner::after{content:none}
+  .pbanner::before{content:"";display:block;aspect-ratio:3/1;
+    background-image:var(--cover);background-size:cover;background-position:50% 50%;
+    background-color:var(--navy-d);border-radius:0}
+  .pb-in{padding:24px 0 0;max-width:none}
+  .pbanner h1{color:var(--ink);text-shadow:none}
+  .pbanner .pmeta,.pbanner .pmeta time{color:var(--mute)}
+  .pbanner .pmeta time::before{color:var(--line-2)}
+}
+
+/* 68ch, not the 74ch the prose blocks use/* 68ch, not the 74ch the prose blocks use: those are two or three paragraphs
+   under a heading, this is eleven hundred words and the measure has to hold
+   up over the whole of it. */
+.post{max-width:68ch;margin:0 auto;font-size:17px;line-height:1.72;
+  color:var(--body)}
+.post > *:first-child{margin-top:0}
+.post p{margin-top:20px}
+/* Space above a heading, not below it: a heading belongs to what follows. */
+.post h2{margin-top:46px;font-size:clamp(21px,2.2vw,26px);letter-spacing:-.028em;
+  line-height:1.25;color:var(--ink)}
+.post h3{margin-top:34px;font-size:18.4px;letter-spacing:-.02em;
+  line-height:1.35;color:var(--ink)}
+.post h2 + p,.post h3 + p{margin-top:12px}
+.post ul{margin-top:16px;padding-left:0;list-style:none;display:grid;gap:9px}
+.post li{position:relative;padding-left:26px}
+.post li::before{content:"";position:absolute;left:6px;top:11px;
+  width:6px;height:6px;border-radius:50%;background:var(--or)}
+/* Pull quote. A rule down the left rather than quotation marks set large:
+   the author's own quote marks are already in the text, and a decorative pair
+   on top of them reads as a typo. */
+/* Figures the author put IN the article. First used by the 2026-10-04
+   lead-generation piece, whose two infographics the surrounding prose refers
+   to directly. Full measure, not inset: these are diagrams with small type
+   and every pixel of width helps them stay legible. */
+.pfig{margin:30px 0;}
+.pfig img{display:block;width:100%;height:auto;border:1px solid var(--line);
+  border-radius:12px;background:#fff}
+.post blockquote{margin:34px 0;padding:4px 0 4px 26px;
+  border-left:3px solid var(--or);font-size:19.4px;line-height:1.6;
+  letter-spacing:-.014em;color:var(--ink)}
+@media(max-width:640px){
+  .post blockquote{margin:26px 0;padding-left:18px;font-size:17.6px}
+}
+/* Without a byline the meta is a date alone, and the separator before it would
+   be a stray dot at the start of the line. */
+.pmeta time:first-child::before{content:none}
+
+.post a{color:var(--or-d);text-decoration:underline;
+  text-underline-offset:2px;text-decoration-thickness:1px}
+.post a:hover{text-decoration-thickness:2px}
+@media(max-width:640px){
+  .post{font-size:16.2px;line-height:1.68}
+  .post h2{margin-top:38px}
+  .post h3{margin-top:28px}
+}
+
+/* ==========================================================================
+   Article sidebar and prev/next, 2026-08-25
+   ========================================================================== */
+/* One grid, article and sidebar together. 776px is the article's own measure
+   (68ch at 17px) written as a number, because the sidebar column has to be
+   subtracted from the same total and `ch` here would resolve against the
+   grid's font size rather than the article's. 776 + 48 + 280 = 1104, inside
+   the 1120 wrap at 1280. */
+.post-grid{display:grid;grid-template-columns:minmax(0,776px) 280px;
+  gap:48px;justify-content:start;align-items:start}
+.post-grid .post{margin:0}
+
+/* Sticky, so it is still there four minutes into the article. `top` clears
+   the site header, which is itself sticky. */
+.pside{position:sticky;top:96px}
+.subc{background:var(--t-navy);border:1px solid var(--line);border-radius:14px;
+  padding:24px 22px}
+.subc h2{font-size:18.4px;letter-spacing:-.022em;color:var(--ink)}
+.subc p{margin-top:9px;font-size:14px;line-height:1.58;color:var(--body)}
+.subf{margin-top:16px;display:grid;gap:7px}
+.subf label{font-size:12.8px;font-weight:650;color:var(--mute)}
+.subf input{width:100%;padding:11px 13px;font:inherit;font-size:14.6px;
+  color:var(--ink);background:#fff;border:1px solid var(--line-2);
+  border-radius:9px}
+.subf input:focus-visible{outline:2px solid var(--or);outline-offset:1px;
+  border-color:transparent}
+.subf .btn{margin-top:5px;width:100%;justify-content:center}
+
+/* The consent tick and the notice under it. Two elements on purpose: the
+   label is the agreement and the paragraph is information, and only the
+   first is ever sent to HubSpot.
+
+   EVERY SELECTOR HERE IS SCOPED TO .subf, and that is what makes it work.
+   The first version used bare `.sub-consent input`, which ties on
+   specificity with `.subf input{width:100%}` above and therefore LOSES to
+   it on order: the checkbox rendered 234px wide, the text was squeezed to
+   zero width, and the label overflowed its column all the way up to a
+   page-level sideways scroll. Same story for `.subf label`, which was
+   beating the label's own font size and colour. */
+.subf .sub-consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px;
+  font-size:13.4px;font-weight:400;line-height:1.45;color:var(--body);
+  cursor:pointer;text-transform:none;letter-spacing:0}
+.subf .sub-consent input{flex:none;width:16px;height:16px;margin:1px 0 0;
+  padding:0;accent-color:var(--or)}
+/* min-width:0 so the sentence can wrap: a flex item defaults to
+   min-width:auto and refuses to shrink below its own content width. */
+.subf .sub-consent span{min-width:0}
+.subf .sub-note{margin-top:7px;font-size:12.6px;line-height:1.45;
+  color:var(--mute)}
+.subf .sub-note a{color:var(--or-d);text-decoration:underline;
+  text-underline-offset:2px}
+
+/* Previous / next. Spans the full wrap under both columns, so it reads as the
+   end of the page rather than the end of the text column. */
+.pn{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pn-l{display:grid;gap:5px;padding:18px 20px;background:#fff;
+  border:1px solid var(--line);border-radius:13px;box-shadow:var(--sh-xs);
+  transition:border-color .2s var(--ease),transform .2s var(--ease),
+             box-shadow .2s var(--ease)}
+.pn-l:hover{border-color:var(--line-2);transform:translateY(-2px);
+  box-shadow:var(--sh-sm)}
+.pn-k{font-size:12.4px;font-weight:700;letter-spacing:-.004em;color:var(--or-d)}
+.pn-t{font-size:15.4px;line-height:1.38;letter-spacing:-.02em;color:var(--ink)}
+/* Next sits right and reads right, so the pair mirrors the direction of
+   travel rather than being two identical cards side by side. */
+.pn-n{text-align:right}
+/* A lone Next must not sit in the left column pretending to be a Previous. */
+.pn-n:only-child{grid-column:2}
+
+@media(max-width:1000px){
+  .post-grid{grid-template-columns:minmax(0,1fr);gap:44px;max-width:776px;
+    margin:0 auto}
+  .pside{position:static;max-width:776px;margin:0 auto}
+}
+@media(max-width:560px){
+  .pn{grid-template-columns:minmax(0,1fr)}
+  .pn-n{text-align:left}
+  .pn-n:only-child{grid-column:1}
+}
+
+/* ----------------------------------------- L&D hero: course assembling ---
+   Client 2026-10-04 asked for a hero graphic like the Technical Writing one.
+   Deliberately a different component: .tf is that page's argument and reusing
+   it would say the two pages do the same work.
+
+   Same motion contract as .tf throughout this file: every keyframe only moves
+   an element away from where it already sits, with `backwards` fill, so the
+   resting state is the finished state. Kill the animation and the course
+   renders complete. */
+.md{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:20px;box-shadow:var(--sh-sm)}
+.md-head{display:flex;align-items:center;gap:14px;padding-bottom:16px;
+  margin-bottom:6px;border-bottom:1px solid var(--line)}
+.md-head b{display:block;font-size:14.5px;color:var(--ink);letter-spacing:-.014em}
+.md-head span{font-size:12.8px;color:var(--mute)}
+/* conic-gradient ring. --p is animated from 0 to 1 through @property where it
+   is supported and simply lands at 1 where it is not, which is the whole
+   degradation story for this element. */
+.md-ring{width:40px;height:40px;border-radius:50%;flex:none;display:grid;
+  place-items:center;
+  background:conic-gradient(var(--or) calc(var(--p,1) * 360deg),
+    var(--t-navy) 0)}
+.md-ring b{width:30px;height:30px;border-radius:50%;background:#fff;display:block}
+.md-set{display:flex;flex-direction:column}
+.md-row{display:flex;align-items:center;gap:11px;padding:9px 0;
+  font-size:14.5px;color:var(--body);letter-spacing:-.008em}
+.md-row+.md-row{border-top:1px solid var(--line)}
+.md-tick{width:21px;height:21px;border-radius:50%;flex:none;display:grid;
+  place-items:center;background:var(--t-orl);color:var(--or-d)}
+@property --p{syntax:"<number>";inherits:false;initial-value:1}
+html.js .md-ring{animation:md-fill 4.6s var(--ease) infinite}
+html.js .md-row{animation:md-in 4.6s ease infinite backwards;
+  animation-delay:calc(var(--i) * .5s)}
+@keyframes md-fill{0%{--p:0}70%,100%{--p:1}}
+@keyframes md-in{0%,6%{opacity:.32}18%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  html.js .md-ring,html.js .md-row{animation:none}
+}
+
+/* ------------------------------- Workflow Automation hero: a run that loops */
+/* The one place on the site where a continuous animation carries the idea
+   rather than decorating it: the page argues repetition removed, so the
+   picture is a job that runs itself, repeatedly. Nodes render lit at rest, so
+   with motion off this is a labelled sequence and nothing is lost. The
+   travelling token is the only motion-only element and it is aria-hidden. */
+.af{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:22px 20px;box-shadow:var(--sh-sm);position:relative}
+/* overflow:hidden is load-bearing. The token is sized as a percentage of the
+   rail but travels as a percentage of ITSELF, so at the end of the loop it
+   runs about its own width past the rail and, with nothing clipping it, out
+   through the side of the card. Clipped, the same keyframe reads correctly:
+   the run leaves one end and re-enters at the other. */
+.af-rail{position:relative;height:3px;border-radius:2px;background:var(--t-navy);
+  margin:14px 10px 18px;overflow:hidden}
+.af-run{position:absolute;inset:0 auto 0 0;width:22%;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--or),transparent)}
+.af-set{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:10px}
+.af-node{display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;min-width:0}
+.af-node i{width:38px;height:38px;border-radius:11px;display:grid;
+  place-items:center;background:var(--t-navy);color:var(--navy);flex:none}
+.af-node b{font-size:12.4px;font-weight:550;color:var(--body);letter-spacing:-.006em}
+/* Same cause as `.own-who` above: at 320px each node gets 43px and
+   "Process" wants 45, so it spilled a pixel either side of its column. */
+@media(max-width:360px){.af-node b{font-size:11.4px;letter-spacing:-.012em}}
+html.js .af-run{animation:af-travel 3.6s linear infinite}
+html.js .af-node i{animation:af-lit 3.6s ease infinite;
+  animation-delay:calc(var(--i) / var(--n) * 3.6s)}
+@keyframes af-travel{from{transform:translateX(-24%)}to{transform:translateX(455%)}}
+@keyframes af-lit{
+  0%,14%{background:var(--t-or);color:var(--or-d);transform:translateY(-2px)}
+  34%,100%{background:var(--t-navy);color:var(--navy);transform:none}}
+@media(prefers-reduced-motion:reduce){
+  html.js .af-run{display:none}
+  html.js .af-node i{animation:none}
+}
+
+/* ------------------------------------------------- Careers hero: the team */
+/* Rewritten 2026-10-04. The first version put a "Shipped this quarter" list
+   beside the people and the client said the animation "is not related to
+   employees but related to our deliverables", which was right: the list was
+   the half that moved, so it read as the subject. People only now.
+
+   Initial tiles, not photographs. We have no pictures of the team and stock
+   models on a careers page are the oldest lie in recruitment advertising. */
+.tg{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:22px 20px;box-shadow:var(--sh-sm)}
+.tg-faces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px}
+.tg-p{display:flex;flex-direction:column;align-items:center;gap:9px;
+  text-align:center;min-width:0}
+.tg-p>b{font-size:12.2px;font-weight:550;color:var(--body);letter-spacing:-.006em}
+.tg-face{position:relative;width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;font-size:18px;font-weight:600;
+  letter-spacing:-.02em;flex:none}
+.tg-face.c1{background:var(--t-navy);color:var(--navy)}
+.tg-face.c2{background:var(--t-indigo);color:var(--indigo)}
+.tg-face.c3{background:var(--t-orl);color:var(--or-d)}
+.tg-face.c4{background:var(--t-or);color:var(--or-d)}
+/* The presence dot is the only thing that moves, and it is the "high
+   potential, active team" half of his brief. Resting state is a solid dot,
+   so with motion off this is a labelled team grid and nothing is lost. */
+.tg-dot{position:absolute;right:1px;bottom:1px;width:12px;height:12px;
+  border-radius:50%;background:var(--or);border:2.5px solid #fff}
+html.js .tg-dot{animation:tg-pulse 4.8s ease-in-out infinite;
+  animation-delay:calc(var(--i) * .5s)}
+html.js .tg-face{animation:tg-breathe 4.8s ease-in-out infinite;
+  animation-delay:calc(var(--i) * .5s)}
+@keyframes tg-pulse{0%,72%,100%{transform:none;opacity:1}
+  80%{transform:scale(1.42);opacity:.72}}
+@keyframes tg-breathe{0%,70%,100%{transform:none}82%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){
+  html.js .tg-dot,html.js .tg-face{animation:none}
+}
+@media(max-width:520px){
+  .tg-faces{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.hcta.mid{justify-content:center}
+
+/* ------------------------------------- SEO: Google result vs AI answer ---
+   Rewritten 2026-10-04. The first version drew grey bars on both sides and
+   the client was right that it said nothing: abstract shapes cannot show
+   WHAT changed, only that something did. Both panels are literal now, a
+   result listing and an assistant answering, and the same query runs across
+   the top of both, which is the argument in one line.
+
+   Mocked, not screenshotted. A real Google capture would be a claim about a
+   ranking nobody has verified, and it would go stale the week after. */
+.shift{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:18px;align-items:stretch;margin-top:34px;text-align:left}
+.shift-p{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--sh-xs);min-width:0}
+.shift-k{display:block;font-size:12.4px;font-weight:600;color:var(--mute);
+  margin-bottom:12px}
+.shift-now{border-color:var(--navy-l);box-shadow:var(--sh-sm)}
+.shift-now .shift-k{color:var(--navy)}
+/* The query, set as a search field on the left and as a typed question on
+   the right, so the two panels read as the same ask in two places. */
+.shift-q{font-size:12.8px;color:var(--body);background:var(--bg-alt);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px;
+  margin-bottom:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shift-q-ai{background:var(--t-navy);border-color:var(--t-indigo)}
+/* A result listing: url, blue title, two lines of snippet. The first one is
+   the brand and is the only one with any text in it. */
+.sr{margin-bottom:13px}
+.sr-u{display:block;font-size:10.8px;color:var(--mute);margin-bottom:2px}
+.sr-t{display:block;font-size:13.4px;font-weight:600;color:var(--indigo);
+  letter-spacing:-.012em;margin-bottom:5px}
+.sr:not(.sr-1) .sr-u,.sr:not(.sr-1) .sr-t{background:#E9EDF6;border-radius:4px;
+  height:9px;width:46%}
+.sr:not(.sr-1) .sr-t{width:72%;height:11px;margin-bottom:6px}
+.sr-s i{display:block;height:7px;border-radius:4px;width:var(--w);
+  background:#EDF1F8;margin-bottom:5px}
+/* The answer: prose naming the brand, then its sources. The named brand is
+   what the left panel cannot show and the whole point of the right one. */
+.shift-ans p{font-size:13px;line-height:1.55;color:var(--body);margin:0 0 9px}
+.shift-ans p b{color:var(--ink);font-weight:650}
+.shift-ans>i{display:block;height:7px;border-radius:4px;width:var(--w);
+  background:var(--t-navy);margin-bottom:6px}
+.shift-cites{display:flex;gap:6px;margin-top:12px;align-items:center}
+.shift-cites b{display:block;height:17px;border-radius:5px;padding:0 7px;
+  font-size:10.4px;font-weight:600;line-height:17px;color:var(--or-d);
+  background:var(--t-or);border:1px solid var(--or-l)}
+.shift-cites b:empty{width:30px;padding:0}
+.shift-arrow{color:var(--or);display:grid;place-items:center;flex:none}
+@media(max-width:720px){
+  .shift{grid-template-columns:minmax(0,1fr);gap:14px}
+  .shift-arrow{transform:rotate(90deg);justify-self:center}
+  /* The query is what ties the two panels together, so on a narrow card it
+     wraps rather than truncating: "who writes technical docu..." in both
+     panels loses the one thing the pair is there to show. The pill keeps its
+     shape at two lines. */
+  .shift-q{white-space:normal;border-radius:12px;line-height:1.45}
+}
+
+
+/* ------------------------------------------------------ consent bar --- */
+/* Shown only until it is answered, then never again on this device.
+   `hidden` in the markup and removed by script, so it cannot flash up for
+   somebody who already decided, and cannot appear at all without script,
+   which is correct: without script nothing is loaded to consent to. */
+.cbar{position:fixed;left:0;right:0;bottom:0;z-index:120;
+  background:var(--card);border-top:1px solid var(--line);
+  box-shadow:0 -6px 24px rgba(16,24,40,.08)}
+.cbar[hidden]{display:none}
+.cbar-in{max-width:var(--wrap,1200px);margin:0 auto;padding:16px 24px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.cbar-in p{margin:0;flex:1 1 320px;min-width:0;
+  font-size:14.4px;line-height:1.5;color:var(--body)}
+.cbar-in a{color:var(--or-d);text-decoration:underline;
+  text-underline-offset:2px}
+.cbar-act{display:flex;gap:10px;flex:none}
+/* Stacked on a phone: two buttons beside 3 lines of text leaves each about
+   90px, which is not a tap target. Full width and the accept on top. */
+@media(max-width:620px){
+  .cbar-in{padding:14px 20px;gap:12px}
+  .cbar-act{width:100%}
+  .cbar-act .btn{flex:1}
+}
+@media(prefers-reduced-motion:no-preference){
+  .cbar{animation:cbar-up .32s cubic-bezier(.22,1,.36,1) both}
+}
+@keyframes cbar-up{from{transform:translateY(100%)}to{transform:none}}
